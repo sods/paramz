@@ -91,10 +91,10 @@ class ObsAr(np.ndarray, Pickleable, Observable):
         super(ObsAr, self).__setitem__(s, val)
         self.notify_observers()
 
-    def __getslice__(self, start, stop):
+    def __getslice__(self, start, stop): #pragma: no cover
         return self.__getitem__(slice(start, stop))
 
-    def __setslice__(self, start, stop, val):
+    def __setslice__(self, start, stop, val): #pragma: no cover
         return self.__setitem__(slice(start, stop), val)
 
     def __ilshift__(self, *args, **kwargs): #pragma: no cover
