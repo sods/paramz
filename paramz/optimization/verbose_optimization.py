@@ -32,7 +32,6 @@ from __future__ import print_function
 import numpy as np
 import sys
 import time
-import datetime
 
 def exponents(fnow, current_grad):
     exps = [np.abs(np.float(fnow)), 1 if current_grad is np.nan else current_grad]

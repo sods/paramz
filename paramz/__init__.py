@@ -30,9 +30,31 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-from .model import *
-from .parameterization.parameterized import adjust_name_for_printing, Parameterizable
-from .parameterization.param import Param, ParamConcatenation
-from .parameterization.observable_array import ObsAr
+from .model import Model
+from .parameterized import Parameterized
+from .param import Param
+from .core.observable_array import ObsAr
+from .core import transformations as constraints
+from . import caching
 
-from .mapping import *
+def load(file_or_path):
+    """
+    Load a previously pickled model, using `m.pickle('path/to/file.pickle)'
+
+    :param file_name: path/to/file.pickle
+    """
+    try:
+        import cPickle as pickle
+        if isinstance(file_or_path, basestring): 
+            with open(file_or_path, 'rb') as f:
+                m = pickle.load(f)
+        else:
+            m = pickle.load(file_or_path)
+    except: #python3
+        import pickle
+        if isinstance(file_or_path, str): 
+            with open(file_or_path, 'rb') as f:
+                m = pickle.load(f)
+        else:
+            m = pickle.load(file_or_path)
+    return m

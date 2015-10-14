@@ -1,7 +1,5 @@
 #===============================================================================
-# Copyright (c) 2012 - 2014, GPy authors (see AUTHORS.txt).
 # Copyright (c) 2015, Max Zwiessele
-#
 # All rights reserved.
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -30,5 +28,4 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-from .scg import SCG
-from .optimization import *
+from . import domains, index_operations, lists_and_dicts, observable, observable_array, parameter_core, transformations, updateable

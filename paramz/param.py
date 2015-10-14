@@ -30,8 +30,8 @@
 
 import itertools
 import numpy as np
-from .parameter_core import Parameterizable, adjust_name_for_printing, Pickleable
-from .observable_array import ObsAr
+from .core.parameter_core import Parameterizable, adjust_name_for_printing, Pickleable
+from .core.observable_array import ObsAr
 from functools import reduce
 
 ###### printing
@@ -188,7 +188,7 @@ class Param(Parameterizable, ObsAr):
     #===========================================================================
     @property
     def is_fixed(self):
-        from .transformations import __fixed__
+        from paramz.core.transformations import __fixed__
         return self.constraints[__fixed__].size == self.size
 
     def _get_original(self, param):
@@ -238,6 +238,10 @@ class Param(Parameterizable, ObsAr):
     @property
     def num_params(self):
         return 0
+    
+    def get_property_string(self, prop):
+        return [' '.join(map(lambda c: str(c[0]) if c[1].size == self._realsize_ else "{" + str(c[0]) + "}", prop.items()))]
+
     @property
     def _constraints_str(self):
         #py3 fix
@@ -273,13 +277,16 @@ class Param(Parameterizable, ObsAr):
             indices = indices[(slice(None),)+slice_index]
             indices = np.rollaxis(indices, 0, indices.ndim)
         return indices
+    
     def _max_len_names(self, gen, header):
-        gen = map(lambda x: " ".join(map(str, x)), gen)
-        return reduce(lambda a, b:max(a, len(b)), gen, len(header))
+        return max(max(map(lambda x: len(" ".join(map(str, x))), gen)), len(header))
+    
     def _max_len_values(self):
         return reduce(lambda a, b:max(a, len("{x:=.{0}g}".format(__precision__, x=b))), self.flat, len(self.hierarchy_name()))
+    
     def _max_len_index(self, ind):
         return reduce(lambda a, b:max(a, len(str(b))), ind, len(__index_name__))
+    
     def _short(self):
         # short string to print
         name = self.hierarchy_name()
@@ -350,7 +357,7 @@ class ParamConcatenation(object):
         See :py:class:`GPy.core.parameter.Param` for more details on constraining.
         """
         # self.params = params
-        from .lists_and_dicts import ArrayList
+        from .core.lists_and_dicts import ArrayList
         self.params = ArrayList([])
         for p in params:
             for p in p.flattened_parameters:

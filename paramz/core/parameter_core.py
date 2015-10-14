@@ -1,5 +1,3 @@
-# Copyright (c) 2012, GPy authors (see AUTHORS.txt).
-# Licensed under the BSD 3-clause license (see LICENSE.txt)
 """
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
@@ -42,13 +40,13 @@ Observable Pattern for patameterization
 
 
 """
-
-from .transformations import Transformation,Logexp, NegativeLogexp, Logistic, __fixed__, FIXED, UNFIXED
 import numpy as np
 import re
 import logging
-from .updateable import Updateable
 from functools import reduce
+
+from .transformations import Transformation,Logexp, NegativeLogexp, Logistic, __fixed__, FIXED, UNFIXED
+from .updateable import Updateable
 
 class HierarchyError(Exception):
     """
@@ -142,7 +140,7 @@ class Pickleable(object):
         """
         try: #Py2
             import cPickle as pickle
-        except ImportError: #Py3
+        except ImportError: #python3
             import pickle
         if isinstance(f, str):
             with open(f, 'wb') as f:
@@ -346,7 +344,7 @@ class Indexable(Nameable, Updateable):
         that is an int array, containing the indexes for the flattened
         param inside this parameterized logic.
         """
-        from .param import ParamConcatenation
+        from paramz.param import ParamConcatenation
         if isinstance(param, ParamConcatenation):
             return np.hstack((self._raveled_index_for(p) for p in param.params))
         return param._raveled_index() + self._offset_for(param)
@@ -432,68 +430,6 @@ class Indexable(Nameable, Updateable):
         return self.parameters[param._parent_index_]
 
     #===========================================================================
-    # Prior Operations
-    #===========================================================================
-    def set_prior(self, prior, warning=True):
-        """
-        Set the prior for this object to prior.
-        :param :class:`~GPy.priors.Prior` prior: a prior to set for this parameter
-        :param bool warning: whether to warn if another prior was set for this parameter
-        """
-        repriorized = self.unset_priors()
-        self._add_to_index_operations(self.priors, repriorized, prior, warning)
-
-        from .domains import _REAL, _POSITIVE, _NEGATIVE
-        if prior.domain is _POSITIVE:
-            self.constrain_positive(warning)
-        elif prior.domain is _NEGATIVE:
-            self.constrain_negative(warning)
-        elif prior.domain is _REAL:
-            rav_i = self._raveled_index()
-            assert all(all(False if c is __fixed__ else c.domain is _REAL for c in con) for con in self.constraints.properties_for(rav_i)), 'Domain of prior and constraint have to match, please unconstrain if you REALLY wish to use this prior'
-
-    def unset_priors(self, *priors):
-        """
-        Un-set all priors given (in *priors) from this parameter handle.
-        """
-        return self._remove_from_index_operations(self.priors, priors)
-
-    def log_prior(self):
-        """evaluate the prior"""
-        if self.priors.size == 0:
-            return 0.
-        x = self.param_array
-        #evaluate the prior log densities
-        log_p = reduce(lambda a, b: a + b, (p.lnpdf(x[ind]).sum() for p, ind in self.priors.items()), 0)
-
-        #account for the transformation by evaluating the log Jacobian (where things are transformed)
-        log_j = 0.
-        priored_indexes = np.hstack([i for p, i in self.priors.items()])
-        for c,j in self.constraints.items():
-            if not isinstance(c, Transformation):continue
-            for jj in j:
-                if jj in priored_indexes:
-                    log_j += c.log_jacobian(x[jj])
-        return log_p + log_j
-
-    def _log_prior_gradients(self):
-        """evaluate the gradients of the priors"""
-        if self.priors.size == 0:
-            return 0.
-        x = self.param_array
-        ret = np.zeros(x.size)
-        #compute derivate of prior density
-        [np.put(ret, ind, p.lnpdf_grad(x[ind])) for p, ind in self.priors.items()]
-        #add in jacobian derivatives if transformed
-        priored_indexes = np.hstack([i for p, i in self.priors.items()])
-        for c,j in self.constraints.items():
-            if not isinstance(c, Transformation):continue
-            for jj in j:
-                if jj in priored_indexes:
-                    ret[jj] += c.log_jacobian_grad(x[jj])
-        return ret
-
-    #===========================================================================
     # Tie parameters together
     #===========================================================================
 
@@ -515,12 +451,12 @@ class Indexable(Nameable, Updateable):
 
     def constrain(self, transform, warning=True, trigger_parent=True):
         """
-        :param transform: the :py:class:`GPy.core.transformations.Transformation`
+        :param transform: the :py:class:`paramz.transformations.Transformation`
                           to constrain the this parameter to.
         :param warning: print a warning if re-constraining parameters.
 
         Constrain the parameter to the given
-        :py:class:`GPy.core.transformations.Transformation`.
+        :py:class:`paramz.transformations.Transformation`.
         """
         if isinstance(transform, Transformation):
             self.param_array[...] = transform.initialize(self.param_array)
@@ -533,7 +469,7 @@ class Indexable(Nameable, Updateable):
         """
         :param transforms: The transformations to unconstrain from.
 
-        remove all :py:class:`GPy.core.transformations.Transformation`
+        remove all :py:class:`paramz.transformations.Transformation`
         transformats of this parameter object.
         """
         return self._remove_from_index_operations(self.constraints, transforms)
@@ -740,7 +676,6 @@ class OptimizationHandlable(Indexable):
         Transform the gradients by multiplying the gradient factor for each
         constraint to it.
         """
-        self._highest_parent_.tie.collate_gradient()
         #py3 fix
         #[np.put(g, i, c.gradfactor(self.param_array[i], g[i])) for c, i in self.constraints.iteritems() if c != __fixed__]
         [np.put(g, i, c.gradfactor(self.param_array[i], g[i])) for c, i in self.constraints.items() if c != __fixed__]
@@ -752,7 +687,6 @@ class OptimizationHandlable(Indexable):
         Transform the gradients by multiplying the gradient factor for each
         constraint to it.
         """
-        self._highest_parent_.tie.collate_gradient()
         #py3 fix
         #[np.put(g, i, c.gradfactor_non_natural(self.param_array[i], g[i])) for c, i in self.constraints.iteritems() if c != __fixed__]
         [np.put(g, i, c.gradfactor_non_natural(self.param_array[i], g[i])) for c, i in self.constraints.items() if c != __fixed__]
@@ -880,12 +814,12 @@ class Parameterizable(OptimizationHandlable):
     and the empty parameters_changed().
 
     This class is abstract and should not be instantiated.
-    Use GPy.core.Parameterized() as node (or leaf) in the parameterized hierarchy.
-    Use GPy.core.Param() for a leaf in the parameterized hierarchy.
+    Use paramz.Parameterized() as node (or leaf) in the parameterized hierarchy.
+    Use paramz.Param() for a leaf in the parameterized hierarchy.
     """
     def __init__(self, *args, **kwargs):
         super(Parameterizable, self).__init__(*args, **kwargs)
-        from GPy.core.parameterization.lists_and_dicts import ArrayList
+        from .lists_and_dicts import ArrayList
         self.parameters = ArrayList()
         self._param_array_ = None
         self._added_names_ = set()
@@ -1084,7 +1018,7 @@ class Parameterizable(OptimizationHandlable):
         This method gets called when parameters have changed.
         Another way of listening to param changes is to
         add self as a listener to the param, such that
-        updates get passed through. See :py:function:``GPy.core.param.Observable.add_observer``
+        updates get passed through. See :py:function:``paramz.param.Observable.add_observer``
         """
         pass
 
@@ -1092,8 +1026,8 @@ class Parameterizable(OptimizationHandlable):
         """
         Save all the model parameters into a file (HDF5 by default).
         """
-        from . import Param
-        from ...util.misc import param_to_array
+        from ..param import Param
+
         def gather_params(self, plist):
             if isinstance(self,Param):
                 plist.append(self)
@@ -1106,7 +1040,7 @@ class Parameterizable(OptimizationHandlable):
                 f = h5py.File(filename,'w')
                 for p,n in zip(plist,names):
                     n = n.replace('.','_')
-                    p = param_to_array(p)
+                    p = p.values
                     d = f.create_dataset(n,p.shape,dtype=p.dtype)
                     d[:] = p
                 if hasattr(self, 'param_array'):

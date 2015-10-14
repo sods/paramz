@@ -92,17 +92,18 @@ class ObserverList(object):
         """
         Add an observer with priority and callble
         """
-        if observer is not None:
-            ins = 0
-            for pr, _, _ in self:
-                if priority > pr:
-                    break
-                ins += 1
-            self._poc.insert(ins, (priority, weakref.ref(observer), callble))
+        #if observer is not None:
+        ins = 0
+        for pr, _, _ in self:
+            if priority > pr:
+                break
+            ins += 1
+        self._poc.insert(ins, (priority, weakref.ref(observer), callble))
 
     def __str__(self):
-        from . import ObsAr, Param
-        from .parameter_core import Parameterizable
+        from ..param import Param
+        from ..core.observable_array import ObsAr
+        from ..core.parameter_core import Parameterizable
         ret = []
         curr_p = None
         
@@ -123,7 +124,7 @@ class ObserverList(object):
             curr += curr_pre
             
             ret.append(curr + ", ".join([frmt(o), str(c)]))
-            return '\n'.join(ret)
+        return '\n'.join(ret)
 
     def flush(self):
         """
@@ -139,28 +140,5 @@ class ObserverList(object):
     def __len__(self):
         self.flush()
         return self._poc.__len__()
-
-    def __deepcopy__(self, memo):
-        s = ObserverList()
-        for p,o,c in self:
-            import copy
-            s.add(p, copy.deepcopy(o, memo), copy.deepcopy(c, memo))
-        s.flush()
-        return s
-
-    def __getstate__(self):
-        self.flush()
-        from ..caching import Cacher
-        obs = []
-        for p, o, c in self:
-            if (getattr(o, c.__name__, None) is not None 
-                and not isinstance(o, Cacher)):
-                obs.append((p,o,c.__name__))
-        return obs
-
-    def __setstate__(self, state):
-        self._poc = []
-        for p, o, c in state:
-            self.add(p,o,getattr(o, c))
 
     pass

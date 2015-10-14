@@ -91,25 +91,22 @@ class ParameterIndexOperations(object):
         self._properties = IntArrayDict()
         if constraints is not None:
             #python 3 fix
-            #for t, i in constraints.iteritems():
             for t, i in constraints.items():
                 self.add(t, i)
 
-    #iteritems has gone in python 3
-    #def iteritems(self):
-    #    return self._properties.iteritems()
-        
     def items(self):
-        return self._properties.items()
+        for i, ind in self._properties.items():
+            if ind.size > 0:
+                yield i, ind
 
     def properties(self):
-        return self._properties.keys()
+        return [i[0] for i in self.items()]
 
-    def iterproperties(self):
-        return iter(self._properties)
+    def indices(self):
+        return [i[1] for i in self.items()]
 
     def shift_right(self, start, size):
-        for ind in self.iterindices():
+        for ind in self.indices():
             toshift = ind>=start
             ind[toshift] += size
 
@@ -129,17 +126,8 @@ class ParameterIndexOperations(object):
 
     @property
     def size(self):
-        return reduce(lambda a,b: a+b.size, self.iterindices(), 0)
+        return sum([i.size for i in self.indices()])
 
-    def iterindices(self):
-        try:
-            return self._properties.itervalues()
-        except AttributeError:
-            #Changed this from itervalues to values for Py3 compatibility. It didn't break the test suite.
-            return self._properties.values()
-
-    def indices(self):
-        return self._properties.values()
 
     def properties_for(self, index):
         """
@@ -152,9 +140,9 @@ class ParameterIndexOperations(object):
         >>> properties_for([2,3,5])
         [['one'], ['one', 'two'], ['two']]
         """
-        return vectorize(lambda i: [prop for prop in self.iterproperties() if i in self[prop]], otypes=[list])(index)
+        return vectorize(lambda i: [prop for prop in self.properties() if i in self[prop]], otypes=[list])(index)
 
-    def properties_to_index_dict(self, index):
+    def properties_dict_for(self, index):
         """
         Return a dictionary, containing properties as keys and indices as index
         Thus, the indices for each constraint, which is contained will be collected as
@@ -163,7 +151,7 @@ class ParameterIndexOperations(object):
         Example:
         let properties: 'one':[1,2,3,4], 'two':[3,5,6]
 
-        >>> properties_to_index_dict([2,3,5])
+        >>> properties_dict_for([2,3,5])
         {'one':[2,3], 'two':[3,5]}
         """
         props = self.properties_for(index)
@@ -186,7 +174,6 @@ class ParameterIndexOperations(object):
 
     def update(self, parameter_index_view, offset=0):
         #py3 fix
-        #for i, v in parameter_index_view.iteritems():
         for i, v in parameter_index_view.items():
             self.add(i, v+offset)
 
@@ -195,7 +182,6 @@ class ParameterIndexOperations(object):
 
     def __deepcopy__(self, memo):
         #py3 fix
-        #return ParameterIndexOperations(dict(self.iteritems()))
         return ParameterIndexOperations(dict(self.items()))
 
     def __getitem__(self, prop):
@@ -234,28 +220,18 @@ class ParameterIndexOperationsView(object):
     def _filter_index(self, ind):
         return ind[(ind >= self._offset) * (ind < (self._offset + self._size))] - self._offset
 
-    #iteritems has gone in python 3. It has been renamed items()
     def items(self):
-        _items_list = list(self._param_index_ops.items())
+        _items_list = self._param_index_ops.items()
         for i, ind in _items_list:
             ind2 = self._filter_index(ind)
             if ind2.size > 0:
                 yield i, ind2
     
-    #Python 3 items() is now implemented as per py2 iteritems
-    #def items(self):
-    #    return [[i,v] for i,v in self.iteritems()]
-
     def properties(self):
-        return [i for i in self.iterproperties()]
+        return [i[0] for i in self.items()]
 
-
-    def iterproperties(self):
-        #py3 fix
-        #for i, _ in self.iteritems():
-        for i, _ in self.items():
-            yield i
-
+    def indices(self):
+        return [i[1] for i in self.items()]
 
     def shift_right(self, start, size):
         self._param_index_ops.shift_right(start+self._offset, size)
@@ -269,19 +245,7 @@ class ParameterIndexOperationsView(object):
 
     @property
     def size(self):
-        return reduce(lambda a,b: a+b.size, self.iterindices(), 0)
-
-
-    def iterindices(self):
-        #py3 fix
-        #for _, ind in self.iteritems():
-        for _, ind in self.items():
-            yield ind
-
-
-    def indices(self):
-        return [ind for ind in self.iterindices()]
-
+        return sum([i.size for i in self.indices()])
 
     def properties_for(self, index):
         """
@@ -294,9 +258,9 @@ class ParameterIndexOperationsView(object):
         >>> properties_for([2,3,5])
         [['one'], ['one', 'two'], ['two']]
         """
-        return vectorize(lambda i: [prop for prop in self.iterproperties() if i in self[prop]], otypes=[list])(index)
+        return vectorize(lambda i: [prop for prop in self.properties() if i in self[prop]], otypes=[list])(index)
 
-    def properties_to_index_dict(self, index):
+    def properties_dict_for(self, index):
         """
         Return a dictionary, containing properties as keys and indices as index
         Thus, the indices for each constraint, which is contained will be collected as
@@ -305,7 +269,7 @@ class ParameterIndexOperationsView(object):
         Example:
         let properties: 'one':[1,2,3,4], 'two':[3,5,6]
 
-        >>> properties_to_index_dict([2,3,5])
+        >>> property_dict_for([2,3,5])
         {'one':[2,3], 'two':[3,5]}
         """
         return extract_properties_to_index(index, self.properties_for(index))
@@ -332,12 +296,10 @@ class ParameterIndexOperationsView(object):
     def __str__(self, *args, **kwargs):
         import pprint
         #py3 fixes
-        #return pprint.pformat(dict(self.iteritems()))
         return pprint.pformat(dict(self.items()))
 
     def update(self, parameter_index_view, offset=0):
         #py3 fixes
-        #for i, v in parameter_index_view.iteritems():
         for i, v in parameter_index_view.items():
             self.add(i, v+offset)
 
@@ -347,7 +309,6 @@ class ParameterIndexOperationsView(object):
 
     def __deepcopy__(self, memo):
         #py3 fix
-        #return ParameterIndexOperations(dict(self.iteritems()))
         return ParameterIndexOperations(dict(self.items()))
     pass
 

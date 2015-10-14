@@ -97,78 +97,78 @@ class ObsAr(np.ndarray, Pickleable, Observable):
     def __setslice__(self, start, stop, val):
         return self.__setitem__(slice(start, stop), val)
 
-    def __ilshift__(self, *args, **kwargs):
+    def __ilshift__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__ilshift__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
-    def __irshift__(self, *args, **kwargs):
+    def __irshift__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__irshift__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __ixor__(self, *args, **kwargs):
+    def __ixor__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__ixor__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __ipow__(self, *args, **kwargs):
+    def __ipow__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__ipow__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __ifloordiv__(self, *args, **kwargs):
+    def __ifloordiv__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__ifloordiv__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __isub__(self, *args, **kwargs):
+    def __isub__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__isub__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __ior__(self, *args, **kwargs):
+    def __ior__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__ior__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __itruediv__(self, *args, **kwargs):
+    def __itruediv__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__itruediv__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __idiv__(self, *args, **kwargs):
+    def __idiv__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__idiv__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __iand__(self, *args, **kwargs):
+    def __iand__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__iand__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __imod__(self, *args, **kwargs):
+    def __imod__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__imod__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __iadd__(self, *args, **kwargs):
+    def __iadd__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__iadd__(self, *args, **kwargs)
         self.notify_observers()
         return r
 
 
-    def __imul__(self, *args, **kwargs):
+    def __imul__(self, *args, **kwargs): #pragma: no cover
         r = np.ndarray.__imul__(self, *args, **kwargs)
         self.notify_observers()
         return r

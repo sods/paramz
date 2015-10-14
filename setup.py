@@ -35,21 +35,24 @@
 from __future__ import print_function
 import os
 from setuptools import setup
+import codecs
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
-
+    with codecs.open(fname, 'r', 'latin') as f:
+        return f.read()
+        
 def read_to_rst(fname):
     try:
         import pypandoc
-        #print 'Warning in installation: For rst formatting in pypi, consider installing pypandoc for conversion'
-        with open('README.rst', 'w') as f:
-            f.write(pypandoc.convert('README.md', 'rst'))
-    except:
+        rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
+        return pypandoc.convert(read(fname), 'rst', format='md')
+        #return read(rstname)
+    except ImportError:
         return read(fname)
 
+
 version_dummy = {}
-exec(read('mzparam/__version__.py'), version_dummy)
+exec(read('paramz/__version__.py'), version_dummy)
 __version__ = version_dummy['__version__']
 del version_dummy
 
@@ -85,19 +88,19 @@ del version_dummy
 #                       include_dirs=[np.get_include(),'.'],
 #                       extra_compile_args=compile_flags)]
 
-setup(name = 'mzparam',
+setup(name = 'paramz',
       version = __version__,
-      author = read('Max Zwiessele'),
+      author = 'Max Zwiessele',
       author_email = "ibinbei@gmail.com",
       description = ("The Parameterization Framework"),
       license = "BSD 3-clause",
       keywords = "machine-learning gaussian-processes kernels",
-      url = "https://github.com/mzwiessele/mzparam",
+      url = "https://github.com/mzwiessele/paramz",
       #ext_modules = ext_mods,
-      packages = ["mzparam",
-                  "mzparam.optimization",
-                  "mzparam.parameterization",
-                  "mzparam.tests"
+      packages = ["paramz",
+                  "paramz.optimization",
+                  "paramz.core",
+                  "paramz.tests"
                   ],
       #package_dir={'GPy': 'GPy'},
       #package_data = {'GPy': ['defaults.cfg', 'installation.cfg',
@@ -105,8 +108,8 @@ setup(name = 'mzparam',
       #                        'util/football_teams.json',
       #                        ]},
       #include_package_data = True,
-      py_modules = ['mzparam.__init__'],
-      test_suite = 'mzparam.tests',
+      py_modules = ['paramz.__init__'],
+      test_suite = 'paramz.tests',
       long_description=read_to_rst('README.md'),
       install_requires=['numpy>=1.7', 'scipy', 'six'],
       classifiers=['License :: OSI Approved :: BSD License',

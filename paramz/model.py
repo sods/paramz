@@ -32,16 +32,13 @@
 #===============================================================================
 
 
-from .. import optimization
-from mzparam import Parameterized
-import multiprocessing as mp
 import numpy as np
 from numpy.linalg.linalg import LinAlgError
-import itertools
-import sys
-from mzparam.optimization.verbose_optimization import VerboseOptimization
-# import numdifftools as ndt
-from functools import reduce
+
+from . import optimization
+from .parameterized import Parameterized
+from .optimization.verbose_optimization import VerboseOptimization
+#from functools import reduce
 
 class Model(Parameterized):
     _fail_count = 0  # Count of failed optimization steps (see objective)
@@ -51,17 +48,65 @@ class Model(Parameterized):
         super(Model, self).__init__(name)  # Parameterized.__init__(self)
         self.optimization_runs = []
         self.sampling_runs = []
-        self.preferred_optimizer = 'bfgs'
-        from mzparam import Tie
-        self.tie = Tie()
-        self.link_parameter(self.tie, -1)
+        self.preferred_optimizer = 'lbfgsb'
+        #from paramz import Tie
+        #self.tie = Tie()
+        #self.link_parameter(self.tie, -1)
         self.obj_grads = None
-        self.add_observer(self.tie, self.tie._parameters_changed_notification, priority=-500)
+        #self.add_observer(self.tie, self.tie._parameters_changed_notification, priority=-500)
 
-    def log_likelihood(self):
-        raise NotImplementedError("this needs to be implemented to use the model class")
-    def _log_likelihood_gradients(self):
-        return self.gradient.copy()
+    def optimize(self, optimizer=None, start=None, messages=False, max_iters=1000, ipython_notebook=True, clear_after_finish=False, **kwargs):
+        """
+        Optimize the model using self.log_likelihood and self.log_likelihood_gradient, as well as self.priors.
+
+        kwargs are passed to the optimizer. They can be:
+
+        :param max_iters: maximum number of function evaluations
+        :type max_iters: int
+        :messages: True: Display messages during optimisation, "ipython_notebook":
+        :type messages: bool"string
+        :param optimizer: which optimizer to use (defaults to self.preferred optimizer)
+        :type optimizer: string
+
+        Valid optimizers are:
+          - 'scg': scaled conjugate gradient method, recommended for stability.
+                   See also GPy.inference.optimization.scg
+          - 'fmin_tnc': truncated Newton method (see scipy.optimize.fmin_tnc)
+          - 'simplex': the Nelder-Mead simplex method (see scipy.optimize.fmin),
+          - 'lbfgsb': the l-bfgs-b method (see scipy.optimize.fmin_l_bfgs_b),
+          - 'lbfgs': the bfgs method (see scipy.optimize.fmin_bfgs),
+          - 'sgd': stochastic gradient decsent (see scipy.optimize.sgd). For experts only!
+
+
+        """
+        if self.is_fixed or self.size == 0:
+            print('nothing to optimize')
+
+        if not self.update_model():
+            print("updates were off, setting updates on again")
+            self.update_model(True)
+
+        if start == None:
+            start = self.optimizer_array
+
+        if optimizer is None:
+            optimizer = self.preferred_optimizer
+
+        if isinstance(optimizer, optimization.Optimizer):
+            opt = optimizer
+            opt.model = self
+        else:
+            optimizer = optimization.get_optimizer(optimizer)
+            opt = optimizer(x_init=start, model=self, max_iters=max_iters, **kwargs)
+
+        with VerboseOptimization(self, opt, maxiters=max_iters, verbose=messages, ipython_notebook=ipython_notebook, clear_after_finish=clear_after_finish) as vo:
+            opt.run(f_fp=self._objective_grads, f=self._objective, fp=self._grads)
+            vo.finish(opt)
+
+        self.optimization_runs.append(opt)
+
+        self.optimizer_array = opt.x_opt
+        return opt
 
     def optimize_restarts(self, num_restarts=10, robust=False, verbose=True, parallel=False, num_processes=None, **kwargs):
         """
@@ -99,8 +144,12 @@ class Model(Parameterized):
         """
         initial_parameters = self.optimizer_array.copy()
 
+        import multiprocessing as mp
+
         if parallel:
             try:
+                def opt_wrapper(self, **kwargs):
+                    return self.optimize(**kwargs)
                 jobs = []
                 pool = mp.Pool(processes=num_processes)
                 for i in range(num_restarts):
@@ -136,19 +185,7 @@ class Model(Parameterized):
             self.optimizer_array = self.optimization_runs[i].x_opt
         else:
             self.optimizer_array = initial_parameters
-
-    def ensure_default_constraints(self, warning=True):
-        """
-        Ensure that any variables which should clearly be positive
-        have been constrained somehow. The method performs a regular
-        expression search on parameter names looking for the terms
-        'variance', 'lengthscale', 'precision' and 'kappa'. If any of
-        these terms are present in the name the parameter is
-        constrained positive.
-
-        DEPRECATED.
-        """
-        raise DeprecationWarning('parameters now have default constraints')
+        return self.optimization_runs
 
     def objective_function(self):
         """
@@ -162,7 +199,7 @@ class Model(Parameterized):
         (including the MAP prior), so we return it here. If your model is not
         probabilistic, just return your objective to minimize here!
         """
-        return -float(self.log_likelihood()) - self.log_prior()
+        raise NotImplementedError("Implement the result of the objective function here")
 
     def objective_function_gradients(self):
         """
@@ -181,7 +218,7 @@ class Model(Parameterized):
         (including the MAP prior), so we return it here. If your model is not
         probabilistic, just return your *negative* gradient here!
         """
-        return -(self._log_likelihood_gradients() + self._log_prior_gradients())
+        return self.gradient
 
     def _grads(self, x):
         """
@@ -241,63 +278,6 @@ class Model(Parameterized):
             obj_f = np.inf
             self.obj_grads = np.clip(self._transform_gradients(self.objective_function_gradients()), -1e10, 1e10)
         return obj_f, self.obj_grads
-
-    def optimize(self, optimizer=None, start=None, messages=False, max_iters=1000, ipython_notebook=True, clear_after_finish=False, **kwargs):
-        """
-        Optimize the model using self.log_likelihood and self.log_likelihood_gradient, as well as self.priors.
-
-        kwargs are passed to the optimizer. They can be:
-
-        :param max_iters: maximum number of function evaluations
-        :type max_iters: int
-        :messages: True: Display messages during optimisation, "ipython_notebook":
-        :type messages: bool"string
-        :param optimizer: which optimizer to use (defaults to self.preferred optimizer)
-        :type optimizer: string
-
-        Valid optimizers are:
-          - 'scg': scaled conjugate gradient method, recommended for stability.
-                   See also GPy.inference.optimization.scg
-          - 'fmin_tnc': truncated Newton method (see scipy.optimize.fmin_tnc)
-          - 'simplex': the Nelder-Mead simplex method (see scipy.optimize.fmin),
-          - 'lbfgsb': the l-bfgs-b method (see scipy.optimize.fmin_l_bfgs_b),
-          - 'sgd': stochastic gradient decsent (see scipy.optimize.sgd). For experts only!
-
-
-        """
-        if self.is_fixed or self.size == 0:
-            print('nothing to optimize')
-
-        if not self.update_model():
-            print("updates were off, setting updates on again")
-            self.update_model(True)
-
-        if start == None:
-            start = self.optimizer_array
-
-        if optimizer is None:
-            optimizer = self.preferred_optimizer
-
-        if isinstance(optimizer, optimization.Optimizer):
-            opt = optimizer
-            opt.model = self
-        else:
-            optimizer = optimization.get_optimizer(optimizer)
-            opt = optimizer(x_init=start, model=self, max_iters=max_iters, **kwargs)
-
-        with VerboseOptimization(self, opt, maxiters=max_iters, verbose=messages, ipython_notebook=ipython_notebook, clear_after_finish=clear_after_finish) as vo:
-            opt.run(f_fp=self._objective_grads, f=self._objective, fp=self._grads)
-            vo.finish(opt)
-
-        self.optimization_runs.append(opt)
-
-        self.optimizer_array = opt.x_opt
-
-    def optimize_SGD(self, momentum=0.1, learning_rate=0.01, iterations=20, **kwargs):
-        # assert self.Y.shape[1] > 1, "SGD only works with D > 1"
-        sgd = SGD.StochasticGD(self, iterations, learning_rate, momentum, **kwargs)  # @UndefinedVariable
-        sgd.run()
-        self.optimization_runs.append(sgd)
 
     def _checkgrad(self, target_param=None, verbose=False, step=1e-6, tolerance=1e-3, df_tolerance=1e-12):
         """
@@ -452,13 +432,12 @@ class Model(Parameterized):
 
     def __str__(self, VT100=True):
         model_details = [['Name', self.name],
-                         ['Log-likelihood', '{}'.format(float(self.log_likelihood()))],
+                         ['Objective', '{}'.format(float(self.objective_function()))],
                          ["Number of Parameters", '{}'.format(self.size)],
                          ["Number of Optimization Parameters", '{}'.format(self._size_transformed())],
                          ["Updates", '{}'.format(self._update_on)],
                          ]
-        from operator import itemgetter
-        max_len = reduce(lambda a, b: max(len(b[0]), a), model_details, 0)
+        max_len = max(map(len, model_details))
         to_print = [""] + ["{0:{l}} : {1}".format(name, detail, l=max_len) for name, detail in model_details] + ["Parameters:"]
         to_print.append(super(Model, self).__str__(VT100=VT100))
         return "\n".join(to_print)

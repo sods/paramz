@@ -1,5 +1,7 @@
 #===============================================================================
+# Copyright (c) 2012 - 2014, GPy authors (see AUTHORS.txt).
 # Copyright (c) 2015, Max Zwiessele
+#
 # All rights reserved.
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -28,25 +30,5 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-"""
-(Hyper-)Parameter domains defined for :py:mod:`~GPy.core.priors` and :py:mod:`~GPy.kern`.
-These domains specify the legitimate realm of the parameters to live in.
-
-:const:`~GPy.core.domains._REAL` :
-    real domain, all values in the real numbers are allowed
-
-:const:`~GPy.core.domains._POSITIVE`:
-    positive domain, only positive real values are allowed
-
-:const:`~GPy.core.domains._NEGATIVE`:
-    same as :const:`~GPy.core.domains._POSITIVE`, but only negative values are allowed
-
-:const:`~GPy.core.domains._BOUNDED`:
-    only values within the bounded range are allowed,
-    the bounds are specified withing the object with the bounded range
-"""
-
-_REAL = 'real'
-_POSITIVE = "positive"
-_NEGATIVE = 'negative'
-_BOUNDED = 'bounded'
+from .optimization import get_optimizer, Optimizer
+from . import verbose_optimization

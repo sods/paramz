@@ -35,5 +35,5 @@ import matplotlib
 matplotlib.use('svg')
 
 import nose 
-nose.main('mzparam', defaultTest='mzparam/tests')  
+nose.main('paramz', defaultTest='paramz/tests')  
 

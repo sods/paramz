@@ -4,7 +4,7 @@ Created on 4 Sep 2015
 @author: maxz
 '''
 import unittest
-from GPy.util.caching import Cacher
+from ..caching import Cacher
 from pickle import PickleError
 
 

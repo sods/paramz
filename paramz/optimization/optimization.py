@@ -1,43 +1,14 @@
-#===============================================================================
-# Copyright (c) 2012 - 2014, GPy authors (see AUTHORS.txt).
-# Copyright (c) 2014, James Hensman, Max Zwiessele
-# Copyright (c) 2015, Max Zwiessele
-#
-# All rights reserved.
-# 
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-# 
-# * Redistributions of source code must retain the above copyright notice, this
-#   list of conditions and the following disclaimer.
-# 
-# * Redistributions in binary form must reproduce the above copyright notice,
-#   this list of conditions and the following disclaimer in the documentation
-#   and/or other materials provided with the distribution.
-# 
-# * Neither the name of paramax nor the names of its
-#   contributors may be used to endorse or promote products derived from
-#   this software without specific prior written permission.
-# 
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#===============================================================================
+# Copyright (c) 2012-2014, GPy authors (see AUTHORS.txt).
+# Licensed under the BSD 3-clause license (see LICENSE.txt)
 
 import datetime as dt
 from scipy import optimize
 from warnings import warn
 
+from .conjugate_gradient_descent import CGD
 from .scg import SCG
 
-class Optimizer():
+class Optimizer(object):
     """
     Superclass for all the optimizers.
 
@@ -158,6 +129,33 @@ class opt_lbfgsb(Optimizer):
         #a more helpful error message is available in opt_result in the Error case
         if opt_result[2]['warnflag']==2:
             self.status = 'Error' + str(opt_result[2]['task'])
+            
+class opt_bfgs(Optimizer):
+    def __init__(self, *args, **kwargs):
+        Optimizer.__init__(self, *args, **kwargs)
+        self.opt_name = "BFGS (Scipy implementation)"
+
+    def opt(self, f_fp=None, f=None, fp=None):
+        """
+        Run the optimizer
+
+        """
+        rcstrings = ['','Maximum number of iterations exceeded', 'Gradient and/or function calls not changing']
+
+        opt_dict = {}
+        if self.xtol is not None:
+            print("WARNING: bfgs doesn't have an xtol arg, so I'm going to ignore it")
+        if self.ftol is not None:
+            print("WARNING: bfgs doesn't have an ftol arg, so I'm going to ignore it")
+        if self.gtol is not None:
+            opt_dict['pgtol'] = self.gtol
+
+        opt_result = optimize.fmin_bfgs(f, self.x_init, fp, disp=self.messages,
+                                            maxiter=self.max_iters, full_output=True, **opt_dict)
+        self.x_opt = opt_result[0]
+        self.f_opt = f_fp(self.x_opt)[0]
+        self.funct_eval = opt_result[4]
+        self.status = rcstrings[opt_result[6]]
 
 class opt_simplex(Optimizer):
     def __init__(self, *args, **kwargs):
@@ -187,7 +185,6 @@ class opt_simplex(Optimizer):
         self.funct_eval = opt_result[3]
         self.status = statuses[opt_result[4]]
         self.trace = None
-
 
 class opt_SCG(Optimizer):
     def __init__(self, *args, **kwargs):
@@ -239,7 +236,9 @@ def get_optimizer(f_min):
     optimizers = {'fmin_tnc': opt_tnc,
           'simplex': opt_simplex,
           'lbfgsb': opt_lbfgsb,
+          'org-bfgs': opt_bfgs,
           'scg': opt_SCG,
+          'cgd': CGD,
           'adadelta':Opt_Adadelta}
 
     for opt_name in optimizers.keys():

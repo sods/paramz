@@ -30,13 +30,12 @@
 
 import six # For metaclass support in Python 2 and 3 simultaneously
 import numpy; np = numpy
-import itertools
 from re import compile, _pattern_type
+
 from .param import ParamConcatenation
-from .parameter_core import HierarchyError, Parameterizable, adjust_name_for_printing
+from .core.parameter_core import HierarchyError, Parameterizable, adjust_name_for_printing
 
 import logging
-from .index_operations import ParameterIndexOperationsView
 logger = logging.getLogger("parameters changed meta")
 
 class ParametersChangedMeta(type):
@@ -44,13 +43,13 @@ class ParametersChangedMeta(type):
         self._in_init_ = True
         #import ipdb;ipdb.set_trace()
         self = super(ParametersChangedMeta, self).__call__(*args, **kw)
-        logger.debug("finished init")
+        #logger.debug("finished init")
         self._in_init_ = False
-        logger.debug("connecting parameters")
+        #logger.debug("connecting parameters")
         self._highest_parent_._connect_parameters()
         #self._highest_parent_._notify_parent_change()
         self._highest_parent_._connect_fixes()
-        logger.debug("calling parameters changed")
+        #logger.debug("calling parameters changed")
         self.parameters_changed()
         return self
 
@@ -144,7 +143,7 @@ class Parameterized(Parameterizable):
     def link_parameter(self, param, index=None, _ignore_added_names=False):
         """
         :param parameters:  the parameters to add
-        :type parameters:   list of or one :py:class:`GPy.core.param.Param`
+        :type parameters:   list of or one :py:class:`paramz.param.Param`
         :param [index]:     index of where to put parameters
 
         :param bool _ignore_added_names: whether the name of the parameter overrides a possibly existing field
@@ -383,6 +382,10 @@ class Parameterized(Parameterizable):
     @property
     def parameter_shapes(self):
         return [xi for x in self.parameters for xi in x.parameter_shapes]
+
+    def get_property_string(self, prop):
+        return [p.get_property_string(prop) for p in self.parameters]
+ 
     @property
     def _constraints_str(self):
         return [cs for p in self.parameters for cs in p._constraints_str]

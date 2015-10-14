@@ -1,9 +1,10 @@
 # Copyright (c) 2014, Max Zwiessele
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
 import unittest
-from GPy.core.parameterization.parameterized import Parameterized
-from GPy.core.parameterization.param import Param
-import numpy
+from ..core.observable_array import ObsAr
+from ..parameterized import Parameterized
+from ..param import Param
+import numpy as np
 
 # One trigger in init
 _trigger_start = -1
@@ -25,14 +26,14 @@ class Test(unittest.TestCase):
         self.parent = ParamTestParent('test parent')
         self.par = ParameterizedTest('test model')
         self.par2 = ParameterizedTest('test model 2')
-        self.p = Param('test parameter', numpy.random.normal(1,2,(10,3)))
+        self.p = Param('test parameter', np.random.normal(1,2,(10,3)))
 
         self.par.link_parameter(self.p)
-        self.par.link_parameter(Param('test1', numpy.random.normal(0,1,(1,))))
-        self.par.link_parameter(Param('test2', numpy.random.normal(0,1,(1,))))
+        self.par.link_parameter(Param('test1', np.random.normal(0,1,(1,))))
+        self.par.link_parameter(Param('test2', np.random.normal(0,1,(1,))))
 
-        self.par2.link_parameter(Param('par2 test1', numpy.random.normal(0,1,(1,))))
-        self.par2.link_parameter(Param('par2 test2', numpy.random.normal(0,1,(1,))))
+        self.par2.link_parameter(Param('par2 test1', np.random.normal(0,1,(1,))))
+        self.par2.link_parameter(Param('par2 test2', np.random.normal(0,1,(1,))))
 
         self.parent.link_parameter(self.par)
         self.parent.link_parameter(self.par2)
@@ -100,6 +101,11 @@ class Test(unittest.TestCase):
         self.assertEqual(self.par.params_changed_count, 2, 'now params changed')
         self.assertEqual(self.parent.parent_changed_count, self.par.params_changed_count)
 
+        self.par.set_updates(False)
+        self.par.param_array[:] = 3
+        self.par._trigger_params_changed()
+        self.assertEqual(self.par.params_changed_count, 2, 'should not have changed, as updates are off')
+        self.assertEqual(self.parent.parent_changed_count, self.par.params_changed_count)
 
     def test_priority_notify(self):
         self.assertEqual(self.par.params_changed_count, 0)
@@ -107,7 +113,7 @@ class Test(unittest.TestCase):
         self.assertEqual(self.par.params_changed_count, 1)
         self.assertEqual(self.parent.parent_changed_count, self.par.params_changed_count)
 
-        self.par.notify_observers(0, -numpy.inf)
+        self.par.notify_observers(0, -np.inf)
         self.assertEqual(self.par.params_changed_count, 2)
         self.assertEqual(self.parent.parent_changed_count, 1)
 
@@ -116,7 +122,7 @@ class Test(unittest.TestCase):
         self.par.add_observer(self, self._trigger_priority, 0)
         self.par.notify_observers(0)
         self.assertEqual(self._first, self._trigger_priority, 'priority should be first')
-        self.assertEqual(self._second, self._trigger, 'priority should be first')
+        self.assertEqual(self._second, self._trigger, 'trigger should be second')
 
         self.par.remove_observer(self)
         self._first = self._second = None
@@ -126,6 +132,18 @@ class Test(unittest.TestCase):
         self.par.notify_observers(0)
         self.assertEqual(self._first, self._trigger, 'priority should be second')
         self.assertEqual(self._second, self._trigger_priority, 'priority should be second')
+
+        self._first = self._second = None
+        self.par.change_priority(self, self._trigger, -1)
+        self.par.change_priority(self, self._trigger_priority, 0)
+        self.par.notify_observers(0)
+        self.assertEqual(self._first, self._trigger_priority, 'priority should be first')
+        self.assertEqual(self._second, self._trigger, 'trigger should be second')
+        
+    def testObsAr(self):
+        o = ObsAr(np.random.normal(0,1,(10)))
+        o[3:5] = 5
+        np.testing.assert_array_equal(o[3:5].values, 5)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

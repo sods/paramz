@@ -28,6 +28,25 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
+"""
+(Hyper-)Parameter domains defined for :py:mod:`paramz.core.transformations`.
+These domains specify the legitimate realm of the parameters to live in.
 
-from .param import Param, ObsAr
-from .parameterized import Parameterized
+:const:`~paramz.domains._REAL` :
+    real domain, all values in the real numbers are allowed
+
+:const:`~paramz.domains._POSITIVE`:
+    positive domain, only positive real values are allowed
+
+:const:`~paramz.domains._NEGATIVE`:
+    same as :const:`~paramz.domains._POSITIVE`, but only negative values are allowed
+
+:const:`~paramz.domains._BOUNDED`:
+    only values within the bounded range are allowed,
+    the bounds are specified withing the object with the bounded range
+"""
+
+_REAL = 'real'
+_POSITIVE = "positive"
+_NEGATIVE = 'negative'
+_BOUNDED = 'bounded'

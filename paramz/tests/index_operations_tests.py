@@ -3,7 +3,7 @@
 
 import unittest
 import numpy as np
-from GPy.core.parameterization.index_operations import ParameterIndexOperations,\
+from ..core.index_operations import ParameterIndexOperations,\
     ParameterIndexOperationsView
 
 one, two, three = 'one', 'two', 'three'
@@ -127,6 +127,18 @@ class Test(unittest.TestCase):
             self.assertListEqual(self.param_index[k].tolist(), v.tolist())
         self.assertEqual(self.param_index.size, 8)
         self.assertEqual(self.view.size, 5)
+
+    def test_index_conversions(self):
+        self.param_index.add(two, [1,10])
+        self.assertDictEqual(
+            dict([(k, d.tolist()) for k, d in self.param_index.properties_dict_for([1,3,5,10]).items()]),
+            {one:[3], two:[1,5,10], three:[10]}
+            )
+        view = ParameterIndexOperationsView(self.param_index, 2, 8)
+        self.assertDictEqual(
+            dict([(k, d.tolist()) for k, d in view.properties_dict_for([1,3,5]).items()]),
+            {one:[1], two:[3], three:[5]}
+            )
 
     def test_print(self):
         print(self.param_index)
