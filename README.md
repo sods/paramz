@@ -1,10 +1,10 @@
-# paramax
+# paramz
 
 Parameterization Framework for parameterized model creation and handling.
 
-This is a lightweight framework for using parametrized models. 
+This is a lightweight framework for using parameterized models. 
 
-See examples model in `paramax.examples.<tab>`
+See examples model in `paramz.examples.<tab>`
 
 Features:
 
