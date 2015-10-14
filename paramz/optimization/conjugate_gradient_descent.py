@@ -31,7 +31,12 @@
 
 from .gradient_descent_update_rules import FletcherReeves, \
     PolakRibiere
-from Queue import Empty
+try:
+    from Queue import Empty
+except:
+    #python3
+    from queue import Empty
+
 from multiprocessing import Value
 from multiprocessing.queues import Queue
 from multiprocessing.synchronize import Event
@@ -39,7 +44,6 @@ from scipy.optimize.linesearch import line_search_wolfe1, line_search_wolfe2
 from threading import Thread
 import numpy
 import sys
-import time
 
 RUNNING = "running"
 CONVERGED = "converged"
@@ -187,9 +191,10 @@ class _CGDAsync(_Async_Optimization):
         self.result = [xi, fi, gi, it, self.f_call.value, self.df_call.value, status]
 
 class Async_Optimize(object):
-    callback = lambda *x: None
-    runsignal = Event()
-    SENTINEL = "SENTINEL"
+    def __init__(self):
+        self.callback = lambda *x: None
+        self.runsignal = Event()
+        self.SENTINEL = "SENTINEL"
 
     def async_callback_collect(self, q):
         while self.runsignal.is_set():

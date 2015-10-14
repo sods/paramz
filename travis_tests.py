@@ -31,9 +31,6 @@
 
 #!/usr/bin/env python
 
-import matplotlib 
-matplotlib.use('svg')
-
 import nose 
 nose.main('paramz', defaultTest='paramz/tests')  
 

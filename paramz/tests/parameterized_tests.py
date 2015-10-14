@@ -41,15 +41,19 @@ class ParameterizedTest(unittest.TestCase):
             def parameters_changed(self):
                 self.gradient[:] = 1.
                 
-        self.rbf = P('rbf', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()), 
-                     lengthscale=Param('lengthscale', np.random.uniform(.1, 1, 1), transformations.Logexp()))
+        self.rbf = Parameterized('rbf')
+        self.rbf.lengthscale = Param('lengthscale', np.random.uniform(.1, 1), transformations.Logexp())
+        self.rbf.variance = Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()) 
+        self.rbf.link_parameters(self.rbf.variance, self.rbf.lengthscale)
+        
         self.white = P('white', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
         self.param = Param('param', np.random.uniform(0,1,(10,5)), transformations.Logistic(0, 1))
 
         self.test1 = Parameterized('test_parameterized')
 
         self.test1.param = self.param
-        self.test1.kern = P('add', rbf=self.rbf, white=self.white)
+        self.test1.kern = Parameterized('add')
+        self.test1.kern.link_parameters(self.rbf, self.white)
         
         self.test1.link_parameter(self.test1.kern)
         self.test1.link_parameter(self.param, 0)

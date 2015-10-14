@@ -240,7 +240,7 @@ class ParameterIndexOperationsView(object):
         self._param_index_ops.shift_left(start+self._offset, size)
 
     def clear(self):
-        for i, ind in self.items():
+        for i, ind in list(self.items()):
             self._param_index_ops.remove(i, ind+self._offset)
 
     @property
