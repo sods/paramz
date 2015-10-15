@@ -32,6 +32,7 @@ from .nameable import Nameable
 from .updateable import Updateable
 from ..transformations import __fixed__
 from operator import delitem
+from functools import reduce
 
 class Indexable(Nameable, Updateable):
     """
