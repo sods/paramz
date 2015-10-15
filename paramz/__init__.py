@@ -34,7 +34,7 @@ from .model import Model
 from .parameterized import Parameterized
 from .param import Param
 from .core.observable_array import ObsAr
-from .core import transformations as constraints
+from paramz import transformations as constraints
 from . import caching
 
 def load(file_or_path):

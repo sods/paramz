@@ -7,9 +7,9 @@ import unittest
 import numpy as np
 
 from ..core.observable_array import ObsAr
-from ..core.index_operations import ParameterIndexOperations, ParameterIndexOperationsView
-from ..core.parameter_core import HierarchyError
-from ..core import transformations
+from ..core.index_operations import ParameterIndexOperations
+from ..core import HierarchyError
+from paramz import transformations
 from ..parameterized import Parameterized
 from ..param import Param
 from ..model import Model

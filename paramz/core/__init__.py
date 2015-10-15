@@ -1,3 +1,12 @@
+"""
+Core
+----
+
+This package holds the core modules for the parameterization
+
+HierarchyError:
+raised when an error with the hierarchy occurs (circles etc.)
+"""
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
@@ -28,4 +37,13 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-from . import domains, index_operations, lists_and_dicts, observable, observable_array, parameter_core, transformations, updateable
+class HierarchyError(Exception):
+    """
+    Gets thrown when something is wrong with the parameter hierarchy.
+    """
+    pass
+
+from . import index_operations, lists_and_dicts, observable, observable_array, parameter_core, updateable
+from paramz import domains
+from paramz import transformations
+

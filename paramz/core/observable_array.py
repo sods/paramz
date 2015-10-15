@@ -30,7 +30,7 @@
 
 
 import numpy as np
-from .parameter_core import Pickleable
+from .pickleable import Pickleable
 from .observable import Observable
 
 class ObsAr(np.ndarray, Pickleable, Observable):

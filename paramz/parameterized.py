@@ -33,7 +33,8 @@ import numpy; np = numpy
 from re import compile, _pattern_type
 
 from .param import ParamConcatenation
-from .core.parameter_core import HierarchyError, Parameterizable, adjust_name_for_printing
+from .core.parameter_core import Parameterizable, adjust_name_for_printing
+from .core import HierarchyError
 
 import logging
 logger = logging.getLogger("parameters changed meta")
@@ -166,19 +167,17 @@ class Parameterized(Parameterizable):
             # make sure the size is set
             if index is None:
                 start = sum(p.size for p in self.parameters)
-                self.constraints.shift_right(start, param.size)
-                self.priors.shift_right(start, param.size)
-                self.constraints.update(param.constraints, self.size)
-                self.priors.update(param.priors, self.size)
+                for name, iop in self._index_operations.items(): 
+                    iop.shift_right(start, param.size)
+                    iop.update(param._index_operations[name], self.size)
                 param._parent_ = self
                 param._parent_index_ = len(self.parameters)
                 self.parameters.append(param)
             else:
                 start = sum(p.size for p in self.parameters[:index])
-                self.constraints.shift_right(start, param.size)
-                self.priors.shift_right(start, param.size)
-                self.constraints.update(param.constraints, start)
-                self.priors.update(param.priors, start)
+                for name, iop in self._index_operations.items(): 
+                    iop.shift_right(start, param.size)
+                    iop.update(param._index_operations[name], start)
                 param._parent_ = self
                 param._parent_index_ = index if index>=0 else len(self.parameters[:index])
                 for p in self.parameters[index:]:
@@ -230,7 +229,8 @@ class Parameterized(Parameterizable):
 
         param._disconnect_parent()
         param.remove_observer(self, self._pass_through_notify_observers)
-        self.constraints.shift_left(start, param.size)
+        for name, iop in self._index_operations.items(): 
+            iop.shift_left(start, param.size)
 
         self._connect_parameters()
         self._notify_parent_change()

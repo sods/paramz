@@ -30,8 +30,9 @@
 
 import itertools
 import numpy as np
-from .core.parameter_core import Parameterizable, adjust_name_for_printing, Pickleable
+from .core.parameter_core import Parameterizable, adjust_name_for_printing
 from .core.observable_array import ObsAr
+from .core.pickleable import Pickleable
 from functools import reduce
 
 ###### printing
@@ -188,7 +189,7 @@ class Param(Parameterizable, ObsAr):
     #===========================================================================
     @property
     def is_fixed(self):
-        from paramz.core.transformations import __fixed__
+        from paramz.transformations import __fixed__
         return self.constraints[__fixed__].size == self.size
 
     def _get_original(self, param):

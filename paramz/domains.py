@@ -29,7 +29,7 @@
 #===============================================================================
 
 """
-(Hyper-)Parameter domains defined for :py:mod:`paramz.core.transformations`.
+(Hyper-)Parameter domains defined for :py:mod:`paramz.transformations`.
 These domains specify the legitimate realm of the parameters to live in.
 
 :const:`~paramz.domains._REAL` :

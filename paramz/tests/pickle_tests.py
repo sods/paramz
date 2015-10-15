@@ -7,7 +7,7 @@ import unittest, pickle, tempfile, os, paramz
 import numpy as np
 from ..core.index_operations import ParameterIndexOperations, ParameterIndexOperationsView
 from ..core.observable_array import ObsAr
-from ..core.transformations import Exponent, Logexp
+from paramz.transformations import Exponent, Logexp
 from ..parameterized import Parameterized
 from ..param import Param
 
