@@ -78,10 +78,10 @@ class OptimizationHandlable(Constrainable):
             #py3 fix
             #[np.put(self._optimizer_copy_, ind, c.finv(self.param_array[ind])) for c, ind in self.constraints.iteritems() if c != __fixed__]
             [np.put(self._optimizer_copy_, ind, c.finv(self.param_array[ind])) for c, ind in self.constraints.items() if c != __fixed__]
-            if self.has_parent() and (self.constraints[__fixed__].size != 0 or self._has_ties()):
+            if self.has_parent() and (self.constraints[__fixed__].size != 0):# or self._has_ties()):
                 fixes = np.ones(self.size).astype(bool)
                 fixes[self.constraints[__fixed__]] = FIXED
-                return self._optimizer_copy_[np.logical_and(fixes, self._highest_parent_.tie.getTieFlag(self))]
+                return self._optimizer_copy_[fixes]#np.logical_and(fixes, self._highest_parent_.tie.getTieFlag(self))]
             elif self._has_fixes():
                 return self._optimizer_copy_[self._fixes_]
 

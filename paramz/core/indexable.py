@@ -47,8 +47,6 @@ class Indexable(Nameable, Updateable):
     def __init__(self, name, default_constraint=None, *a, **kw):
         super(Indexable, self).__init__(name=name, *a, **kw)
         self._index_operations = dict()
-        from .index_operations import ParameterIndexOperations
-        self.add_index_operation('priors', ParameterIndexOperations())
 
     def add_index_operation(self, name, operations):
         if name not in self._index_operations:

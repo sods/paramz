@@ -55,7 +55,7 @@ class VerboseOptimization(object):
 
             try:
                 from IPython.display import display
-                from IPython.html.widgets import IntProgress, HTML, Box, VBox, HBox, FlexBox
+                from ipywidgets import IntProgress, HTML, Box, VBox, HBox, FlexBox
                 self.text = HTML(width='100%')
                 self.progress = IntProgress(min=0, max=maxiters)
                 #self.progresstext = Text(width='100%', disabled=True, value='0/{}'.format(maxiters))
