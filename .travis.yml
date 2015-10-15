@@ -1,77 +1,53 @@
 sudo: false
-
 os:
-  - osx
-  - linux
-
+- osx
+- linux
 addons:
   apt_packages:
-    - pandoc
-
+  - pandoc
 env:
-  - PYTHON_VERSION=2.7
-  - PYTHON_VERSION=3.3
-  - PYTHON_VERSION=3.4
-  - PYTHON_VERSION=3.5
-
+- PYTHON_VERSION=2.7
+- PYTHON_VERSION=3.3
+- PYTHON_VERSION=3.4
+- PYTHON_VERSION=3.5
 before_install:
-  - export CONDA_CACHED=1
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      export OS=Linux;
-    elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      export OS=MacOSX;
-      brew install pandoc; 
-    else
-      echo "OS not supported yet";
-      exit 1;
-    fi;
-  - if [[ $PYTHON_VERSION == "2.7" ]]; then
-      export MINICONDA=Miniconda;
-    elif [[ $PYTHON_VERSION == 3* ]]; then
-      export MINICONDA=Miniconda3;
-    else
-      echo "Could not find python version";
-      exit 1;
-    fi;
-  - if [ ! -d $HOME/download/ ]; then mkdir $HOME/download/; fi;
-  - if [ ! -d $HOME/install/ ]; then mkdir $HOME/install/; fi;
-  - export MINICONDA_FILE=$MINICONDA-latest-$OS-x86_64-$PYTHON_VERSION
-  - export MINCONDA_CACHE_FILE=$HOME/download/$MINICONDA_FILE.sh
-  - export MINICONDA_INSTALL=$HOME/install/$MINICONDA_FILE
-  - if [ ! -f $MINCONDA_CACHE_FILE ]; then
-      export CONDA_CACHED=0;
-      wget http://repo.continuum.io/miniconda/$MINICONDA-latest-$OS-x86_64.sh -O $MINCONDA_CACHE_FILE;
-      bash $MINCONDA_CACHE_FILE -b -p $MINICONDA_INSTALL;
-    fi;
-  - export PATH="$MINICONDA_INSTALL/bin:$PATH";
-  
+- export CONDA_CACHED=1
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export OS=Linux; elif [[ "$TRAVIS_OS_NAME"
+  == "osx" ]]; then export OS=MacOSX; brew install pandoc; else echo "OS not supported
+  yet"; exit 1; fi;
+- if [[ $PYTHON_VERSION == "2.7" ]]; then export MINICONDA=Miniconda; elif [[ $PYTHON_VERSION
+  == 3* ]]; then export MINICONDA=Miniconda3; else echo "Could not find python version";
+  exit 1; fi;
+- if [ ! -d $HOME/download/ ]; then mkdir $HOME/download/; fi;
+- if [ ! -d $HOME/install/ ]; then mkdir $HOME/install/; fi;
+- export MINICONDA_FILE=$MINICONDA-latest-$OS-x86_64-$PYTHON_VERSION
+- export MINCONDA_CACHE_FILE=$HOME/download/$MINICONDA_FILE.sh
+- export MINICONDA_INSTALL=$HOME/install/$MINICONDA_FILE
+- if [ ! -f $MINCONDA_CACHE_FILE ]; then export CONDA_CACHED=0; wget http://repo.continuum.io/miniconda/$MINICONDA-latest-$OS-x86_64.sh
+  -O $MINCONDA_CACHE_FILE; bash $MINCONDA_CACHE_FILE -b -p $MINICONDA_INSTALL; fi;
+- export PATH="$MINICONDA_INSTALL/bin:$PATH";
 install:
-  - conda install --yes python=$PYTHON_VERSION numpy=1.9 scipy=0.16 nose pip six matplotlib;
-  - pip install codecov
-  - pip install pypandoc
-  - python setup.py develop
-   
+- conda install --yes python=$PYTHON_VERSION numpy=1.9 scipy=0.16 nose pip six matplotlib;
+- pip install codecov
+- pip install pypandoc
+- python setup.py develop
 script:
-  - coverage run travis_tests.py
-
+- coverage run travis_tests.py
 after_success:
-  - codecov
-  
+- codecov
 before_deploy:
-  - cd doc
-  - pip install sphinx_rtd_theme
-  - sphinx-apidoc -o source/ ../paramz
-  - make html
-  - cd ../
-
+- cd doc
+- pip install sphinx_rtd_theme
+- sphinx-apidoc -o source/ ../paramz
+- make html
+- cd ../
 deploy:
   provider: pypi
   user: maxz
-  password: 
-    secure: "YS6Ue660FfMWs9wnCtWK3er2i3AgYsfYXEMIVHIIFT7U/l6MPJAlneUYbOz9bniQ/oYmG1/4NBJdDGryOnMmovXIuHmvG3XKrPVHT+m7C63+v0ZwHatL2ZuXDw0QC6whbmk0aKTEako49UWo+d7i7TvUoMwYS8W2OkQCQ0BKRVrxvB2DISxleZcnwB6lewubzu2EJ3czG97wKUnZ2meWElHYD1oTCr2OxAIRQMzIZMomvW9pL8j5KiTxoSA5yyxSpWeI/M04Y9PZk4yGA335r/EPZ9m11soIRtrGGyQRkfV8+N97V7eQO+NfzKKhalJPicOKk7Bp3VHGVZLW66RJukMTP3W0KBbq0jm4NZvhRN6Q7SCz+WIC8iDRS7LFnvUiH7hgZWyAF4821eNnUd4/DM4cwEM6q2BjTRfVcIsGwRq2Xao7qKi5a+wpL6MDDD/neHm3w5HFtMtCj8YzOHka+3Ud0WWHftpRbNVBxlIRIApnoUjAdp9gLoa4NYs+askhQ7AhVQGIyN6Nkba7efy4PygfVGWIgOwHEmSYAUC8icYUz2PKVnBF0anOW3Df6zcRdj+pA83uz5ZmvgidNBijfPBxaUZleVWr8KGTrzne7WNYKMjOOaTxMsK07sBIUDCAg1/QKBjlkso6bcd30OGim3vWCwDBS3REJ91PP5fkuhA="
+  password:
+    secure: vyDANRu14qv6J7BhI/Zt0vkOZeK3ioPdrer1K4/FICC5V8H2scvcz9C4u6nT2QMdr3X4qjZ6X1AWk5IgpMyn2jDhMvQ6A0bED0ONbY6VtqCDQBc6PJzr+PwBOBGdC0118hjf86L6NSNsJlCRBkKklzCBD91rbD6io2Lybndf8f/GfzVsjnt1E0yy3g1bV696TKCyWAq5UtvL/NS/XU9TbuHVOdbwATM6AfRPZ6VzTzngyUonkxbK9WTtC8aSFBy9yNkauYAApL0uDMpxPtlb+HluABP8azfsrRHrTFJYl0QIIuu7pNRz94bXCmsEZ5omrlx4Wk4FigUiInEVQT45x3O6b2Ui2mst7Nz7pMYhoFyw+ANeHqYvC/q25xWrxU1JVYeWuDbezAvka4wA7eREHP+fU9xopH6h7thQLue3k3FRzNaect8P6zqa536f/FdVMAn9fAoZ2ciK+E6MKwj1E6ju5fanD8s+uOkG7AeALx5bx0adUiNhePuBtR/OiUW6ANBfL6QitaLIZL/mDeTHikBxlZLTZ1rnFz/8jAJ4rJrRmCqFWHhJDhT7OMRO8Nyl35DFVxdApet+tMHJ8xXJZkQYKU05cb9JmH4EVvCqqGs8Tw9hcHo03BNjpaKUVEXD33NDEAQV6QO+P92GBJ8ae78WH1lsC+47EjpoQMIQdjY=
   on:
     tags: true
+    repo: mzwiessele/paramz
     branch: master
-  #server: https://testpypi.python.org/pypi
   distributions: "bdist_wheel sdist"
-  skip_cleanup: true
