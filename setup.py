@@ -44,7 +44,7 @@ def read(fname):
 def read_to_rst(fname):
     try:
         import pypandoc
-        rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
+        #rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
         return pypandoc.convert(read(fname), 'rst', format='md')
         #return read(rstname)
     except ImportError:
@@ -118,6 +118,7 @@ setup(name = 'paramz',
                    'Operating System :: Microsoft :: Windows',
                    'Operating System :: POSIX :: Linux',
                    'Programming Language :: Python :: 2.7',
+                   'Programming Language :: Python :: 3.3',
                    'Programming Language :: Python :: 3.4',
                    'Programming Language :: Python :: 3.5',
                    'Topic :: Scientific/Engineering :: Artificial Intelligence']
