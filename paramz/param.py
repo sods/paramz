@@ -36,10 +36,10 @@ from .core.pickleable import Pickleable
 from functools import reduce
 
 ###### printing
-__constraints_name__ = "Constraint"
-__index_name__ = "Index"
-__tie_name__ = "Tied to"
-__priors_name__ = "Prior"
+#__constraints_name__ = "Constraint"
+__index_name__ = "index"
+#__tie_name__ = "Tied to"
+#__priors_name__ = "Prior"
 __precision__ = np.get_printoptions()['precision'] # numpy printing precision used, sublassing numpy ndarray after all
 __print_threshold__ = 5
 ######
@@ -345,7 +345,11 @@ class Param(Parameterizable, ObsAr):
         if only_name: header = header_format.format(lc, lx, li, lt, lp, ' ', x=self.hierarchy_name(), c=sep*lc, i=sep*li, t=sep*lt, p=sep*lp)  # nice header for printing
         else: header = header_format.format(lc, lx, li, lt, lp, ' ', x=self.hierarchy_name(), c=__constraints_name__, i=__index_name__, t=__tie_name__, p=__priors_name__)  # nice header for printing
         if not ties: ties = itertools.cycle([''])
-        return "\n".join([header] + ["  {i!s:^{3}s}  |  {x: >{1}.{2}g}  |  {c:^{0}s}  |  {p:^{5}s}  |  {t:^{4}s}  ".format(lc, lx, __precision__, li, lt, lp, x=x, c=" ".join(map(str, c)), p=" ".join(map(str, p)), t=(t or ''), i=i) for i, x, c, t, p in zip(indices, vals, constr_matrix, ties, prirs)])  # return all the constraints with right indices
+        return "\n".join([header] + ["  {i!s:^{3}s}  |  {x: >{1}.{2}g}  |  {c:^{0}s}  |  {p:^{5}s}  |  {t:^{4}s}  ".format(lc, lx, __precision__, li, lt, lp, x=x, 
+                                                                                                                           c=" ".join(map(str, c)), 
+                                                                                                                           p=" ".join(map(str, p)), 
+                                                                                                                           t=(t or ''), i=i) 
+                                     for i, x, c, t, p in zip(indices, vals, constr_matrix, ties, prirs)])  # return all the constraints with right indices
         # except: return super(Param, self).__str__()
 
 class ParamConcatenation(object):

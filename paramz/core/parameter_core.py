@@ -199,7 +199,7 @@ class OptimizationHandlable(Constrainable):
     def randomize(self, rand_gen=None, *args, **kwargs):
         """
         Randomize the model.
-        Make this draw from the prior if one exists, else draw from given random generator
+        Make this draw from the rand_gen if one exists, else draw random normal(0,1)
 
         :param rand_gen: np random number generator which takes args and kwargs
         :param flaot loc: loc parameter for random number generator
@@ -215,9 +215,6 @@ class OptimizationHandlable(Constrainable):
         self.optimizer_array = x  # makes sure all of the tied parameters get the same init (since there's only one prior object...)
         # now draw from prior where possible
         x = self.param_array.copy()
-        #Py3 fix
-        #[np.put(x, ind, p.rvs(ind.size)) for p, ind in self.priors.iteritems() if not p is None]
-        [np.put(x, ind, p.rvs(ind.size)) for p, ind in self.priors.items() if not p is None]
         unfixlist = np.ones((self.size,),dtype=np.bool)
         unfixlist[self.constraints[__fixed__]] = False
         self.param_array.flat[unfixlist] = x.view(np.ndarray).ravel()[unfixlist]
