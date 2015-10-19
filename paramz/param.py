@@ -34,6 +34,7 @@ from .core.parameter_core import Parameterizable, adjust_name_for_printing
 from .core.observable_array import ObsAr
 from .core.pickleable import Pickleable
 from functools import reduce
+from collections import OrderedDict
 
 ###### printing
 #__constraints_name__ = "Constraint"
@@ -120,6 +121,7 @@ class Param(Parameterizable, ObsAr):
         self._update_on = getattr(obj, '_update_on', None)
         self.constraints = getattr(obj, 'constraints', None)
         self.priors = getattr(obj, 'priors', None)
+        self._index_operations = getattr(obj, '_index_operations', None)
 
     @property
     def param_array(self):
@@ -240,24 +242,10 @@ class Param(Parameterizable, ObsAr):
     def num_params(self):
         return 0
     
-    def get_property_string(self, prop):
+    def get_property_string(self, propname):
+        prop = self._index_operations[propname]
         return [' '.join(map(lambda c: str(c[0]) if c[1].size == self._realsize_ else "{" + str(c[0]) + "}", prop.items()))]
 
-    @property
-    def _constraints_str(self):
-        #py3 fix
-        #return [' '.join(map(lambda c: str(c[0]) if c[1].size == self._realsize_ else "{" + str(c[0]) + "}", self.constraints.iteritems()))]
-        return [' '.join(map(lambda c: str(c[0]) if c[1].size == self._realsize_ else "{" + str(c[0]) + "}", self.constraints.items()))]
-    @property
-    def _priors_str(self):
-        #py3 fix
-        #return [' '.join(map(lambda c: str(c[0]) if c[1].size == self._realsize_ else "{" + str(c[0]) + "}", self.priors.iteritems()))]
-        return [' '.join(map(lambda c: str(c[0]) if c[1].size == self._realsize_ else "{" + str(c[0]) + "}", self.priors.items()))]
-    @property
-    def _ties_str(self):
-        return ['']
-    def _ties_for(self, ravi):
-        return [['N/A']]*ravi.size
     def __repr__(self, *args, **kwargs):
         name = "\033[1m{x:s}\033[0;0m:\n".format(
                             x=self.hierarchy_name())
@@ -298,59 +286,69 @@ class Param(Parameterizable, ObsAr):
         else: indstr = ','.join(map(str, ind))
         return name + '[' + indstr + ']'
 
-    def _repr_html_(self, constr_matrix=None, indices=None, prirs=None, ties=None):
-        """Representation of the parameter in html for notebook display."""
-        filter_ = self._current_slice_
-        vals = self.flat
-        if indices is None: indices = self._indices(filter_)
-        ravi = self._raveled_index(filter_)
-        if constr_matrix is None: constr_matrix = self.constraints.properties_for(ravi)
-        if prirs is None: prirs = self.priors.properties_for(ravi)
-        if ties is None: ties = self._ties_for(ravi)
-        ties = [' '.join(map(lambda x: x, t)) for t in ties]
-        header_format = """
-<tr>
-  <th><b>{i}</b></th>
-  <th><b>{x}</b></th>
-  <th><b>{c}</b></th>
-  <th><b>{p}</b></th>
-  <th><b>{t}</b></th>
-</tr>"""
-        header = header_format.format(x=self.hierarchy_name(), c=__constraints_name__, i=__index_name__, t=__tie_name__, p=__priors_name__)  # nice header for printing
-        if not ties: ties = itertools.cycle([''])
-        return "\n".join(["""<style type="text/css">
-.tg  {padding:2px 3px;word-break:normal;border-collapse:collapse;border-spacing:0;border-color:#DCDCDC;margin:0px auto;width:100%;}
-.tg td{font-family:"Courier New", Courier, monospace !important;font-weight:bold;color:#444;background-color:#F7FDFA;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
-.tg th{font-family:"Courier New", Courier, monospace !important;font-weight:normal;color:#fff;background-color:#26ADE4;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
-.tg .tg-left{font-family:"Courier New", Courier, monospace !important;font-weight:normal;text-align:left;}
-.tg .tg-right{font-family:"Courier New", Courier, monospace !important;font-weight:normal;text-align:right;}
-</style>"""] + ['<table class="tg">'] + [header] + ["<tr><td class=tg-left>{i}</td><td  class=tg-right>{x}</td><td class=tg-left>{c}</td><td class=tg-left>{p}</td><td class=tg-left>{t}</td></tr>".format(x=x, c=" ".join(map(str, c)), p=" ".join(map(str, p)), t=(t or ''), i=i) for i, x, c, t, p in zip(indices, vals, constr_matrix, ties, prirs)] + ["</table>"])
+#     def _repr_html_(self, constr_matrix=None, indices=None, prirs=None, ties=None):
+#         """Representation of the parameter in html for notebook display."""
+#         filter_ = self._current_slice_
+#         vals = self.flat
+#         if indices is None: indices = self._indices(filter_)
+#         ravi = self._raveled_index(filter_)
+#         if constr_matrix is None: constr_matrix = self.constraints.properties_for(ravi)
+#         if prirs is None: prirs = self.priors.properties_for(ravi)
+#         if ties is None: ties = self._ties_for(ravi)
+#         ties = [' '.join(map(lambda x: x, t)) for t in ties]
+#         header_format = """
+# <tr>
+#   <th><b>{i}</b></th>
+#   <th><b>{x}</b></th>
+#   <th><b>{c}</b></th>
+#   <th><b>{p}</b></th>
+#   <th><b>{t}</b></th>
+# </tr>"""
+#         header = header_format.format(x=self.hierarchy_name(), c=__constraints_name__, i=__index_name__, t=__tie_name__, p=__priors_name__)  # nice header for printing
+#         if not ties: ties = itertools.cycle([''])
+#         return "\n".join(["""<style type="text/css">
+# .tg  {padding:2px 3px;word-break:normal;border-collapse:collapse;border-spacing:0;border-color:#DCDCDC;margin:0px auto;width:100%;}
+# .tg td{font-family:"Courier New", Courier, monospace !important;font-weight:bold;color:#444;background-color:#F7FDFA;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
+# .tg th{font-family:"Courier New", Courier, monospace !important;font-weight:normal;color:#fff;background-color:#26ADE4;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
+# .tg .tg-left{font-family:"Courier New", Courier, monospace !important;font-weight:normal;text-align:left;}
+# .tg .tg-right{font-family:"Courier New", Courier, monospace !important;font-weight:normal;text-align:right;}
+# </style>"""] + ['<table class="tg">'] + [header] + ["<tr><td class=tg-left>{i}</td><td  class=tg-right>{x}</td><td class=tg-left>{c}</td><td class=tg-left>{p}</td><td class=tg-left>{t}</td></tr>".format(x=x, c=" ".join(map(str, c)), p=" ".join(map(str, p)), t=(t or ''), i=i) for i, x, c, t, p in zip(indices, vals, constr_matrix, ties, prirs)] + ["</table>"])
 
-    def __str__(self, constr_matrix=None, indices=None, prirs=None, ties=None, lc=None, lx=None, li=None, lp=None, lt=None, only_name=False):
+    def _format_spec(self, indices, iops, lx=None, li=None, lls=None, VT100=True):
+        if li is None: li = self._max_len_index(indices)
+        if lx is None: lx = self._max_len_values()
+        if lls is None: lls = [self._max_len_names(iop, name) for name, iop in iops.items()]
+
+        if VT100:
+            format_spec = ["  \033[1m{{index:<{0}s}}\033[0;0m".format(li),"{{value:>{0}s}}".format(lx)]
+        else:
+            format_spec = ["  {{index:<{0}s}}".format(li),"{{value:>{0}s}}".format(lx)]
+
+        for opname, l in zip(iops, lls):
+            f = '{{{1}:^{0}s}}'.format(l, opname)
+            format_spec.append(f)
+        return format_spec
+        
+
+    def __str__(self, indices=None, iops=None, lx=None, li=None, lls=None, only_name=False, VT100=True):
         filter_ = self._current_slice_
         vals = self.flat
         if indices is None: indices = self._indices(filter_)
-        ravi = self._raveled_index(filter_)
-        if constr_matrix is None: constr_matrix = self.constraints.properties_for(ravi)
-        if prirs is None: prirs = self.priors.properties_for(ravi)
-        if ties is None: ties = self._ties_for(ravi)
-        ties = [' '.join(map(lambda x: x, t)) for t in ties]
-        if lc is None: lc = self._max_len_names(constr_matrix, __constraints_name__)
-        if lx is None: lx = self._max_len_values()
-        if li is None: li = self._max_len_index(indices)
-        if lt is None: lt = self._max_len_names(ties, __tie_name__)
-        if lp is None: lp = self._max_len_names(prirs, __tie_name__)
-        sep = '-'
-        header_format = "  {i:{5}^{2}s}  |  \033[1m{x:{5}^{1}s}\033[0;0m  |  {c:{5}^{0}s}  |  {p:{5}^{4}s}  |  {t:{5}^{3}s}"
-        if only_name: header = header_format.format(lc, lx, li, lt, lp, ' ', x=self.hierarchy_name(), c=sep*lc, i=sep*li, t=sep*lt, p=sep*lp)  # nice header for printing
-        else: header = header_format.format(lc, lx, li, lt, lp, ' ', x=self.hierarchy_name(), c=__constraints_name__, i=__index_name__, t=__tie_name__, p=__priors_name__)  # nice header for printing
-        if not ties: ties = itertools.cycle([''])
-        return "\n".join([header] + ["  {i!s:^{3}s}  |  {x: >{1}.{2}g}  |  {c:^{0}s}  |  {p:^{5}s}  |  {t:^{4}s}  ".format(lc, lx, __precision__, li, lt, lp, x=x, 
-                                                                                                                           c=" ".join(map(str, c)), 
-                                                                                                                           p=" ".join(map(str, p)), 
-                                                                                                                           t=(t or ''), i=i) 
-                                     for i, x, c, t, p in zip(indices, vals, constr_matrix, ties, prirs)])  # return all the constraints with right indices
-        # except: return super(Param, self).__str__()
+        if iops is None:
+            ravi = self._raveled_index(filter_)
+            iops = OrderedDict([name, iop.properties_for(ravi)] for name, iop in self._index_operations.items())
+        if lls is None: lls = [self._max_len_names(iop, name) for name, iop in iops.items()]
+        
+        format_spec = '  |  '.join(self._format_spec(indices, iops, lx, li, lls, VT100))
+
+        to_print = []
+        
+        if not only_name: to_print.append(format_spec.format(index=__index_name__, value=self.hierarchy_name(), **dict((name, name) for name in iops)))
+        else: to_print.append(format_spec.format(index='-'*li, value=self.hierarchy_name(), **dict((name, '-'*l) for name, l in zip(iops, lls))))
+        
+        for i in range(self.size):
+            to_print.append(format_spec.format(index=indices[i], value="{1:.{0}f}".format(__precision__, vals[i]), **dict((name, ' '.join(map(str, iops[name][i]))) for name in iops)))
+        return '\n'.join(to_print)
 
 class ParamConcatenation(object):
     def __init__(self, params):
@@ -396,6 +394,7 @@ class ParamConcatenation(object):
         params = [p.param_array.flat[ind[ps]] for p,ps in zip(self.params, self._param_slices_) if np.any(p.param_array.flat[ind[ps]])]
         if len(params)==1: return params[0]
         return ParamConcatenation(params)
+
     def __setitem__(self, s, val, update=True):
         if isinstance(val, ParamConcatenation):
             val = val.values()
@@ -405,6 +404,7 @@ class ParamConcatenation(object):
             p.flat[ind[ps]] = vals[ps]
         if update:
             self.update_all_params()
+
     def values(self):
         return np.hstack([p.param_array.flat for p in self.params])
     #===========================================================================
@@ -473,23 +473,37 @@ class ParamConcatenation(object):
     __ne__ = lambda self, val: self.values() != val
     __gt__ = lambda self, val: self.values() > val
     __ge__ = lambda self, val: self.values() >= val
+    
     def __str__(self, *args, **kwargs):
-        def f(p):
-            ind = p._raveled_index()
-            return p.constraints.properties_for(ind), p._ties_for(ind), p.priors.properties_for(ind)
         params = self.params
-        constr_matrices, ties_matrices, prior_matrices = zip(*map(f, params))
+        
         indices = [p._indices() for p in params]
-        lc = max([p._max_len_names(cm, __constraints_name__) for p, cm in zip(params, constr_matrices)])
         lx = max([p._max_len_values() for p in params])
         li = max([p._max_len_index(i) for p, i in zip(params, indices)])
-        lt = max([p._max_len_names(tm, __tie_name__) for p, tm in zip(params, ties_matrices)])
-        lp = max([p._max_len_names(pm, __constraints_name__) for p, pm in zip(params, prior_matrices)])
+
+        lls = None
+        params_iops = []
+        for p in params:
+            filter_ = p._current_slice_
+            ind = p._raveled_index(filter_)
+            i = 0
+            iops = OrderedDict()
+            for name, iop in p._index_operations.items():
+                if lls is None:
+                    lls = [0]*iop.size
+                iops[name] = iop.properties_for(ind)
+                lls[i] = max(lls[i], p._max_len_names(iops[name], name))
+                i += 1
+            params_iops.append(iops)
+
         strings = []
         start = True
-        for p, cm, i, tm, pm in zip(params,constr_matrices,indices,ties_matrices,prior_matrices):
-            strings.append(p.__str__(constr_matrix=cm, indices=i, prirs=pm, ties=tm, lc=lc, lx=lx, li=li, lp=lp, lt=lt, only_name=(1-start)))
+        
+        for i in range(len(params)):
+            strings.append(params[i].__str__(indices=indices[i], iops=params_iops[i], lx=lx, li=li, lls=lls, only_name=(not start)))
             start = False
+            i += 1
+
         return "\n".join(strings)
     def __repr__(self):
         return "\n".join(map(repr,self.params))

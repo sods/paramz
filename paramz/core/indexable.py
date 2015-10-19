@@ -33,6 +33,7 @@ from .updateable import Updateable
 from ..transformations import __fixed__
 from operator import delitem
 from functools import reduce
+from collections import OrderedDict
 
 class Indexable(Nameable, Updateable):
     """
@@ -46,7 +47,7 @@ class Indexable(Nameable, Updateable):
     """
     def __init__(self, name, default_constraint=None, *a, **kw):
         super(Indexable, self).__init__(name=name, *a, **kw)
-        self._index_operations = dict()
+        self._index_operations = OrderedDict()
 
     def add_index_operation(self, name, operations):
         if name not in self._index_operations:
