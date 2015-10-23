@@ -320,12 +320,12 @@ class Param(Parameterizable, ObsAr):
         if lls is None: lls = [self._max_len_names(iop, name) for name, iop in iops.items()]
 
         if VT100:
-            format_spec = ["  \033[1m{{index:<{0}s}}\033[0;0m".format(li),"{{value:>{0}s}}".format(lx)]
+            format_spec = ["  \033[1m{{index!s:<{0}}}\033[0;0m".format(li),"{{value!s:>{0}}}".format(lx)]
         else:
-            format_spec = ["  {{index:<{0}s}}".format(li),"{{value:>{0}s}}".format(lx)]
+            format_spec = ["  {{index!s:<{0}}}".format(li),"{{value!s:>{0}}}".format(lx)]
 
         for opname, l in zip(iops, lls):
-            f = '{{{1}:^{0}s}}'.format(l, opname)
+            f = '{{{1}!s:^{0}}}'.format(l, opname)
             format_spec.append(f)
         return format_spec
         
