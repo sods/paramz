@@ -432,12 +432,12 @@ class Parameterized(Parameterizable):
         
         lls = [max(max(len(s) for s in [opname, p]) for p in iops[opname]) for opname in iops]
         if VT100:
-            format_spec = ["  \033[1m{{name:<{0}s}}\033[0;0m".format(nl),"{{desc:>{0}s}}".format(sl)]
+            format_spec = ["  \033[1m{{name!s:<{0}}}\033[0;0m".format(nl),"{{desc!s:>{0}}}".format(sl)]
         else:
-            format_spec = ["  {{name:<{0}s}}".format(nl),"{{desc:>{0}s}}".format(sl)]
+            format_spec = ["  {{name!s:<{0}}}".format(nl),"{{desc!s:>{0}}}".format(sl)]
 
         for opname, l in zip(iops, lls):
-            f = '{{{1}:^{0}s}}'.format(l, opname)
+            f = '{{{1}!s:^{0}}}'.format(l, opname)
             format_spec.append(f)
 
         return format_spec
