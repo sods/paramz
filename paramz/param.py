@@ -268,13 +268,13 @@ class Param(Parameterizable, ObsAr):
         return indices
     
     def _max_len_names(self, gen, header):
-        return max(max(map(lambda x: len(" ".join(map(str, x))), gen)), len(header))
+        return reduce(lambda a, b: max(a, len(" ".join(map(str, b)))), gen, len(header))
     
     def _max_len_values(self):
-        return reduce(lambda a, b:max(a, len("{x:=.{0}g}".format(__precision__, x=b))), self.flat, len(self.hierarchy_name()))
+        return reduce(lambda a, b: max(a, len("{x:=.{0}g}".format(__precision__, x=b))), self.flat, len(self.hierarchy_name()))
     
     def _max_len_index(self, ind):
-        return reduce(lambda a, b:max(a, len(str(b))), ind, len(__index_name__))
+        return reduce(lambda a, b: max(a, len(str(b))), ind, len(__index_name__))
     
     def _short(self):
         # short string to print

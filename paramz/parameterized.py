@@ -430,7 +430,8 @@ class Parameterized(Parameterizable):
         nl = max([len(str(x)) for x in names + [name]])
         sl = max([len(str(x)) for x in desc + ["value"]])
         
-        lls = [max(max(len(s) for s in [opname, p]) for p in iops[opname]) for opname in iops]
+        lls = [reduce(lambda a,b: max(a, len(b)), iops[opname], len(opname)) for opname in iops]
+        
         if VT100:
             format_spec = ["  \033[1m{{name!s:<{0}}}\033[0;0m".format(nl),"{{desc!s:>{0}}}".format(sl)]
         else:
