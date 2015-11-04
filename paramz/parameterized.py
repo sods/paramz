@@ -38,6 +38,7 @@ from .core import HierarchyError
 
 import logging
 from collections import OrderedDict
+from functools import reduce
 logger = logging.getLogger("parameters changed meta")
 
 class ParametersChangedMeta(type):
