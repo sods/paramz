@@ -390,9 +390,7 @@ class Parameterizable(OptimizationHandlable):
             # """.format(pname, self.hierarchy_name(), self.hierarchy_name(), param.name + "_")
             #===================================================================
             if match is None:
-                print param.name
                 param.name = param.name+"_1"
-                print param.name
             else:
                 param.name = match.group('name') + "_" + str(int(match.group('digit'))+1)
             self._add_parameter_name(param, ignore_added_names)

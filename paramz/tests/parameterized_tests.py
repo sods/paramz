@@ -94,12 +94,16 @@ class ModelTest(unittest.TestCase):
                 self.gradient[:] = 2*self.param_array
         
         self.testmodel = M('testmodel', 
-                           kern=P('rbf', 
-                                 variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()), 
-                                 lengthscale=Param('lengthscale', np.random.uniform(.1, 1, 1), transformations.Logexp())),
+                           kern=P('rbf'),
                            likelihood=P('Gaussian_noise',
                                         variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
                            )
+        variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp())
+        lengthscale=Param('lengthscale', np.random.uniform(.1, 1, 1), transformations.Logexp())
+        self.testmodel.kern.variance = variance
+        self.testmodel.kern.lengthscale = lengthscale
+        self.testmodel.kern.link_parameter(lengthscale)
+        self.testmodel.kern.link_parameter(variance)
         #=============================================================================
         # GP_regression.           |  Value  |  Constraint  |  Prior  |  Tied to
         # rbf.variance             |    1.0  |     +ve      |         |
