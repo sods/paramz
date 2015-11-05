@@ -67,7 +67,7 @@ class Indexable(Nameable, Updateable):
         From Parentable:
         disconnect the parent and set the new constraints to constr
         """
-        for name, iop in self._index_operations.items():
+        for name, iop in list(self._index_operations.items()):
             iopc = iop.copy()
             iop.clear()
             self.remove_index_operation(name)
@@ -145,7 +145,7 @@ class Indexable(Nameable, Updateable):
             #self.constraints.update(param.constraints, start)
             #self.priors.update(param.priors, start)
         offset = parent._offset_for(self)
-        for name, iop in self._index_operations.items():
+        for name, iop in list(self._index_operations.items()):
             self.remove_index_operation(name)
             self.add_index_operation(name, ParameterIndexOperationsView(parent._index_operations[name], offset, self.size))
         self._fixes_ = None
@@ -182,3 +182,8 @@ class Indexable(Nameable, Updateable):
                 self._highest_parent_._set_unfixed(self, unconstrained)
 
         return removed
+    
+    def __setstate__(self, state):
+        self._index_operations = OrderedDict()
+        super(Indexable, self).__setstate__(state)
+        

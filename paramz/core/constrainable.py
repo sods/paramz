@@ -40,6 +40,10 @@ class Constrainable(Indexable):
         if self._default_constraint_ is not None:
             self.constrain(self._default_constraint_)
 
+    def __setstate__(self, state):
+        Indexable.__setstate__(self, state)
+        self._index_operations['constraints'] = self.constraints
+        
     #===========================================================================
     # Fixing Parameters:
     #===========================================================================
