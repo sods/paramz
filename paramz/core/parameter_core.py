@@ -78,15 +78,11 @@ class OptimizationHandlable(Constrainable):
             #py3 fix
             #[np.put(self._optimizer_copy_, ind, c.finv(self.param_array[ind])) for c, ind in self.constraints.iteritems() if c != __fixed__]
             [np.put(self._optimizer_copy_, ind, c.finv(self.param_array[ind])) for c, ind in self.constraints.items() if c != __fixed__]
-            if self.has_parent() and (self.constraints[__fixed__].size != 0):# or self._has_ties()):
-                fixes = np.ones(self.size).astype(bool)
-                fixes[self.constraints[__fixed__]] = FIXED
-                return self._optimizer_copy_[fixes]#np.logical_and(fixes, self._highest_parent_.tie.getTieFlag(self))]
-            elif self._has_fixes():
-                return self._optimizer_copy_[self._fixes_]
-
             self._optimizer_copy_transformed = True
 
+        if self._has_fixes():# or self._has_ties()):
+            self._ensure_fixes()
+            return self._optimizer_copy_[self._fixes_]
         return self._optimizer_copy_
 
     @optimizer_array.setter
@@ -311,19 +307,12 @@ class Parameterizable(OptimizationHandlable):
         !WARNING!: setting the parameter array MUST always be done in memory:
         m.param_array[:] = m_copy.param_array
         """
-        if self.__dict__.get('_param_array_', None) is None:
-            self._param_array_ = np.empty(self.size, dtype=np.float64)
-
         if self.constraints[__fixed__].size !=0:
             fixes = np.ones(self.size).astype(bool)
             fixes[self.constraints[__fixed__]] = FIXED
             return self._param_array_[fixes]
         else:
             return self._param_array_
-
-    @param_array.setter
-    def param_array(self, arr):
-        self._param_array_ = arr
 
     def traverse(self, visit, *args, **kwargs):
         """
@@ -342,9 +331,13 @@ class Parameterizable(OptimizationHandlable):
         if not self.__visited:
             visit(self, *args, **kwargs)
             self.__visited = True
-            for c in self.parameters:
-                c.traverse(visit, *args, **kwargs)
+            self._traverse(visit, *args, **kwargs)
             self.__visited = False
+
+    def _traverse(self, visit, *args, **kwargs):
+        for c in self.parameters:
+            c.traverse(visit, *args, **kwargs)
+        
 
     def traverse_parents(self, visit, *args, **kwargs):
         """
@@ -359,16 +352,8 @@ class Parameterizable(OptimizationHandlable):
         """
         if self.has_parent():
             self.__visited = True
-            self._parent_._traverse_parents(visit, *args, **kwargs)
-            self.__visited = False
-
-    def _traverse_parents(self, visit, *args, **kwargs):
-        if not self.__visited:
-            self.__visited = True
-            visit(self, *args, **kwargs)
-            if self.has_parent():
-                self._parent_._traverse_parents(visit, *args, **kwargs)
-                self._parent_.traverse(visit, *args, **kwargs)
+            self._parent_.traverse_parents(visit, *args, **kwargs)
+            self._parent_.traverse(visit, *args, **kwargs)
             self.__visited = False
 
     #=========================================================================
@@ -405,15 +390,16 @@ class Parameterizable(OptimizationHandlable):
             # """.format(pname, self.hierarchy_name(), self.hierarchy_name(), param.name + "_")
             #===================================================================
             if match is None:
-                param.name += "_1"
+                print param.name
+                param.name = param.name+"_1"
+                print param.name
             else:
                 param.name = match.group('name') + "_" + str(int(match.group('digit'))+1)
             self._add_parameter_name(param, ignore_added_names)
         # and makes sure to not delete programmatically added parameters
-        for other in self.parameters[::-1]:
-            if other is not param and other.name == param.name:
-                warn_and_retry(param, _name_digit.match(other.name))
-                return
+        for other in self.parameters:
+            if (not (other is param)) and (other.name == param.name):
+                return warn_and_retry(other, _name_digit.match(other.name))
         if pname not in dir(self):
             self.__dict__[pname] = param
             self._added_names_.add(pname)

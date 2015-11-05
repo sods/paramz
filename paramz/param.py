@@ -184,7 +184,7 @@ class Param(Parameterizable, ObsAr):
     # Constrainable
     #===========================================================================
     def _ensure_fixes(self):
-        if not self._has_fixes(): self._fixes_ = np.ones(self._realsize_, dtype=bool)
+        if (not hasattr(self, "_fixes_")) or (self._fixes_ is None) or (self._fixes_.size != self._realsize_): self._fixes_ = np.ones(self._realsize_, dtype=bool)
 
     #===========================================================================
     # Convenience

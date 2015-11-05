@@ -64,7 +64,7 @@ class Gradcheckable(Pickleable, Parentable):
             return self._highest_parent_._checkgrad(self, verbose=verbose, step=step, tolerance=tolerance, df_tolerance=df_tolerance)
         return self._checkgrad(self, verbose=verbose, step=step, tolerance=tolerance, df_tolerance=df_tolerance)
 
-    def _checkgrad(self, param, verbose=0, step=1e-6, tolerance=1e-3):
+    def _checkgrad(self, param, verbose=0, step=1e-6, tolerance=1e-3, df_tolerance=1e-12):
         """
         Perform the checkgrad on the model.
         TODO: this can be done more efficiently, when doing it inside here

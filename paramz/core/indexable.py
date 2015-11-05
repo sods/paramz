@@ -114,21 +114,24 @@ class Indexable(Nameable, Updateable):
         return np.r_[:self.size]
 
 
-    #===========================================================================
-    # Tie parameters together
-    #===========================================================================
 
-    def _has_ties(self):
-        if self._highest_parent_.tie.tied_param is None:
-            return False
-        if self.has_parent():
-            return self._highest_parent_.tie.label_buf[self._highest_parent_._raveled_index_for(self)].sum()>0
-        return True
 
-    def tie_together(self):
-        self._highest_parent_.tie.add_tied_parameter(self)
-        self._highest_parent_._set_fixed(self,self._raveled_index())
-        self._trigger_params_changed()
+#===========================================================================
+# Tie parameters together
+# TODO: create own class for tieing and remapping
+#===========================================================================
+#     def _has_ties(self):
+#         if self._highest_parent_.tie.tied_param is None:
+#             return False
+#         if self.has_parent():
+#             return self._highest_parent_.tie.label_buf[self._highest_parent_._raveled_index_for(self)].sum()>0
+#         return True
+# 
+#     def tie_together(self):
+#         self._highest_parent_.tie.add_tied_parameter(self)
+#         self._highest_parent_._set_fixed(self,self._raveled_index())
+#         self._trigger_params_changed()
+#===============================================================================
 
 
     def _parent_changed(self, parent):

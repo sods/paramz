@@ -81,6 +81,7 @@ class Model(Parameterized):
         """
         if self.is_fixed or self.size == 0:
             print('nothing to optimize')
+            return
 
         if not self.update_model():
             print("updates were off, setting updates on again")

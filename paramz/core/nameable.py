@@ -72,6 +72,7 @@ class Nameable(Gradcheckable):
         self._name = name
         if self.has_parent():
             self._parent_._name_changed(self, from_name)
+            
     def hierarchy_name(self, adjust_for_printing=True):
         """
         return the name for this object with the parents names attached by dots.

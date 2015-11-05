@@ -5,7 +5,6 @@ import datetime as dt
 from scipy import optimize
 from warnings import warn
 
-from .conjugate_gradient_descent import CGD
 from .scg import SCG
 
 class Optimizer(object):
@@ -238,7 +237,6 @@ def get_optimizer(f_min):
           'lbfgsb': opt_lbfgsb,
           'org-bfgs': opt_bfgs,
           'scg': opt_SCG,
-          'cgd': CGD,
           'adadelta':Opt_Adadelta}
 
     for opt_name in optimizers.keys():
