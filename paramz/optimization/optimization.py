@@ -147,7 +147,7 @@ class opt_bfgs(Optimizer):
         if self.ftol is not None:
             print("WARNING: bfgs doesn't have an ftol arg, so I'm going to ignore it")
         if self.gtol is not None:
-            opt_dict['pgtol'] = self.gtol
+            opt_dict['gtol'] = self.gtol
 
         opt_result = optimize.fmin_bfgs(f, self.x_init, fp, disp=self.messages,
                                             maxiter=self.max_iters, full_output=True, **opt_dict)

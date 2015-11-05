@@ -109,26 +109,29 @@ class ModelTest(unittest.TestCase):
 
     def test_optimize_preferred(self):
         self.testmodel.update_model(False)
-        self.testmodel.optimize(messages=1)
+        self.testmodel.optimize('lbfgs', messages=True, xtol=0, ftol=0, gtol=1e-6, bfgs_factor=1)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_scg(self):
-        self.testmodel.optimize('scg', messages=1)
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel.optimize('scg', messages=1, max_f_eval=10)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-1)
     def test_optimize_tnc(self):
         from ..optimization.optimization import opt_tnc
-        self.testmodel.optimize_restarts(messages=0, optimizer=opt_tnc(self.testmodel.optimizer_array))
+        self.testmodel.optimize_restarts(messages=1, optimizer=opt_tnc(self.testmodel.optimizer_array))
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_org_bfgs(self):
         with np.errstate(divide='ignore'):
-            self.testmodel.optimize_restarts(messages=0, optimizer='org-bfgs')
+            self.testmodel.optimize_restarts(messages=1, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_fix(self):
         self.testmodel.fix()
-        self.testmodel.optimize()
+        self.testmodel.optimize(messages=1)
     def test_optimize_cgd(self):
         self.assertRaises(KeyError, self.testmodel.optimize, 'cgd', messages=1)
     def test_optimize_simplex(self):
-        self.testmodel.optimize('simplex', messages=1)
+        self.testmodel.optimize('simplex', messages=1, xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
         
     def test_raveled_index(self):
