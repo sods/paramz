@@ -37,7 +37,7 @@ class Test(unittest.TestCase):
         b = cache(*ins)
         self.assertIs(cache(*ins), b)
         self.assertEqual(opcalls[0], 1)
-        self.assertSequenceEqual(cache.cached_inputs.values()[0], ins)
+        self.assertIn(ins, cache.cached_inputs.values())
         
         self.assertRaises(TypeError, cache, 'this does not work', 2)
 
@@ -49,9 +49,9 @@ class Test(unittest.TestCase):
     def test_cached_atomic_str(self):
         i = "printing the cached value"
         print(self.cache(i))
-        self.assertIs(i, self.cache.cached_outputs.values()[0][0])
+        self.assertIn((i,), self.cache.cached_outputs.values())
         print(self.cache(i))
-        self.assertIs(i, self.cache.cached_outputs.values()[0][0])
+        self.assertIn((i,), self.cache.cached_outputs.values())
         self.assertEqual(len(self.cache.cached_outputs.values()), 1)
 
     def test_caching_non_cachables(self):
@@ -73,7 +73,6 @@ class Test(unittest.TestCase):
                 opcalls[1] = ignore_this
                 if force is not False:
                     opcalls[2] = force
-                    print 'we have a force'
                 return x+y
         cache = O()
 
@@ -131,9 +130,9 @@ class Test(unittest.TestCase):
     def test_cached_atomic_int(self):
         i = 1234
         print(self.cache(i))
-        self.assertIs(i, self.cache.cached_outputs.values()[0][0])
+        self.assertIn((i,), self.cache.cached_outputs.values())
         print(self.cache(i))
-        self.assertIs(i, self.cache.cached_outputs.values()[0][0])
+        self.assertIn((i,), self.cache.cached_outputs.values())
         self.assertEqual(len(self.cache.cached_outputs.values()), 1)
 
     def test_cached_ObsAr(self):
@@ -225,10 +224,8 @@ class Test(unittest.TestCase):
         self.assertTrue(cache.inputs_changed[id_ab])
         abnew = cache(a, b)
         # Redo the id for ab, as the objects have changed (numpy)
-        print cache.inputs_changed, id_ab
         _inputs = cache.combine_inputs((a, b), {}, ())
         id_ab = cache.prepare_cache_id(_inputs)
-        print id_ab
         self.assertFalse(cache.inputs_changed[id_ab])
         self.assertIsNot(abnew, ab)
         self.assertIs(cache(a, b), abnew)
