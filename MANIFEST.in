@@ -1,0 +1,4 @@
+# Documentation:
+include doc/source/conf.py
+include doc/source/index.rst
+include README.md
