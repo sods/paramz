@@ -18,6 +18,9 @@ exclude_lines =
     raise AssertionError
     raise NotImplementedError
     raise NotImplemented
+    except NotImplementedError
+    except NotImplemented
+    except AssertionError
     pass
 
     # Don't complain if non-runnable code isn't run:

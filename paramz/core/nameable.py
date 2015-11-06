@@ -78,7 +78,8 @@ class Nameable(Gradcheckable):
         return the name for this object with the parents names attached by dots.
 
         :param bool adjust_for_printing: whether to call :func:`~adjust_for_printing()`
-        on the names, recursively
+                                         on the names, recursively
+                                         
         """
         if adjust_for_printing: adjust = lambda x: adjust_name_for_printing(x)
         else: adjust = lambda x: x

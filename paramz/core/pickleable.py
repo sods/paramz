@@ -51,13 +51,18 @@ class Pickleable(object):
         """
         try: #Py2
             import cPickle as pickle
+            if isinstance(f, basestring):
+                with open(f, 'wb') as f:
+                    pickle.dump(self, f, protocol)
+            else:
+                pickle.dump(self, f, protocol)
         except ImportError: #python3
             import pickle
-        if isinstance(f, str):
-            with open(f, 'wb') as f:
+            if isinstance(f, str):
+                with open(f, 'wb') as f:
+                    pickle.dump(self, f, protocol)
+            else:
                 pickle.dump(self, f, protocol)
-        else:
-            pickle.dump(self, f, protocol)
 
     #===========================================================================
     # copy and pickling

@@ -69,7 +69,8 @@ class Tie(Parameterized):
     Its value should always be equal to all the tied parameters, and its gradient
     is the sum of all the tied parameters.
     
-    =====Implementation Details=====
+    Implementation Details:
+    
     The *Tie* object should only exist on the top of param tree (the highest parent).
     
     self.label_buf:
@@ -80,10 +81,10 @@ class Tie(Parameterized):
     self.buf_index:
     An auxiliary index list for the global index of the tie parameter inside the *Tie* object.
     
-    ================================
-    
-    TODO:
-    * EVERYTHING
+    .. warning::
+
+        This is not implemented yet and will be different, with high degree of certainty.
+        Do not use!
     
     """
     def __init__(self, name='tie'):

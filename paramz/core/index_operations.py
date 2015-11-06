@@ -58,21 +58,21 @@ class ParameterIndexOperations(object):
     the model constain instances of the ParameterIndexOperationsView class,
     which can map from a 'local' index (starting 0) to this global index.
 
-    Here's an illustration:
+    Here's an illustration::
 
-    #=======================================================================
-    model : 0 1 2 3 4 5 6 7 8 9
-    key1: 4 5
-    key2: 7 8
-
-    param1: 0 1 2 3 4 5
-    key1: 2 3
-    key2: 5
-
-    param2: 0 1 2 3 4
-    key1: 0
-    key2: 2 3
-    #=======================================================================
+        #=======================================================================
+        model : 0 1 2 3 4 5 6 7 8 9
+        key1: 4 5
+        key2: 7 8
+    
+        param1: 0 1 2 3 4 5
+        key1: 2 3
+        key2: 5
+    
+        param2: 0 1 2 3 4
+        key1: 0
+        key2: 2 3
+        #=======================================================================
 
     The views of this global index have a subset of the keys in this global
     (model) index.

@@ -36,6 +36,18 @@ from .observable import Observable
 class ObsAr(np.ndarray, Pickleable, Observable):
     """
     An ndarray which reports changes to its observers.
+    
+    .. warning::
+       
+       ObsAr tries to not ever give back an observable array itself. Thus,
+       if you want to preserve an ObsAr you need to work in memory. Let 
+       `a` be an ObsAr and you want to add a random number `r` to it. You need to
+       make sure it stays an ObsAr by working in memory (see numpy for details):
+       
+       .. code-block:: python
+       
+           a[:] += r
+    
     The observers can add themselves with a callable, which
     will be called every time this array changes. The callable
     takes exactly one argument, which is this array itself.
@@ -53,8 +65,11 @@ class ObsAr(np.ndarray, Pickleable, Observable):
         # see InfoArray.__array_finalize__ for comments
         if obj is None: return
         self.observers = getattr(obj, 'observers', None)
+        self._update_on = getattr(obj, '_update_on', None)
 
     def __array_wrap__(self, out_arr, context=None):
+        #np.ndarray.__array_wrap__(self, out_arr, context)
+        #return out_arr
         return out_arr.view(np.ndarray)
 
     def _setup_observers(self):
@@ -63,9 +78,16 @@ class ObsAr(np.ndarray, Pickleable, Observable):
 
     @property
     def values(self):
+        """
+        Return the ObsAr underlying array as a standard ndarray.
+        """
         return self.view(np.ndarray)
 
     def copy(self):
+        """
+        Make a copy. This means, we delete all observers and return a copy of this
+        array. It will still be an ObsAr!
+        """
         from .lists_and_dicts import ObserverList
         memo = {}
         memo[id(self)] = self

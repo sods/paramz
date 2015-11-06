@@ -55,7 +55,7 @@ class Gradcheckable(Pickleable, Parentable):
         :param float tolerance: the tolerance for the gradient ratio or difference.
         :param float df_tolerance: the tolerance for df_tolerance
 
-        Note:-
+        .. note::
            The *dF_ratio* indicates the limit of accuracy of numerical gradients.
            If it is too small, e.g., smaller than 1e-12, the numerical gradients
            are usually not accurate enough for the tests (shown with blue).

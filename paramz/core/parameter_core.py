@@ -242,10 +242,10 @@ class OptimizationHandlable(Constrainable):
         1.) connect param_array of children to self.param_array
         2.) tell all children to propagate further
         """
-        if self.param_array.size != self.size:
-            self._param_array_ = np.empty(self.size, dtype=np.float64)
-        if self.gradient.size != self.size:
-            self._gradient_array_ = np.empty(self.size, dtype=np.float64)
+        #if self.param_array.size != self.size:
+        #    self._param_array_ = np.empty(self.size, dtype=np.float64)
+        #if self.gradient.size != self.size:
+        #    self._gradient_array_ = np.empty(self.size, dtype=np.float64)
 
         pi_old_size = 0
         for pi in self.parameters:
@@ -316,17 +316,19 @@ class Parameterizable(OptimizationHandlable):
 
     def traverse(self, visit, *args, **kwargs):
         """
-        Traverse the hierarchy performing visit(self, *args, **kwargs)
+        Traverse the hierarchy performing `visit(self, *args, **kwargs)`
         at every node passed by downwards. This function includes self!
 
-        See "visitor pattern" in literature. This is implemented in pre-order fashion.
+        See *visitor pattern* in literature. This is implemented in pre-order fashion.
 
-        Example:
-        Collect all children:
-
-        children = []
-        self.traverse(children.append)
-        print children
+        Example::
+            
+            #Collect all children:
+    
+            children = []
+            self.traverse(children.append)
+            print children
+            
         """
         if not self.__visited:
             visit(self, *args, **kwargs)

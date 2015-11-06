@@ -77,8 +77,10 @@ class Observable(object):
         Notifies all observers. Which is the element, which kicked off this
         notification loop. The first argument will be self, the second `which`.
 
-        NOTE: notifies only observers with priority p > min_priority!
-                                                    ^^^^^^^^^^^^^^^^
+        .. note::
+           
+           notifies only observers with priority p > min_priority!
+           
         :param min_priority: only notify observers with priority > min_priority
                              if min_priority is None, notify all observers in order
         """

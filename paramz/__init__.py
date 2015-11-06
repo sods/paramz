@@ -39,7 +39,7 @@ from . import caching
 
 def load(file_or_path):
     """
-    Load a previously pickled model, using `m.pickle('path/to/file.pickle)'
+    Load a previously pickled model, using `m.pickle('path/to/file.pickle)'`
 
     :param file_name: path/to/file.pickle
     """
