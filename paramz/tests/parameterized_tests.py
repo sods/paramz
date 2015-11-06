@@ -93,11 +93,11 @@ class ModelTest(unittest.TestCase):
                 self._obj = (self.param_array**2).sum()
                 self.gradient[:] = 2*self.param_array
         
-        self.testmodel = M('testmodel', 
-                           kern=P('rbf'),
-                           likelihood=P('Gaussian_noise',
-                                        variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
-                           )
+        self.testmodel = M('testmodel')
+        self.testmodel.kern = P('rbf')
+        self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
+        self.testmodel.link_parameter(self.testmodel.kern)
+        self.testmodel.link_parameter(self.testmodel.likelihood)
         variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp())
         lengthscale=Param('lengthscale', np.random.uniform(.1, 1, 1), transformations.Logexp())
         self.testmodel.kern.variance = variance
