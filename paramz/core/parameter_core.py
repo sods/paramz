@@ -164,18 +164,20 @@ class OptimizationHandlable(Constrainable):
         """
         raise NotImplemented("Abstract, please implement in respective classes")
 
-    def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True):
+    def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True, intermediate=False):
         """
         Get the names of all parameters of this model.
 
         :param bool add_self: whether to add the own name in front of names
         :param bool adjust_for_printing: whether to call `adjust_name_for_printing` on names
         :param bool recursive: whether to traverse through hierarchy and append leaf node names
+        :param bool intermediate: whether to add intermediate names, that is parameterized objects
         """
         if adjust_for_printing: adjust = lambda x: adjust_name_for_printing(x)
         else: adjust = lambda x: x
-        if recursive: names = [xi for x in self.parameters for xi in x.parameter_names(add_self=True, adjust_for_printing=adjust_for_printing)]
-        else: names = [adjust(x.name) for x in self.parameters]
+        names = []
+        if intermediate or (not recursive): names.extend([adjust(x.name) for x in self.parameters])
+        if intermediate or recursive: names.extend([xi for x in self.parameters for xi in x.parameter_names(add_self=True, adjust_for_printing=adjust_for_printing)])
         if add_self: names = map(lambda x: adjust(self.name) + "." + x, names)
         return names
 

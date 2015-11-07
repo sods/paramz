@@ -14,6 +14,7 @@ from paramz import transformations
 from ..parameterized import Parameterized
 from ..param import Param
 from ..model import Model
+from paramz.param import ParamConcatenation
 
 class ArrayCoreTest(unittest.TestCase):
     def setUp(self):
@@ -69,8 +70,7 @@ def test_parameter_modify_in_init():
     assert(m.constraints[transformations.Logexp()].tolist() == [1])
     m.randomize()
     assert(m.p1 == val)
-
-
+    
 class P(Parameterized):
     def __init__(self, name, **kwargs):
         super(P, self).__init__(name=name)
@@ -89,12 +89,14 @@ class ModelTest(unittest.TestCase):
                     self.link_parameter(self.__getattribute__(k))
             def objective_function(self):
                 return self._obj
+            def log_likelihood(self):
+                return -self.objective_function()
             def parameters_changed(self):
                 self._obj = (self.param_array**2).sum()
                 self.gradient[:] = 2*self.param_array
         
         self.testmodel = M('testmodel')
-        self.testmodel.kern = P('rbf')
+        self.testmodel.kern = Parameterized('rbf')
         self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
         self.testmodel.link_parameter(self.testmodel.kern)
         self.testmodel.link_parameter(self.testmodel.likelihood)
@@ -104,6 +106,7 @@ class ModelTest(unittest.TestCase):
         self.testmodel.kern.lengthscale = lengthscale
         self.testmodel.kern.link_parameter(lengthscale)
         self.testmodel.kern.link_parameter(variance)
+        self.testmodel.update_model(True)
         #=============================================================================
         # GP_regression.           |  Value  |  Constraint  |  Prior  |  Tied to
         # rbf.variance             |    1.0  |     +ve      |         |
@@ -213,6 +216,113 @@ class ModelTest(unittest.TestCase):
 
     def test_printing(self):
         print(self.testmodel.hierarchy_name(False))
+
+    def test_hierarchy_error(self):
+        self.assertRaises(HierarchyError, self.testmodel.link_parameter, self.testmodel.parameters[0])
+        p2 = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
+        self.testmodel.link_parameter(p2.variance)
+        self.assertTrue(self.testmodel.checkgrad())
+        self.assertRaises(HierarchyError, self.testmodel.unlink_parameter, p2)
+        self.assertRaises(HierarchyError, self.testmodel.unlink_parameter, 'not a parameter')
+
+    def test_set_get(self):
+        self.testmodel.likelihood.variance = 10
+        self.assertIsInstance(self.testmodel.likelihood.variance, Param)
+        np.testing.assert_array_equal(self.testmodel.likelihood[:], [10])
+
+    def test_get_by_name(self):
+        self.testmodel.likelihood.variance = 10
+        self.assertIsInstance(self.testmodel.likelihood.variance, Param)
+        np.testing.assert_array_equal(self.testmodel.likelihood[:], [10])
+
+    def test_likelihood_replicate(self):
+        m = self.testmodel
+        m2 = self.testmodel.copy()
+
+        np.testing.assert_array_equal(self.testmodel[:], m2[:])
+
+        np.testing.assert_equal(m.log_likelihood(), m2.log_likelihood())
+        m.randomize()
+        m2[:] = m[''].values()
+        np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
+        m.randomize()
+        m2[''] = m[:]
+        np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
+        m.randomize()
+        m2[:] = m[:]
+        np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
+        m.randomize()
+        m2[''] = m['']
+        np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
+
+        m.kern.lengthscale.randomize()
+        m2[:] = m[:]
+        np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
+
+        m.Gaussian_noise.randomize()
+        m2[:] = m[:]
+        np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
+
+        m['.*var'] = 2
+        m2['.*var'] = m['.*var']
+        np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
+
+        np.testing.assert_array_equal(self.testmodel[''].values(), m2[''].values())
+        np.testing.assert_array_equal(self.testmodel[:], m2[''].values())
+        np.testing.assert_array_equal(self.testmodel[''].values(), m2[:])
+        np.testing.assert_array_equal(self.testmodel['.*variance'].values(), m2['.*variance'].values())
+        np.testing.assert_array_equal(self.testmodel['.*len'].values, m2['.*len'].values)
+        np.testing.assert_array_equal(self.testmodel['.*rbf'].values(), m2['.*rbf'].values())
+
+    def test_set_empty(self):
+        pars = self.testmodel[:].copy()
+        self.testmodel.rbf[:] = None
+        np.testing.assert_array_equal(self.testmodel[:], pars)
+    
+    def test_set_error(self):
+        self.assertRaises(ValueError, self.testmodel.__setitem__, slice(None), 'test')
+
+    def test_empty_parameterized(self):
+        #print(ParamConcatenation([self.testmodel.rbf, self.testmodel.likelihood.variance]))
+        self.testmodel.name = 'anothername'
+        self.testmodel.link_parameter(Parameterized('empty'))
+        hmm = Parameterized('test')
+        self.testmodel.kern.test = hmm
+        self.testmodel.kern.link_parameter(hmm)
+        self.testmodel.kern.test.link_parameter(Param('test1',1))
+        self.assertIsInstance(self.testmodel['.*test$'], Param)
+        self.assertIsInstance(self.testmodel['.*empty'], Parameterized)
+        self.assertIsInstance(self.testmodel['.*test'], ParamConcatenation)
+        self.assertIsInstance(self.testmodel['.*rbf$'], ParamConcatenation)
+            
+    def test_likelihood_set(self):
+        m = self.testmodel
+        m2 = self.testmodel.copy()
+        np.testing.assert_equal(m.log_likelihood(), m2.log_likelihood())
+
+        m.kern.lengthscale.randomize()
+        m2.kern.lengthscale = m.kern.lengthscale
+        np.testing.assert_equal(m.log_likelihood(), m2.log_likelihood())
+
+        m.kern.lengthscale.randomize()
+        m2['.*lengthscale'] = m.kern.lengthscale
+        np.testing.assert_equal(m.log_likelihood(), m2.log_likelihood())
+
+        m.kern.lengthscale.randomize()
+        m2['.*lengthscale'] = m.kern['.*lengthscale']
+        np.testing.assert_equal(m.log_likelihood(), m2.log_likelihood())
+
+        m.kern.lengthscale.randomize()
+        m2.kern.lengthscale = m.kern['.*lengthscale']
+        np.testing.assert_equal(m.log_likelihood(), m2.log_likelihood())
+        
+        np.testing.assert_array_equal(self.testmodel[''].values(), m2[''].values())
+        np.testing.assert_array_equal(self.testmodel[:], m2[''].values())
+        np.testing.assert_array_equal(self.testmodel[''].values(), m2[:])
+        np.testing.assert_array_equal(self.testmodel['.*variance'].values(), m2['.*variance'].values())
+        np.testing.assert_array_equal(self.testmodel['.*len'], m2['.*len'])
+        np.testing.assert_array_equal(self.testmodel['.*rbf'][0], m2['.*rbf'][0])
+        np.testing.assert_array_equal(self.testmodel['.*rbf'][1], m2['.*rbf'][1])
 
 class ParameterizedTest(unittest.TestCase):
 

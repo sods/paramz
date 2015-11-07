@@ -217,9 +217,9 @@ class Parameterized(Parameterizable):
         """
         if not param in self.parameters:
             try:
-                raise RuntimeError("{} does not belong to this object {}, remove parameters directly from their respective parents".format(param._short(), self.name))
+                raise HierarchyError("{} does not belong to this object {}, remove parameters directly from their respective parents".format(param._short(), self.name))
             except AttributeError:
-                raise RuntimeError("{} does not seem to be a parameter, remove parameters directly from their respective parents".format(str(param)))
+                raise HierarchyError("{} does not seem to be a parameter, remove parameters directly from their respective parents".format(str(param)))
 
         start = sum([p.size for p in self.parameters[:param._parent_index_]])
         self.size -= param.size
@@ -244,11 +244,6 @@ class Parameterized(Parameterizable):
         self._highest_parent_._connect_fixes()
         self._highest_parent_._notify_parent_change()
 
-    def add_parameter(self, *args, **kwargs):
-        raise DeprecationWarning("add_parameter was renamed to link_parameter to avoid confusion of setting variables, use link_parameter instead")
-    def remove_parameter(self, *args, **kwargs):
-        raise DeprecationWarning("remove_parameter was renamed to unlink_parameter to avoid confusion of setting variables, use unlink_parameter instead")
-
     def _connect_parameters(self, ignore_added_names=False):
         # connect parameterlist to this parameterized object
         # This just sets up the right connection for the params objects
@@ -258,10 +253,6 @@ class Parameterized(Parameterizable):
         if not hasattr(self, "parameters") or len(self.parameters) < 1:
             # no parameters for this class
             return
-        if self.param_array.size != self.size:
-            self._param_array_ = np.empty(self.size, dtype=np.float64)
-        if self.gradient.size != self.size:
-            self._gradient_array_ = np.empty(self.size, dtype=np.float64)
 
         old_size = 0
         self._param_slices_ = []
@@ -298,9 +289,10 @@ class Parameterized(Parameterizable):
         """
         if not isinstance(regexp, _pattern_type): regexp = compile(regexp)
         found_params = []
-        for n, p in zip(self.parameter_names(False, False, True), self.flattened_parameters):
-            if regexp.match(n) is not None:
-                found_params.append(p)
+        def visit(self, regexp):
+            if regexp.match(self.hierarchy_name()):
+                found_params.append(self)
+        self.traverse(visit, regexp)
         return found_params
 
     def __getitem__(self, name, paramlist=None):
@@ -311,7 +303,7 @@ class Parameterized(Parameterizable):
                 paramlist = self.grep_param_names(name)
             if len(paramlist) < 1: raise AttributeError(name)
             if len(paramlist) == 1:
-                if isinstance(paramlist[-1], Parameterized):
+                if isinstance(paramlist[-1], Parameterized) and paramlist[-1].size > 0:
                     paramlist = paramlist[-1].flattened_parameters
                     if len(paramlist) != 1:
                         return ParamConcatenation(paramlist)
@@ -328,20 +320,16 @@ class Parameterized(Parameterizable):
                 raise ValueError("Setting by slice or index only allowed with array-like")
             self.trigger_update()
         else:
-            try: param = self.__getitem__(name, paramlist)
-            except: raise
+            param = self.__getitem__(name, paramlist)
             param[:] = value
 
     def __setattr__(self, name, val):
         # override the default behaviour, if setting a param, so broadcasting can by used
         if hasattr(self, "parameters"):
-            try:
-                pnames = self.parameter_names(False, adjust_for_printing=True, recursive=False)
-                if name in pnames:
-                    param = self.parameters[pnames.index(name)]
-                    param[:] = val; return
-            except AttributeError as a:
-                raise
+            pnames = self.parameter_names(False, adjust_for_printing=True, recursive=False)
+            if name in pnames:
+                param = self.parameters[pnames.index(name)]
+                param[:] = val; return
         return object.__setattr__(self, name, val);
 
     #===========================================================================
@@ -349,13 +337,10 @@ class Parameterized(Parameterizable):
     #===========================================================================
     def __setstate__(self, state):
         super(Parameterized, self).__setstate__(state)
-        try:
-            self._connect_parameters()
-            self._connect_fixes()
-            self._notify_parent_change()
-            self.parameters_changed()
-        except Exception as e:
-            print("WARNING: caught exception {!s}, trying to continue".format(e))
+        self._connect_parameters()
+        self._connect_fixes()
+        self._notify_parent_change()
+        self.parameters_changed()            
 
     def copy(self, memo=None):
         if memo is None:
@@ -376,12 +361,6 @@ class Parameterized(Parameterizable):
     @property
     def flattened_parameters(self):
         return [xi for x in self.parameters for xi in x.flattened_parameters]
-    @property
-    def _parameter_sizes_(self):
-        return [x.size for x in self.parameters]
-    @property
-    def parameter_shapes(self):
-        return [xi for x in self.parameters for xi in x.parameter_shapes]
 
     def get_property_string(self, propname):
         props = []
