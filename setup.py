@@ -44,15 +44,16 @@ def read(fname):
 def read_to_rst(fname):
     try:
         import pypandoc
-        #rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
-        rststr = pypandoc.convert(read(fname), 'rst', format='md')
-        with open("{}.rst".format(os.path.splitext(fname)[0]), 'w') as f:
-            f.write(rststr)
+        rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
+        pypandoc.convert(read(fname), 'rst', format='md', outfilename=rstname)
+        with open(rstname, 'r') as f:
+            rststr = f.read()
         return rststr
         #return read(rstname)
     except ImportError:
         return read(fname)
 
+read_to_rst('README.md')
 
 version_dummy = {}
 exec(read('paramz/__version__.py'), version_dummy)
@@ -113,7 +114,7 @@ setup(name = 'paramz',
       #include_package_data = True,
       py_modules = ['paramz.__init__'],
       test_suite = 'paramz.tests',
-      long_description=read_to_rst('README.md'),
+      #long_description=read_to_rst('README.md'),
       install_requires=['numpy>=1.7', 'scipy', 'six'],
       classifiers=['License :: OSI Approved :: BSD License',
                    'Natural Language :: English',
