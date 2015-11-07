@@ -50,4 +50,4 @@ deploy:
     tags: false
     #repo: mzwiessele/paramz
     branch: master
-  distributions: "sdist bdist_wheel"
+  distributions: "bdist_wheel sdist"
