@@ -1,6 +1,6 @@
 # .coveragerc to control coverage.py
 [run]
-branch = False
+branch = True
 source = paramz
 omit = ./paramz/tests/*.py, travis_tests.py, setup.py, ./paramz/__version__.py
 
@@ -12,6 +12,7 @@ exclude_lines =
 
     # Don't complain about missing debug-only code:
     def __repr__
+    def __str__
     if self\.debug
 
     # Don't complain if tests don't hit defensive assertion code:
