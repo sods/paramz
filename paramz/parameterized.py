@@ -303,10 +303,10 @@ class Parameterized(Parameterizable):
                 paramlist = self.grep_param_names(name)
             if len(paramlist) < 1: raise AttributeError(name)
             if len(paramlist) == 1:
-                if isinstance(paramlist[-1], Parameterized) and paramlist[-1].size > 0:
-                    paramlist = paramlist[-1].flattened_parameters
-                    if len(paramlist) != 1:
-                        return ParamConcatenation(paramlist)
+                #if isinstance(paramlist[-1], Parameterized) and paramlist[-1].size > 0:
+                #    paramlist = paramlist[-1].flattened_parameters
+                #    if len(paramlist) != 1:
+                #        return ParamConcatenation(paramlist)
                 return paramlist[-1]
             return ParamConcatenation(paramlist)
 

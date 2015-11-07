@@ -290,10 +290,13 @@ class ModelTest(unittest.TestCase):
         self.testmodel.kern.test = hmm
         self.testmodel.kern.link_parameter(hmm)
         self.testmodel.kern.test.link_parameter(Param('test1',1))
-        self.assertIsInstance(self.testmodel['.*test$'], Param)
+        self.assertIsInstance(self.testmodel['.*test1$'], Param)
+        self.assertIsInstance(self.testmodel['.*test$'], Parameterized)
         self.assertIsInstance(self.testmodel['.*empty'], Parameterized)
         self.assertIsInstance(self.testmodel['.*test'], ParamConcatenation)
-        self.assertIsInstance(self.testmodel['.*rbf$'], ParamConcatenation)
+        self.assertIsInstance(self.testmodel['.*rbf$'], Parameterized)
+        self.assertIs(self.testmodel['rbf.variance'], self.testmodel.rbf.variance)
+        self.assertIs(self.testmodel['rbf$'], self.testmodel.rbf)
             
     def test_likelihood_set(self):
         m = self.testmodel
