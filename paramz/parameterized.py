@@ -289,9 +289,9 @@ class Parameterized(Parameterizable):
         """
         if not isinstance(regexp, _pattern_type): regexp = compile(regexp)
         found_params = []
-        def visit(self, regexp):
-            if regexp.match(self.hierarchy_name()):
-                found_params.append(self)
+        def visit(innerself, regexp):
+            if (innerself is not self) and regexp.match(innerself.hierarchy_name().partition('.')[2]):
+                found_params.append(innerself)
         self.traverse(visit, regexp)
         return found_params
 
