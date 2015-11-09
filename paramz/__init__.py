@@ -44,7 +44,7 @@ def load(file_or_path):
     :param file_name: path/to/file.pickle
     """
     try:
-        import pickle
+        import cPickle as pickle
         strcl = basestring
         p3kw = {}
     except ImportError: #python3
