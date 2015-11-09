@@ -4,10 +4,18 @@ paramz.core package
 Submodules
 ----------
 
-paramz.core.domains module
---------------------------
+paramz.core.constrainable module
+--------------------------------
 
-.. automodule:: paramz.core.domains
+.. automodule:: paramz.core.constrainable
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+paramz.core.gradcheckable module
+--------------------------------
+
+.. automodule:: paramz.core.gradcheckable
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,10 +28,26 @@ paramz.core.index_operations module
     :undoc-members:
     :show-inheritance:
 
+paramz.core.indexable module
+----------------------------
+
+.. automodule:: paramz.core.indexable
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 paramz.core.lists_and_dicts module
 ----------------------------------
 
 .. automodule:: paramz.core.lists_and_dicts
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+paramz.core.nameable module
+---------------------------
+
+.. automodule:: paramz.core.nameable
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,10 +76,18 @@ paramz.core.parameter_core module
     :undoc-members:
     :show-inheritance:
 
-paramz.core.transformations module
-----------------------------------
+paramz.core.parentable module
+-----------------------------
 
-.. automodule:: paramz.core.transformations
+.. automodule:: paramz.core.parentable
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+paramz.core.pickleable module
+-----------------------------
+
+.. automodule:: paramz.core.pickleable
     :members:
     :undoc-members:
     :show-inheritance:

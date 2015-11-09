@@ -44,12 +44,14 @@ def read(fname):
 def read_to_rst(fname):
     try:
         import pypandoc
-        #rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
-        return pypandoc.convert(read(fname), 'rst', format='md')
+        rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
+        pypandoc.convert(read(fname), 'rst', format='md', outputfile=rstname)
+        with open(rstname, 'r') as f:
+            rststr = f.read()
+        return rststr
         #return read(rstname)
     except ImportError:
         return read(fname)
-
 
 version_dummy = {}
 exec(read('paramz/__version__.py'), version_dummy)

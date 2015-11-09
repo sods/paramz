@@ -11,12 +11,8 @@ Welcome to paramz's documentation!
 Developer API:
 
 .. toctree::
-   :maxdepth: 1
-
+      
    paramz
-   paramz.core
-   paramz.optimization
-   paramz.tests
 
 Indices and tables
 ==================

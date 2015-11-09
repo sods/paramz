@@ -40,6 +40,10 @@ class Constrainable(Indexable):
         if self._default_constraint_ is not None:
             self.constrain(self._default_constraint_)
 
+    def __setstate__(self, state):
+        Indexable.__setstate__(self, state)
+        self._index_operations['constraints'] = self.constraints
+        
     #===========================================================================
     # Fixing Parameters:
     #===========================================================================
@@ -72,7 +76,9 @@ class Constrainable(Indexable):
         # Ensure that the fixes array is set:
         # Parameterized: ones(self.size)
         # Param: ones(self._realsize_
-        if not self._has_fixes(): self._fixes_ = np.ones(self.size, dtype=bool)
+        if (not hasattr(self, "_fixes_")) or (self._fixes_ is None) or (self._fixes_.size != self.size): 
+            self._fixes_ = np.ones(self.size, dtype=bool)
+            self._fixes_[self.constraints[__fixed__]] = FIXED
 
     def _set_fixed(self, param, index):
         self._ensure_fixes()
@@ -99,7 +105,7 @@ class Constrainable(Indexable):
     # Convenience for fixed
     #===========================================================================
     def _has_fixes(self):
-        return hasattr(self, "_fixes_") and self._fixes_ is not None and self._fixes_.size == self.size
+        return self.constraints[__fixed__].size != 0
 
     @property
     def is_fixed(self):

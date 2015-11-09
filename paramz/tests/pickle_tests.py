@@ -71,8 +71,7 @@ class Test(ListDictTestCase):
         self.assertListEqual(obs.tolist(), pcopy.tolist())
         tmpfile = ''.join(map(str, np.random.randint(10, size=20)))
         try:
-            with open(tmpfile, 'wb') as f:
-                pickle.dump(obs, f)
+            obs.pickle(tmpfile)
             pcopy = paramz.load(tmpfile)
         except:
             raise

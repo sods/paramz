@@ -33,6 +33,7 @@ from .updateable import Updateable
 from ..transformations import __fixed__
 from operator import delitem
 from functools import reduce
+from collections import OrderedDict
 
 class Indexable(Nameable, Updateable):
     """
@@ -46,7 +47,7 @@ class Indexable(Nameable, Updateable):
     """
     def __init__(self, name, default_constraint=None, *a, **kw):
         super(Indexable, self).__init__(name=name, *a, **kw)
-        self._index_operations = dict()
+        self._index_operations = OrderedDict()
 
     def add_index_operation(self, name, operations):
         if name not in self._index_operations:
@@ -66,7 +67,7 @@ class Indexable(Nameable, Updateable):
         From Parentable:
         disconnect the parent and set the new constraints to constr
         """
-        for name, iop in self._index_operations.items():
+        for name, iop in list(self._index_operations.items()):
             iopc = iop.copy()
             iop.clear()
             self.remove_index_operation(name)
@@ -113,21 +114,24 @@ class Indexable(Nameable, Updateable):
         return np.r_[:self.size]
 
 
-    #===========================================================================
-    # Tie parameters together
-    #===========================================================================
 
-    def _has_ties(self):
-        if self._highest_parent_.tie.tied_param is None:
-            return False
-        if self.has_parent():
-            return self._highest_parent_.tie.label_buf[self._highest_parent_._raveled_index_for(self)].sum()>0
-        return True
 
-    def tie_together(self):
-        self._highest_parent_.tie.add_tied_parameter(self)
-        self._highest_parent_._set_fixed(self,self._raveled_index())
-        self._trigger_params_changed()
+#===========================================================================
+# Tie parameters together
+# TODO: create own class for tieing and remapping
+#===========================================================================
+#     def _has_ties(self):
+#         if self._highest_parent_.tie.tied_param is None:
+#             return False
+#         if self.has_parent():
+#             return self._highest_parent_.tie.label_buf[self._highest_parent_._raveled_index_for(self)].sum()>0
+#         return True
+# 
+#     def tie_together(self):
+#         self._highest_parent_.tie.add_tied_parameter(self)
+#         self._highest_parent_._set_fixed(self,self._raveled_index())
+#         self._trigger_params_changed()
+#===============================================================================
 
 
     def _parent_changed(self, parent):
@@ -144,7 +148,7 @@ class Indexable(Nameable, Updateable):
             #self.constraints.update(param.constraints, start)
             #self.priors.update(param.priors, start)
         offset = parent._offset_for(self)
-        for name, iop in self._index_operations.items():
+        for name, iop in list(self._index_operations.items()):
             self.remove_index_operation(name)
             self.add_index_operation(name, ParameterIndexOperationsView(parent._index_operations[name], offset, self.size))
         self._fixes_ = None
@@ -181,3 +185,8 @@ class Indexable(Nameable, Updateable):
                 self._highest_parent_._set_unfixed(self, unconstrained)
 
         return removed
+    
+    def __setstate__(self, state):
+        self._index_operations = OrderedDict()
+        super(Indexable, self).__setstate__(state)
+        

@@ -55,7 +55,7 @@ class Gradcheckable(Pickleable, Parentable):
         :param float tolerance: the tolerance for the gradient ratio or difference.
         :param float df_tolerance: the tolerance for df_tolerance
 
-        Note:-
+        .. note::
            The *dF_ratio* indicates the limit of accuracy of numerical gradients.
            If it is too small, e.g., smaller than 1e-12, the numerical gradients
            are usually not accurate enough for the tests (shown with blue).
@@ -64,7 +64,7 @@ class Gradcheckable(Pickleable, Parentable):
             return self._highest_parent_._checkgrad(self, verbose=verbose, step=step, tolerance=tolerance, df_tolerance=df_tolerance)
         return self._checkgrad(self, verbose=verbose, step=step, tolerance=tolerance, df_tolerance=df_tolerance)
 
-    def _checkgrad(self, param, verbose=0, step=1e-6, tolerance=1e-3):
+    def _checkgrad(self, param, verbose=0, step=1e-6, tolerance=1e-3, df_tolerance=1e-12):
         """
         Perform the checkgrad on the model.
         TODO: this can be done more efficiently, when doing it inside here

@@ -78,15 +78,11 @@ class OptimizationHandlable(Constrainable):
             #py3 fix
             #[np.put(self._optimizer_copy_, ind, c.finv(self.param_array[ind])) for c, ind in self.constraints.iteritems() if c != __fixed__]
             [np.put(self._optimizer_copy_, ind, c.finv(self.param_array[ind])) for c, ind in self.constraints.items() if c != __fixed__]
-            if self.has_parent() and (self.constraints[__fixed__].size != 0):# or self._has_ties()):
-                fixes = np.ones(self.size).astype(bool)
-                fixes[self.constraints[__fixed__]] = FIXED
-                return self._optimizer_copy_[fixes]#np.logical_and(fixes, self._highest_parent_.tie.getTieFlag(self))]
-            elif self._has_fixes():
-                return self._optimizer_copy_[self._fixes_]
-
             self._optimizer_copy_transformed = True
 
+        if self._has_fixes():# or self._has_ties()):
+            self._ensure_fixes()
+            return self._optimizer_copy_[self._fixes_]
         return self._optimizer_copy_
 
     @optimizer_array.setter
@@ -168,18 +164,20 @@ class OptimizationHandlable(Constrainable):
         """
         raise NotImplemented("Abstract, please implement in respective classes")
 
-    def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True):
+    def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True, intermediate=False):
         """
         Get the names of all parameters of this model.
 
         :param bool add_self: whether to add the own name in front of names
         :param bool adjust_for_printing: whether to call `adjust_name_for_printing` on names
         :param bool recursive: whether to traverse through hierarchy and append leaf node names
+        :param bool intermediate: whether to add intermediate names, that is parameterized objects
         """
         if adjust_for_printing: adjust = lambda x: adjust_name_for_printing(x)
         else: adjust = lambda x: x
-        if recursive: names = [xi for x in self.parameters for xi in x.parameter_names(add_self=True, adjust_for_printing=adjust_for_printing)]
-        else: names = [adjust(x.name) for x in self.parameters]
+        names = []
+        if intermediate or (not recursive): names.extend([adjust(x.name) for x in self.parameters])
+        if intermediate or recursive: names.extend([xi for x in self.parameters for xi in x.parameter_names(add_self=True, adjust_for_printing=adjust_for_printing)])
         if add_self: names = map(lambda x: adjust(self.name) + "." + x, names)
         return names
 
@@ -246,10 +244,10 @@ class OptimizationHandlable(Constrainable):
         1.) connect param_array of children to self.param_array
         2.) tell all children to propagate further
         """
-        if self.param_array.size != self.size:
-            self._param_array_ = np.empty(self.size, dtype=np.float64)
-        if self.gradient.size != self.size:
-            self._gradient_array_ = np.empty(self.size, dtype=np.float64)
+        #if self.param_array.size != self.size:
+        #    self._param_array_ = np.empty(self.size, dtype=np.float64)
+        #if self.gradient.size != self.size:
+        #    self._gradient_array_ = np.empty(self.size, dtype=np.float64)
 
         pi_old_size = 0
         for pi in self.parameters:
@@ -311,9 +309,6 @@ class Parameterizable(OptimizationHandlable):
         !WARNING!: setting the parameter array MUST always be done in memory:
         m.param_array[:] = m_copy.param_array
         """
-        if self.__dict__.get('_param_array_', None) is None:
-            self._param_array_ = np.empty(self.size, dtype=np.float64)
-
         if self.constraints[__fixed__].size !=0:
             fixes = np.ones(self.size).astype(bool)
             fixes[self.constraints[__fixed__]] = FIXED
@@ -321,30 +316,32 @@ class Parameterizable(OptimizationHandlable):
         else:
             return self._param_array_
 
-    @param_array.setter
-    def param_array(self, arr):
-        self._param_array_ = arr
-
     def traverse(self, visit, *args, **kwargs):
         """
-        Traverse the hierarchy performing visit(self, *args, **kwargs)
+        Traverse the hierarchy performing `visit(self, *args, **kwargs)`
         at every node passed by downwards. This function includes self!
 
-        See "visitor pattern" in literature. This is implemented in pre-order fashion.
+        See *visitor pattern* in literature. This is implemented in pre-order fashion.
 
-        Example:
-        Collect all children:
-
-        children = []
-        self.traverse(children.append)
-        print children
+        Example::
+            
+            #Collect all children:
+    
+            children = []
+            self.traverse(children.append)
+            print children
+            
         """
         if not self.__visited:
             visit(self, *args, **kwargs)
             self.__visited = True
-            for c in self.parameters:
-                c.traverse(visit, *args, **kwargs)
+            self._traverse(visit, *args, **kwargs)
             self.__visited = False
+
+    def _traverse(self, visit, *args, **kwargs):
+        for c in self.parameters:
+            c.traverse(visit, *args, **kwargs)
+        
 
     def traverse_parents(self, visit, *args, **kwargs):
         """
@@ -359,16 +356,8 @@ class Parameterizable(OptimizationHandlable):
         """
         if self.has_parent():
             self.__visited = True
-            self._parent_._traverse_parents(visit, *args, **kwargs)
-            self.__visited = False
-
-    def _traverse_parents(self, visit, *args, **kwargs):
-        if not self.__visited:
-            self.__visited = True
-            visit(self, *args, **kwargs)
-            if self.has_parent():
-                self._parent_._traverse_parents(visit, *args, **kwargs)
-                self._parent_.traverse(visit, *args, **kwargs)
+            self._parent_.traverse_parents(visit, *args, **kwargs)
+            self._parent_.traverse(visit, *args, **kwargs)
             self.__visited = False
 
     #=========================================================================
@@ -405,15 +394,14 @@ class Parameterizable(OptimizationHandlable):
             # """.format(pname, self.hierarchy_name(), self.hierarchy_name(), param.name + "_")
             #===================================================================
             if match is None:
-                param.name += "_1"
+                param.name = param.name+"_1"
             else:
                 param.name = match.group('name') + "_" + str(int(match.group('digit'))+1)
             self._add_parameter_name(param, ignore_added_names)
         # and makes sure to not delete programmatically added parameters
-        for other in self.parameters[::-1]:
-            if other is not param and other.name == param.name:
-                warn_and_retry(param, _name_digit.match(other.name))
-                return
+        for other in self.parameters:
+            if (not (other is param)) and (other.name == param.name):
+                return warn_and_retry(other, _name_digit.match(other.name))
         if pname not in dir(self):
             self.__dict__[pname] = param
             self._added_names_.add(pname)

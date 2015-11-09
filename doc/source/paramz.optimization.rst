@@ -4,22 +4,6 @@ paramz.optimization package
 Submodules
 ----------
 
-paramz.optimization.conjugate_gradient_descent module
------------------------------------------------------
-
-.. automodule:: paramz.optimization.conjugate_gradient_descent
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-paramz.optimization.gradient_descent_update_rules module
---------------------------------------------------------
-
-.. automodule:: paramz.optimization.gradient_descent_update_rules
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 paramz.optimization.optimization module
 ---------------------------------------
 

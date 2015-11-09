@@ -36,15 +36,16 @@ from functools import reduce
 from pickle import PickleError
 
 from .core.observable import Observable
+from numbers import Number
 
 class Cacher(object):
     def __init__(self, operation, limit=5, ignore_args=(), force_kwargs=()):
         """
-        Parameters:
-        ***********
+        Cache an `operation`. 
+
         :param callable operation: function to cache
         :param int limit: depth of cacher
-        :param [int] ignore_args: list of indices, pointing at arguments to ignore in *args of operation(*args). This includes self!
+        :param [int] ignore_args: list of indices, pointing at arguments to ignore in `*args` of `operation(*args)`. This includes self, so make sure to ignore self, if it is not cachable and you do not want this to prevent caching!
         :param [str] force_kwargs: list of kwarg names (strings). If a kwarg with that name is given, the cacher will force recompute and wont cache anything.
         :param int verbose: verbosity level. 0: no print outs, 1: casual print outs, 2: debug level print outs
         """
@@ -109,7 +110,7 @@ class Cacher(object):
         self.order.append(cache_id)
         self.cached_inputs[cache_id] = inputs
         for a in inputs:
-            if a is not None and not isinstance(a, int):
+            if a is not None and not isinstance(a, Number) and not isinstance(a, str):
                 ind_id = self.id(a)
                 v = self.cached_input_ids.get(ind_id, [weakref.ref(a), []])
                 v[1].append(cache_id)
@@ -136,23 +137,28 @@ class Cacher(object):
         inputs = self.combine_inputs(args, kw, self.ignore_args)
         cache_id = self.prepare_cache_id(inputs)
         # 2: if anything is not cachable, we will just return the operation, without caching
-        if reduce(lambda a, b: a or (not (isinstance(b, Observable) or b is None or isinstance(b,int))), inputs, False):
+        if reduce(lambda a, b: a or (not (isinstance(b, Observable) or b is None or isinstance(b, Number) or isinstance(b, str))), inputs, False):
 #             print 'WARNING: '+self.operation.__name__ + ' not cacheable!'
 #             print [not (isinstance(b, Observable)) for b in inputs]
             return self.operation(*args, **kw)
         # 3&4: check whether this cache_id has been cached, then has it changed?
-        try:
-            if(self.inputs_changed[cache_id]):
+        not_seen = not(cache_id in self.inputs_changed)
+        changed = (not not_seen) and self.inputs_changed[cache_id]
+        if changed or not_seen:
+            # If we need to compute, we compute the operation, but fail gracefully, if the operation has an error:
+            try:
+                new_output = self.operation(*args, **kw)
+            except:
+                self.reset()
+                raise
+            if(changed):
                 # 4: This happens, when elements have changed for this cache self.id
                 self.inputs_changed[cache_id] = False
-                self.cached_outputs[cache_id] = self.operation(*args, **kw)
-        except KeyError:
-            # 3: This is when we never saw this chache_id:
-            self.ensure_cache_length(cache_id)
-            self.add_to_cache(cache_id, inputs, self.operation(*args, **kw))
-        except:
-            self.reset()
-            raise
+                self.cached_outputs[cache_id] = new_output
+            elif(not_seen):
+                # 3: This is when we never saw this chache_id:
+                self.ensure_cache_length(cache_id)
+                self.add_to_cache(cache_id, inputs, new_output)
         # 5: We have seen this cache_id and it is cached:
         return self.cached_outputs[cache_id]
 

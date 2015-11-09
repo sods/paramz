@@ -21,6 +21,14 @@ paramz.caching module
     :undoc-members:
     :show-inheritance:
 
+paramz.domains module
+---------------------
+
+.. automodule:: paramz.domains
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 paramz.model module
 -------------------
 
@@ -49,6 +57,14 @@ paramz.ties_and_remappings module
 ---------------------------------
 
 .. automodule:: paramz.ties_and_remappings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+paramz.transformations module
+-----------------------------
+
+.. automodule:: paramz.transformations
     :members:
     :undoc-members:
     :show-inheritance:

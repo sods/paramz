@@ -5,7 +5,6 @@ import datetime as dt
 from scipy import optimize
 from warnings import warn
 
-from .conjugate_gradient_descent import CGD
 from .scg import SCG
 
 class Optimizer(object):
@@ -148,7 +147,7 @@ class opt_bfgs(Optimizer):
         if self.ftol is not None:
             print("WARNING: bfgs doesn't have an ftol arg, so I'm going to ignore it")
         if self.gtol is not None:
-            opt_dict['pgtol'] = self.gtol
+            opt_dict['gtol'] = self.gtol
 
         opt_result = optimize.fmin_bfgs(f, self.x_init, fp, disp=self.messages,
                                             maxiter=self.max_iters, full_output=True, **opt_dict)
@@ -238,7 +237,6 @@ def get_optimizer(f_min):
           'lbfgsb': opt_lbfgsb,
           'org-bfgs': opt_bfgs,
           'scg': opt_SCG,
-          'cgd': CGD,
           'adadelta':Opt_Adadelta}
 
     for opt_name in optimizers.keys():

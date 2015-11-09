@@ -81,6 +81,7 @@ class Model(Parameterized):
         """
         if self.is_fixed or self.size == 0:
             print('nothing to optimize')
+            return
 
         if not self.update_model():
             print("updates were off, setting updates on again")
@@ -116,8 +117,8 @@ class Model(Parameterized):
         If the robust flag is set, exceptions raised during optimizations will
         be handled silently.  If _all_ runs fail, the model is reset to the
         existing parameter values.
-
-        **Notes**
+        
+        \*\*kwargs are passed to the optimizer.
 
         :param num_restarts: number of restarts to use (default 10)
         :type num_restarts: int
@@ -127,9 +128,6 @@ class Model(Parameterized):
         :type parallel: bool
         :param num_processes: number of workers in the multiprocessing pool
         :type numprocesses: int
-
-        \*\*kwargs are passed to the optimizer. They can be:
-
         :param max_f_eval: maximum number of function evaluations
         :type max_f_eval: int
         :param max_iters: maximum number of iterations
@@ -137,9 +135,11 @@ class Model(Parameterized):
         :param messages: whether to display during optimisation
         :type messages: bool
 
-        .. note:: If num_processes is None, the number of workes in the
-        multiprocessing pool is automatically set to the number of processors
-        on the current machine.
+        .. note:: 
+        
+            If num_processes is None, the number of workes in the
+            multiprocessing pool is automatically set to the number of processors
+            on the current machine.
 
         """
         initial_parameters = self.optimizer_array.copy()
@@ -236,7 +236,7 @@ class Model(Parameterized):
             self.optimizer_array = x
             self.obj_grads = self._transform_gradients(self.objective_function_gradients())
             self._fail_count = 0
-        except (LinAlgError, ZeroDivisionError, ValueError):
+        except (LinAlgError, ZeroDivisionError, ValueError): #pragma: no cover
             if self._fail_count >= self._allowed_failures:
                 raise
             self._fail_count += 1
@@ -259,7 +259,7 @@ class Model(Parameterized):
             self.optimizer_array = x
             obj = self.objective_function()
             self._fail_count = 0
-        except (LinAlgError, ZeroDivisionError, ValueError):
+        except (LinAlgError, ZeroDivisionError, ValueError):#pragma: no cover
             if self._fail_count >= self._allowed_failures:
                 raise
             self._fail_count += 1
@@ -271,7 +271,7 @@ class Model(Parameterized):
             self.optimizer_array = x
             obj_f, self.obj_grads = self.objective_function(), self._transform_gradients(self.objective_function_gradients())
             self._fail_count = 0
-        except (LinAlgError, ZeroDivisionError, ValueError):
+        except (LinAlgError, ZeroDivisionError, ValueError):#pragma: no cover
             if self._fail_count >= self._allowed_failures:
                 raise
             self._fail_count += 1
