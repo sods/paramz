@@ -47,7 +47,7 @@ deploy:
   password:
     secure: vyDANRu14qv6J7BhI/Zt0vkOZeK3ioPdrer1K4/FICC5V8H2scvcz9C4u6nT2QMdr3X4qjZ6X1AWk5IgpMyn2jDhMvQ6A0bED0ONbY6VtqCDQBc6PJzr+PwBOBGdC0118hjf86L6NSNsJlCRBkKklzCBD91rbD6io2Lybndf8f/GfzVsjnt1E0yy3g1bV696TKCyWAq5UtvL/NS/XU9TbuHVOdbwATM6AfRPZ6VzTzngyUonkxbK9WTtC8aSFBy9yNkauYAApL0uDMpxPtlb+HluABP8azfsrRHrTFJYl0QIIuu7pNRz94bXCmsEZ5omrlx4Wk4FigUiInEVQT45x3O6b2Ui2mst7Nz7pMYhoFyw+ANeHqYvC/q25xWrxU1JVYeWuDbezAvka4wA7eREHP+fU9xopH6h7thQLue3k3FRzNaect8P6zqa536f/FdVMAn9fAoZ2ciK+E6MKwj1E6ju5fanD8s+uOkG7AeALx5bx0adUiNhePuBtR/OiUW6ANBfL6QitaLIZL/mDeTHikBxlZLTZ1rnFz/8jAJ4rJrRmCqFWHhJDhT7OMRO8Nyl35DFVxdApet+tMHJ8xXJZkQYKU05cb9JmH4EVvCqqGs8Tw9hcHo03BNjpaKUVEXD33NDEAQV6QO+P92GBJ8ae78WH1lsC+47EjpoQMIQdjY=
   on:
-    tags: false
+    tags: true
     #repo: mzwiessele/paramz
     branch: master
   distributions: "sdist"
