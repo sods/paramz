@@ -4,21 +4,21 @@
 # Copyright (c) 2015, Max Zwiessele
 #
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramax nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -98,10 +98,10 @@ class Model(Parameterized):
             opt.model = self
         else:
             optimizer = optimization.get_optimizer(optimizer)
-            opt = optimizer(x_init=start, model=self, max_iters=max_iters, **kwargs)
+            opt = optimizer(max_iters=max_iters, **kwargs)
 
         with VerboseOptimization(self, opt, maxiters=max_iters, verbose=messages, ipython_notebook=ipython_notebook, clear_after_finish=clear_after_finish) as vo:
-            opt.run(f_fp=self._objective_grads, f=self._objective, fp=self._grads)
+            opt.run(start, f_fp=self._objective_grads, f=self._objective, fp=self._grads)
             vo.finish(opt)
 
         self.optimization_runs.append(opt)
@@ -117,7 +117,7 @@ class Model(Parameterized):
         If the robust flag is set, exceptions raised during optimizations will
         be handled silently.  If _all_ runs fail, the model is reset to the
         existing parameter values.
-        
+
         \*\*kwargs are passed to the optimizer.
 
         :param num_restarts: number of restarts to use (default 10)
@@ -135,8 +135,8 @@ class Model(Parameterized):
         :param messages: whether to display during optimisation
         :type messages: bool
 
-        .. note:: 
-        
+        .. note::
+
             If num_processes is None, the number of workes in the
             multiprocessing pool is automatically set to the number of processors
             on the current machine.

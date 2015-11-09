@@ -5,6 +5,11 @@ import datetime as dt
 from scipy import optimize
 from warnings import warn
 
+try:
+    import rasmussens_minimize as rasm
+    rasm_available = True
+except ImportError:
+    rasm_available = False
 from .scg import SCG
 
 class Optimizer(object):
@@ -22,10 +27,10 @@ class Optimizer(object):
     :rtype: optimizer object.
 
     """
-    def __init__(self, x_init, messages=False, model=None, max_f_eval=1e4, max_iters=1e3,
+    def __init__(self, messages=False, max_f_eval=1e4, max_iters=1e3,
                  ftol=None, gtol=None, xtol=None, bfgs_factor=None):
         self.opt_name = None
-        self.x_init = x_init
+        #x_init = x_init
         # Turning messages off and using internal structure for print outs:
         self.messages = False #messages
         self.f_opt = None
@@ -40,15 +45,14 @@ class Optimizer(object):
         self.xtol = xtol
         self.gtol = gtol
         self.ftol = ftol
-        self.model = model
 
-    def run(self, **kwargs):
+    def run(self, x_init, **kwargs):
         start = dt.datetime.now()
-        self.opt(**kwargs)
+        self.opt(x_init, **kwargs)
         end = dt.datetime.now()
         self.time = str(end - start)
 
-    def opt(self, f_fp=None, f=None, fp=None):
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
         raise NotImplementedError("this needs to be implemented to use the optimizer class")
 
     def __str__(self):
@@ -59,12 +63,16 @@ class Optimizer(object):
         diagnostics += "Time elapsed: \t\t\t\t %s\n" % self.time
         return diagnostics
 
+    def __getstate__(self):
+        return []
+
+
 class opt_tnc(Optimizer):
     def __init__(self, *args, **kwargs):
         Optimizer.__init__(self, *args, **kwargs)
         self.opt_name = "TNC (Scipy implementation)"
 
-    def opt(self, f_fp=None, f=None, fp=None):
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
         """
         Run the TNC optimizer
 
@@ -82,7 +90,7 @@ class opt_tnc(Optimizer):
         if self.gtol is not None:
             opt_dict['pgtol'] = self.gtol
 
-        opt_result = optimize.fmin_tnc(f_fp, self.x_init, messages=self.messages,
+        opt_result = optimize.fmin_tnc(f_fp, x_init, messages=self.messages,
                        maxfun=self.max_f_eval, **opt_dict)
         self.x_opt = opt_result[0]
         self.f_opt = f_fp(self.x_opt)[0]
@@ -94,7 +102,7 @@ class opt_lbfgsb(Optimizer):
         Optimizer.__init__(self, *args, **kwargs)
         self.opt_name = "L-BFGS-B (Scipy implementation)"
 
-    def opt(self, f_fp=None, f=None, fp=None):
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
         """
         Run the optimizer
 
@@ -118,7 +126,7 @@ class opt_lbfgsb(Optimizer):
         if self.bfgs_factor is not None:
             opt_dict['factr'] = self.bfgs_factor
 
-        opt_result = optimize.fmin_l_bfgs_b(f_fp, self.x_init, iprint=iprint,
+        opt_result = optimize.fmin_l_bfgs_b(f_fp, x_init, iprint=iprint,
                                             maxfun=self.max_iters, **opt_dict)
         self.x_opt = opt_result[0]
         self.f_opt = f_fp(self.x_opt)[0]
@@ -128,13 +136,13 @@ class opt_lbfgsb(Optimizer):
         #a more helpful error message is available in opt_result in the Error case
         if opt_result[2]['warnflag']==2:
             self.status = 'Error' + str(opt_result[2]['task'])
-            
+
 class opt_bfgs(Optimizer):
     def __init__(self, *args, **kwargs):
         Optimizer.__init__(self, *args, **kwargs)
         self.opt_name = "BFGS (Scipy implementation)"
 
-    def opt(self, f_fp=None, f=None, fp=None):
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
         """
         Run the optimizer
 
@@ -149,7 +157,7 @@ class opt_bfgs(Optimizer):
         if self.gtol is not None:
             opt_dict['gtol'] = self.gtol
 
-        opt_result = optimize.fmin_bfgs(f, self.x_init, fp, disp=self.messages,
+        opt_result = optimize.fmin_bfgs(f, x_init, fp, disp=self.messages,
                                             maxiter=self.max_iters, full_output=True, **opt_dict)
         self.x_opt = opt_result[0]
         self.f_opt = f_fp(self.x_opt)[0]
@@ -161,7 +169,7 @@ class opt_simplex(Optimizer):
         Optimizer.__init__(self, *args, **kwargs)
         self.opt_name = "Nelder-Mead simplex routine (via Scipy)"
 
-    def opt(self, f_fp=None, f=None, fp=None):
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
         """
         The simplex optimizer does not require gradients.
         """
@@ -176,7 +184,7 @@ class opt_simplex(Optimizer):
         if self.gtol is not None:
             print("WARNING: simplex doesn't have an gtol arg, so I'm going to ignore it")
 
-        opt_result = optimize.fmin(f, self.x_init, (), disp=self.messages,
+        opt_result = optimize.fmin(f, x_init, (), disp=self.messages,
                    maxfun=self.max_f_eval, full_output=True, **opt_dict)
 
         self.x_opt = opt_result[0]
@@ -184,6 +192,38 @@ class opt_simplex(Optimizer):
         self.funct_eval = opt_result[3]
         self.status = statuses[opt_result[4]]
         self.trace = None
+
+
+class opt_rasm(Optimizer):
+    def __init__(self, *args, **kwargs):
+        Optimizer.__init__(self, *args, **kwargs)
+        self.opt_name = "Rasmussen's Conjugate Gradient"
+
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
+        """
+        Run Rasmussen's Conjugate Gradient optimizer
+        """
+
+        assert f_fp != None, "Rasmussen's minimizer requires f_fp"
+        statuses = ['Converged', 'Line search failed', 'Maximum number of f evaluations reached',
+                'NaNs in optimization']
+
+        opt_dict = {}
+        if self.xtol is not None:
+            print("WARNING: minimize doesn't have an xtol arg, so I'm going to ignore it")
+        if self.ftol is not None:
+            print("WARNING: minimize doesn't have an ftol arg, so I'm going to ignore it")
+        if self.gtol is not None:
+            print("WARNING: minimize doesn't have an gtol arg, so I'm going to ignore it")
+
+        opt_result = rasm.minimize(x_init, f_fp, (), messages=self.messages,
+                                   maxnumfuneval=self.max_f_eval)
+        self.x_opt = opt_result[0]
+        self.f_opt = opt_result[1][-1]
+        self.funct_eval = opt_result[2]
+        self.status = statuses[opt_result[3]]
+
+        self.trace = opt_result[1]
 
 class opt_SCG(Optimizer):
     def __init__(self, *args, **kwargs):
@@ -193,11 +233,11 @@ class opt_SCG(Optimizer):
 
         self.opt_name = "Scaled Conjugate Gradients"
 
-    def opt(self, f_fp=None, f=None, fp=None):
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
         assert not f is None
         assert not fp is None
 
-        opt_result = SCG(f, fp, self.x_init, display=self.messages,
+        opt_result = SCG(f, fp, x_init, display=self.messages,
                          maxiters=self.max_iters,
                          max_f_eval=self.max_f_eval,
                          xtol=self.xtol, ftol=self.ftol,
@@ -208,7 +248,7 @@ class opt_SCG(Optimizer):
         self.f_opt = self.trace[-1]
         self.funct_eval = opt_result[2]
         self.status = opt_result[3]
-        
+
 class Opt_Adadelta(Optimizer):
     def __init__(self, step_rate=0.1, decay=0.9, momentum=0, *args, **kwargs):
         Optimizer.__init__(self, *args, **kwargs)
@@ -217,13 +257,13 @@ class Opt_Adadelta(Optimizer):
         self.decay = decay
         self.momentum = momentum
 
-    def opt(self, f_fp=None, f=None, fp=None):
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
         assert not fp is None
-        
+
         import climin
-                    
-        opt = climin.adadelta.Adadelta(self.x_init, fp, step_rate=self.step_rate, decay=self.decay, momentum=self.momentum)
-        
+
+        opt = climin.adadelta.Adadelta(x_init, fp, step_rate=self.step_rate, decay=self.decay, momentum=self.momentum)
+
         for info in opt:
             if info['n_iter']>=self.max_iters:
                 self.x_opt =  opt.wrt
@@ -238,6 +278,9 @@ def get_optimizer(f_min):
           'org-bfgs': opt_bfgs,
           'scg': opt_SCG,
           'adadelta':Opt_Adadelta}
+
+    if rasm_available:
+        optimizers['rasmussen'] = opt_rasm
 
     for opt_name in optimizers.keys():
         if opt_name.lower().find(f_min.lower()) != -1:
