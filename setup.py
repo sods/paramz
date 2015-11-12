@@ -53,6 +53,8 @@ def read_to_rst(fname):
     except ImportError:
         return read(fname)
 
+desc = read_to_rst('README.md')
+
 version_dummy = {}
 exec(read('paramz/__version__.py'), version_dummy)
 __version__ = version_dummy['__version__']
@@ -113,7 +115,7 @@ setup(name = 'paramz',
       #include_package_data = True,
       py_modules = ['paramz.__init__'],
       test_suite = 'paramz.tests',
-      long_description=read_to_rst('README.md'),
+      #long_description=,
       install_requires=['numpy>=1.7', 'scipy', 'six'],
       classifiers=['License :: OSI Approved :: BSD License',
                    'Natural Language :: English',
