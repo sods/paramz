@@ -377,11 +377,8 @@ class Parameterizable(OptimizationHandlable):
     def num_params(self):
         return len(self.parameters)
 
-    def _add_parameter_name(self, param, ignore_added_names=False):
+    def _add_parameter_name(self, param):
         pname = adjust_name_for_printing(param.name)
-        if ignore_added_names:
-            self.__dict__[pname] = param
-            return
 
         def warn_and_retry(param, match=None):
             #===================================================================
@@ -397,7 +394,7 @@ class Parameterizable(OptimizationHandlable):
                 param.name = param.name+"_1"
             else:
                 param.name = match.group('name') + "_" + str(int(match.group('digit'))+1)
-            self._add_parameter_name(param, ignore_added_names)
+            self._add_parameter_name(param)
         # and makes sure to not delete programmatically added parameters
         for other in self.parameters:
             if (not (other is param)) and (other.name == param.name):

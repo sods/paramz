@@ -5,11 +5,11 @@ import datetime as dt
 from scipy import optimize
 from warnings import warn
 
-try:
-    import rasmussens_minimize as rasm
-    rasm_available = True
-except ImportError:
-    rasm_available = False
+#try:
+#    import rasmussens_minimize as rasm
+#    rasm_available = True
+#except ImportError:
+#    rasm_available = False
 from .scg import SCG
 
 class Optimizer(object):
@@ -111,11 +111,6 @@ class opt_lbfgsb(Optimizer):
 
         assert f_fp != None, "BFGS requires f_fp"
 
-        if self.messages:
-            iprint = 1
-        else:
-            iprint = -1
-
         opt_dict = {}
         if self.xtol is not None:
             print("WARNING: l-bfgs-b doesn't have an xtol arg, so I'm going to ignore it")
@@ -126,8 +121,7 @@ class opt_lbfgsb(Optimizer):
         if self.bfgs_factor is not None:
             opt_dict['factr'] = self.bfgs_factor
 
-        opt_result = optimize.fmin_l_bfgs_b(f_fp, x_init, iprint=iprint,
-                                            maxfun=self.max_iters, **opt_dict)
+        opt_result = optimize.fmin_l_bfgs_b(f_fp, x_init, maxfun=self.max_iters, **opt_dict)
         self.x_opt = opt_result[0]
         self.f_opt = f_fp(self.x_opt)[0]
         self.funct_eval = opt_result[2]['funcalls']
@@ -194,36 +188,36 @@ class opt_simplex(Optimizer):
         self.trace = None
 
 
-class opt_rasm(Optimizer):
-    def __init__(self, *args, **kwargs):
-        Optimizer.__init__(self, *args, **kwargs)
-        self.opt_name = "Rasmussen's Conjugate Gradient"
-
-    def opt(self, x_init, f_fp=None, f=None, fp=None):
-        """
-        Run Rasmussen's Conjugate Gradient optimizer
-        """
-
-        assert f_fp != None, "Rasmussen's minimizer requires f_fp"
-        statuses = ['Converged', 'Line search failed', 'Maximum number of f evaluations reached',
-                'NaNs in optimization']
-
-        opt_dict = {}
-        if self.xtol is not None:
-            print("WARNING: minimize doesn't have an xtol arg, so I'm going to ignore it")
-        if self.ftol is not None:
-            print("WARNING: minimize doesn't have an ftol arg, so I'm going to ignore it")
-        if self.gtol is not None:
-            print("WARNING: minimize doesn't have an gtol arg, so I'm going to ignore it")
-
-        opt_result = rasm.minimize(x_init, f_fp, (), messages=self.messages,
-                                   maxnumfuneval=self.max_f_eval)
-        self.x_opt = opt_result[0]
-        self.f_opt = opt_result[1][-1]
-        self.funct_eval = opt_result[2]
-        self.status = statuses[opt_result[3]]
-
-        self.trace = opt_result[1]
+# class opt_rasm(Optimizer):
+#     def __init__(self, *args, **kwargs):
+#         Optimizer.__init__(self, *args, **kwargs)
+#         self.opt_name = "Rasmussen's Conjugate Gradient"
+# 
+#     def opt(self, x_init, f_fp=None, f=None, fp=None):
+#         """
+#         Run Rasmussen's Conjugate Gradient optimizer
+#         """
+# 
+#         assert f_fp != None, "Rasmussen's minimizer requires f_fp"
+#         statuses = ['Converged', 'Line search failed', 'Maximum number of f evaluations reached',
+#                 'NaNs in optimization']
+# 
+#         opt_dict = {}
+#         if self.xtol is not None:
+#             print("WARNING: minimize doesn't have an xtol arg, so I'm going to ignore it")
+#         if self.ftol is not None:
+#             print("WARNING: minimize doesn't have an ftol arg, so I'm going to ignore it")
+#         if self.gtol is not None:
+#             print("WARNING: minimize doesn't have an gtol arg, so I'm going to ignore it")
+# 
+#         opt_result = rasm.minimize(x_init, f_fp, (), messages=self.messages,
+#                                    maxnumfuneval=self.max_f_eval)
+#         self.x_opt = opt_result[0]
+#         self.f_opt = opt_result[1][-1]
+#         self.funct_eval = opt_result[2]
+#         self.status = statuses[opt_result[3]]
+# 
+#         self.trace = opt_result[1]
 
 class opt_SCG(Optimizer):
     def __init__(self, *args, **kwargs):
@@ -279,8 +273,8 @@ def get_optimizer(f_min):
           'scg': opt_SCG,
           'adadelta':Opt_Adadelta}
 
-    if rasm_available:
-        optimizers['rasmussen'] = opt_rasm
+    #if rasm_available:
+    #    optimizers['rasmussen'] = opt_rasm
 
     for opt_name in optimizers.keys():
         if opt_name.lower().find(f_min.lower()) != -1:

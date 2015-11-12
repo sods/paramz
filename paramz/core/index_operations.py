@@ -113,7 +113,7 @@ class ParameterIndexOperations(object):
     def shift_left(self, start, size):
         for v, ind in list(self.items()):
             todelete = (ind>=start) * (ind<start+size)
-            if todelete.size != 0:
+            if todelete.sum() != 0:
                 ind = ind[~todelete]
             toshift = ind>=start
             if toshift.size != 0:

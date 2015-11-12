@@ -146,7 +146,7 @@ class Model(Parameterized):
 
         import multiprocessing as mp
 
-        if parallel:
+        if parallel: #pragma: no cover
             try:
                 def opt_wrapper(self, **kwargs):
                     return self.optimize(**kwargs)
@@ -169,7 +169,7 @@ class Model(Parameterized):
                 if not parallel:
                     if i>0: self.randomize()
                     self.optimize(**kwargs)
-                else:
+                else:#pragma: no cover
                     self.optimization_runs.append(jobs[i].get())
 
                 if verbose:

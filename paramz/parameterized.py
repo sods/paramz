@@ -141,13 +141,11 @@ class Parameterized(Parameterizable):
     #===========================================================================
     # Add remove parameters:
     #===========================================================================
-    def link_parameter(self, param, index=None, _ignore_added_names=False):
+    def link_parameter(self, param, index=None):
         """
         :param parameters:  the parameters to add
         :type parameters:   list of or one :py:class:`paramz.param.Param`
         :param [index]:     index of where to put parameters
-
-        :param bool _ignore_added_names: whether the name of the parameter overrides a possibly existing field
 
         Add all parameters to this param class, you can insert parameters
         at any given index using the :func:`list.insert` syntax
@@ -196,7 +194,7 @@ class Parameterized(Parameterizable):
                 #self._connect_parameters()
                 #self._notify_parent_change()
 
-                self._highest_parent_._connect_parameters(ignore_added_names=_ignore_added_names)
+                self._highest_parent_._connect_parameters()
                 self._highest_parent_._notify_parent_change()
                 self._highest_parent_._connect_fixes()
 
@@ -277,7 +275,7 @@ class Parameterized(Parameterizable):
 
             self._param_slices_.append(pslice)
 
-            self._add_parameter_name(p, ignore_added_names=ignore_added_names)
+            self._add_parameter_name(p)
             old_size += p.size
 
     #===========================================================================

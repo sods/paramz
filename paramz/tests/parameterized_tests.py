@@ -106,7 +106,7 @@ class ModelTest(unittest.TestCase):
         self.testmodel.kern.lengthscale = lengthscale
         self.testmodel.kern.link_parameter(lengthscale)
         self.testmodel.kern.link_parameter(variance)
-        self.testmodel.update_model(True)
+        self.testmodel.trigger_update()
         #=============================================================================
         # GP_regression.           |  Value  |  Constraint  |  Prior  |  Tied to
         # rbf.variance             |    1.0  |     +ve      |         |
@@ -115,28 +115,33 @@ class ModelTest(unittest.TestCase):
         #=============================================================================
 
     def test_optimize_preferred(self):
-        self.testmodel.update_model(False)
+        self.testmodel.update_toggle()
         self.testmodel.optimize(messages=True, xtol=0, ftol=0, gtol=1e-6, bfgs_factor=1)
+        self.testmodel.optimize(messages=False)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_scg(self):
         import warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             self.testmodel.optimize('scg', messages=1, max_f_eval=10)
+            self.testmodel.optimize('scg', messages=0)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-1)
     def test_optimize_tnc(self):
         from ..optimization.optimization import opt_tnc
         import warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            self.testmodel.optimize_restarts(messages=1, optimizer=opt_tnc(self.testmodel.optimizer_array))
+            self.testmodel.optimize_restarts(1, messages=1, optimizer=opt_tnc(), verbose=False)
+            self.testmodel.optimize('tnc', messages=1, xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+        self.assertListEqual(self.testmodel.optimization_runs[-1].__getstate__(), [])
     def test_optimize_org_bfgs(self):
         import warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             with np.errstate(divide='ignore'):
-                self.testmodel.optimize_restarts(messages=1, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6)
+                self.testmodel.optimize_restarts(1, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6)
+                self.testmodel.optimize(messages=1, optimizer='org-bfgs')
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_fix(self):
         self.testmodel.fix()
@@ -150,7 +155,27 @@ class ModelTest(unittest.TestCase):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             self.testmodel.optimize('simplex', messages=1, xtol=0, ftol=0, gtol=1e-6)
+            self.testmodel.optimize('simplex', start=self.testmodel.optimizer_array, messages=0)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+    def test_optimize_error(self):
+        class M(Model):
+            def __init__(self, name, **kwargs):
+                super(M, self).__init__(name=name)
+                for k, val in kwargs.items():
+                    self.__setattr__(k, val)
+                    self.link_parameter(self.__getattribute__(k))
+                self._allowed_failures = 1
+            def objective_function(self):
+                raise ValueError('Some error occured')
+            def log_likelihood(self):
+                raise ValueError('Some error occured')
+            def parameters_changed(self):
+                #self._obj = (self.param_array**2).sum()
+                self.gradient[:] = 2*self.param_array
+        testmodel = M("test", var=Param('test', np.random.normal(0,1,(20))))
+        testmodel.optimize_restarts(2, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=True)
+        self.assertRaises(ValueError, testmodel.optimize_restarts, 1, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=False)
+        
         
     def test_raveled_index(self):
         self.assertListEqual(self.testmodel._raveled_index_for(self.testmodel['.*variance']).tolist(), [1, 2])
@@ -172,7 +197,7 @@ class ModelTest(unittest.TestCase):
 
     def test_updates(self):
         val = float(self.testmodel.objective_function())
-        self.testmodel.update_model(False)
+        self.testmodel.toggle_update()
         self.testmodel.kern.randomize()
         self.testmodel.likelihood.randomize()
         self.assertEqual(val, self.testmodel.objective_function())
@@ -371,7 +396,7 @@ class ParameterizedTest(unittest.TestCase):
         self.test1[:] = 0.1
         self.test1.unconstrain()
         np.testing.assert_array_equal(self.test1.kern.white.optimizer_array, [0.1])
-        self.test1.kern.fix()
+        self.test1.kern.constrain(transformations.__fixed__)
         
         np.testing.assert_array_equal(self.test1.optimizer_array, [0.1]*50)
         np.testing.assert_array_equal(self.test1.optimizer_array, self.test1.param.optimizer_array)

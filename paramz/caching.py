@@ -88,17 +88,16 @@ class Cacher(object):
             cache_id = self.order.popleft()
             combined_args_kw = self.cached_inputs[cache_id]
             for ind in combined_args_kw:
-                if ind is not None:
-                    ind_id = self.id(ind)
-                    tmp = self.cached_input_ids.get(ind_id, None)
-                    if tmp is not None:
-                        ref, cache_ids = tmp
-                        if len(cache_ids) == 1 and ref() is not None:
-                            ref().remove_observer(self, self.on_cache_changed)
-                            del self.cached_input_ids[ind_id]
-                        else:
-                            cache_ids.remove(cache_id)
-                            self.cached_input_ids[ind_id] = [ref, cache_ids]
+                ind_id = self.id(ind)
+                tmp = self.cached_input_ids.get(ind_id, None)
+                if tmp is not None:
+                    ref, cache_ids = tmp
+                    if len(cache_ids) == 1 and ref() is not None:
+                        ref().remove_observer(self, self.on_cache_changed)
+                        del self.cached_input_ids[ind_id]
+                    else:
+                        cache_ids.remove(cache_id)
+                        self.cached_input_ids[ind_id] = [ref, cache_ids]
             del self.cached_outputs[cache_id]
             del self.inputs_changed[cache_id]
             del self.cached_inputs[cache_id]
@@ -155,7 +154,7 @@ class Cacher(object):
                 # 4: This happens, when elements have changed for this cache self.id
                 self.inputs_changed[cache_id] = False
                 self.cached_outputs[cache_id] = new_output
-            elif(not_seen):
+            else:  # not_seen is True, as one of the two has to be True:
                 # 3: This is when we never saw this chache_id:
                 self.ensure_cache_length(cache_id)
                 self.add_to_cache(cache_id, inputs, new_output)
@@ -169,11 +168,10 @@ class Cacher(object):
         this function gets 'hooked up' to the inputs when we cache them, and upon their elements being changed we update here.
         """
         for what in [direct, which]:
-            if what is not None:
-                ind_id = self.id(what)
-                _, cache_ids = self.cached_input_ids.get(ind_id, [None, []])
-                for cache_id in cache_ids:
-                    self.inputs_changed[cache_id] = True
+            ind_id = self.id(what)
+            _, cache_ids = self.cached_input_ids.get(ind_id, [None, []])
+            for cache_id in cache_ids:
+                self.inputs_changed[cache_id] = True
 
     def reset(self):
         """

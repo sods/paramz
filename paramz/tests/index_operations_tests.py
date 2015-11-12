@@ -64,6 +64,15 @@ class Test(unittest.TestCase):
         self.assertListEqual(self.view[three].tolist(), [0,3,5])
         self.assertListEqual(self.view[two].tolist(), [1])
         self.assertListEqual(self.view[one].tolist(), [])
+        
+        self.param_index.shift_left(9, 1) # Should have done nothing:
+        self.assertListEqual(self.param_index[three].tolist(), [2,5,7])
+        self.assertListEqual(self.param_index[two].tolist(), [0,3])
+        self.assertListEqual(self.param_index[one].tolist(), [])
+        self.assertListEqual(self.view[three].tolist(), [0,3,5])
+        self.assertListEqual(self.view[two].tolist(), [1])
+        self.assertListEqual(self.view[one].tolist(), [])
+        
 
     def test_shift_right(self):
         self.view.shift_right(3, 2)
