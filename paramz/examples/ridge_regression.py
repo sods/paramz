@@ -53,9 +53,11 @@ class Regularizer(Parameterized):
     def __init__(self, lambda_, beta, name='regularizer'):
         super(Regularizer, self).__init__(name=name)
         if not isinstance(beta, Param):
+            if beta.ndim == 1:
+                beta = beta[:,None]
             beta = Param('beta', beta)
-        if beta.ndim == 1:
-            beta = beta[:,None]
+        else:
+            assert beta.ndim == 2, 'beta needs to be at least a column vector'
         self.beta = beta
         self.lambda_ = lambda_
         self.link_parameter(beta)

@@ -256,7 +256,20 @@ class Parameterized(Parameterizable):
         self._param_slices_ = []
         for i, p in enumerate(self.parameters):
             if not p.param_array.flags['C_CONTIGUOUS']:
-                raise ValueError("This should not happen! Please write an email to the developers with the code, which reproduces this error. All parameter arrays must be C_CONTIGUOUS")
+                raise ValueError("""
+Have you added an additional dimension to a Param object?
+
+  p[:,None], where p is of type Param does not work
+  and is expected to fail! Try increasing the 
+  dimensionality of the param array before making
+  a Param out of it:
+  p = Param("<name>", array[:,None])
+
+Otherwise this should not happen! 
+Please write an email to the developers with the code, 
+which reproduces this error. 
+All parameter arrays must be C_CONTIGUOUS
+""")
 
             p._parent_ = self
             p._parent_index_ = i

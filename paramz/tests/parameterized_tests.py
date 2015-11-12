@@ -31,7 +31,6 @@ class ArrayCoreTest(unittest.TestCase):
         t2 = self.obsX[2:78]
         self.assertListEqual(t1.tolist(), t2.tolist(), "Slicing should be the exact same, as in ndarray")
 
-
 def test_constraints_in_init():
     class Test(Parameterized):
         def __init__(self, name=None, parameters=[], *a, **kw):
@@ -354,6 +353,13 @@ class ModelTest(unittest.TestCase):
         np.testing.assert_array_equal(self.testmodel['.*rbf'][0], m2['.*rbf'][0])
         np.testing.assert_array_equal(self.testmodel['.*rbf'][1], m2['.*rbf'][1])
 
+class ErrorTest(unittest.TestCase):
+    def test_fail_param_dimension_change(self):
+        p = Param('test', np.random.normal(0,1,2))
+        m = Parameterized('test')
+        self.assertRaises(ValueError, m.link_parameter, p[:,None])
+
+
 class ParameterizedTest(unittest.TestCase):
 
     def setUp(self):
@@ -382,7 +388,7 @@ class ParameterizedTest(unittest.TestCase):
         # add.rbf.lengthscale  |        1.0  |  0.0,1.0 +ve  |         |
         # add.white.variance   |        1.0  |  0.0,1.0 +ve  |         |
         #=============================================================================
-
+        
     def test_unfixed_param_array(self):
         self.test1.param_array[:] = 0.1
         np.testing.assert_array_equal(self.test1.unfixed_param_array, [0.1]*53)
