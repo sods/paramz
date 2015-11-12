@@ -36,6 +36,7 @@ from .param import Param
 from .core.observable_array import ObsAr
 from paramz import transformations as constraints
 from . import caching, optimization
+from . import examples
 
 def load(file_or_path):
     """
