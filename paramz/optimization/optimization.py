@@ -231,7 +231,7 @@ class opt_SCG(Optimizer):
         assert not f is None
         assert not fp is None
 
-        opt_result = SCG(f, fp, x_init, display=self.messages,
+        opt_result = SCG(f, fp, x_init, 
                          maxiters=self.max_iters,
                          max_f_eval=self.max_f_eval,
                          xtol=self.xtol, ftol=self.ftol,

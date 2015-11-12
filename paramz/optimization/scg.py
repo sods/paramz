@@ -41,16 +41,7 @@ from __future__ import print_function
 import numpy as np
 import sys
 
-def print_out(len_maxiters, fnow, current_grad, beta, iteration):
-    print('\r', end=' ')
-    print('{0:>0{mi}g}  {1:> 12e}  {2:< 12.6e}  {3:> 12e}'.format(iteration, float(fnow), float(beta), float(current_grad), mi=len_maxiters), end=' ') # print 'Iteration:', iteration, ' Objective:', fnow, '  Scale:', beta, '\r',
-    sys.stdout.flush()
-
-def exponents(fnow, current_grad):
-    exps = [np.abs(np.float(fnow)), current_grad]
-    return np.sign(exps) * np.log10(exps).astype(int)
-
-def SCG(f, gradf, x, optargs=(), maxiters=500, max_f_eval=np.inf, display=True, xtol=None, ftol=None, gtol=None):
+def SCG(f, gradf, x, optargs=(), maxiters=500, max_f_eval=np.inf, xtol=None, ftol=None, gtol=None):
     """
     Optimisation through Scaled Conjugate Gradients (SCG)
 
@@ -93,12 +84,6 @@ def SCG(f, gradf, x, optargs=(), maxiters=500, max_f_eval=np.inf, display=True, 
 
     iteration = 0
 
-    len_maxiters = len(str(maxiters))
-    if display:
-        print(' {0:{mi}s}   {1:11s}    {2:11s}    {3:11s}'.format("I", "F", "Scale", "|g|", mi=len_maxiters))
-        exps = exponents(fnow, current_grad)
-        p_iter = iteration
-
     # Main optimization loop.
     while iteration < maxiters:
 
@@ -128,11 +113,6 @@ def SCG(f, gradf, x, optargs=(), maxiters=500, max_f_eval=np.inf, display=True, 
         fnew = f(xnew, *optargs)
         function_eval += 1
 
-        if function_eval >= max_f_eval:
-            status = "maximum number of function evaluations exceeded"
-            break
-            return x, flog, function_eval, status
-
         Delta = 2.*(fnew - fold) / (alpha * mu)
         if Delta >= 0.:
             success = True
@@ -147,17 +127,6 @@ def SCG(f, gradf, x, optargs=(), maxiters=500, max_f_eval=np.inf, display=True, 
         flog.append(fnow) # Current function value
 
         iteration += 1
-        if display:
-            print_out(len_maxiters, fnow, current_grad, beta, iteration)
-            n_exps = exponents(fnow, current_grad)
-            if iteration - p_iter >= 20 * np.random.rand():
-                a = iteration >= p_iter * 2.78
-                b = np.any(n_exps < exps)
-                if a or b:
-                    p_iter = iteration
-                    print('')
-                if b:
-                    exps = n_exps
 
         if success:
             # Test for termination
@@ -202,8 +171,4 @@ def SCG(f, gradf, x, optargs=(), maxiters=500, max_f_eval=np.inf, display=True, 
         # iterations.
         status = "maxiter exceeded"
 
-    if display:
-        print_out(len_maxiters, fnow, current_grad, beta, iteration)
-        print("")
-        print(status)
     return x, flog, function_eval, status

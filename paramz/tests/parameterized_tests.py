@@ -123,8 +123,10 @@ class ModelTest(unittest.TestCase):
         import warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            self.testmodel.optimize('scg', messages=1, max_f_eval=10)
-            self.testmodel.optimize('scg', messages=0)
+            self.testmodel.optimize('scg', messages=1, max_f_eval=10, max_iters=100)
+            self.testmodel.optimize('scg', messages=0, xtol=0, ftol=0, gtol=1e-6, max_iters=2)
+            self.testmodel.optimize('scg', messages=0, xtol=0, ftol=20, gtol=0, max_iters=2)
+            self.testmodel.optimize('scg', messages=0, xtol=20, ftol=0, gtol=0, max_iters=2)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-1)
     def test_optimize_tnc(self):
         from ..optimization.optimization import opt_tnc
