@@ -414,7 +414,7 @@ class Model(Parameterized):
     def _repr_html_(self):
         """Representation of the model in html for notebook display."""
         model_details = [['<b>Model</b>', self.name + '<br>'],
-                         ['<b>Log-likelihood</b>', '{}<br>'.format(float(self.log_likelihood()))],
+                         ['<b>Objective</b>', '{}<br>'.format(float(self.objective_function()))],
                          ["<b>Number of Parameters</b>", '{}<br>'.format(self.size)],
                          ["<b>Number of Optimization Parameters</b>", '{}<br>'.format(self._size_transformed())],
                          ["<b>Updates</b>", '{}<br>'.format(self._update_on)],

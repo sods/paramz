@@ -286,33 +286,43 @@ class Param(Parameterizable, ObsAr):
         else: indstr = ','.join(map(str, ind))
         return name + '[' + indstr + ']'
 
-#     def _repr_html_(self, constr_matrix=None, indices=None, prirs=None, ties=None):
-#         """Representation of the parameter in html for notebook display."""
-#         filter_ = self._current_slice_
-#         vals = self.flat
-#         if indices is None: indices = self._indices(filter_)
-#         ravi = self._raveled_index(filter_)
-#         if constr_matrix is None: constr_matrix = self.constraints.properties_for(ravi)
-#         if prirs is None: prirs = self.priors.properties_for(ravi)
-#         if ties is None: ties = self._ties_for(ravi)
-#         ties = [' '.join(map(lambda x: x, t)) for t in ties]
-#         header_format = """
-# <tr>
-#   <th><b>{i}</b></th>
-#   <th><b>{x}</b></th>
-#   <th><b>{c}</b></th>
-#   <th><b>{p}</b></th>
-#   <th><b>{t}</b></th>
-# </tr>"""
-#         header = header_format.format(x=self.hierarchy_name(), c=__constraints_name__, i=__index_name__, t=__tie_name__, p=__priors_name__)  # nice header for printing
-#         if not ties: ties = itertools.cycle([''])
-#         return "\n".join(["""<style type="text/css">
-# .tg  {padding:2px 3px;word-break:normal;border-collapse:collapse;border-spacing:0;border-color:#DCDCDC;margin:0px auto;width:100%;}
-# .tg td{font-family:"Courier New", Courier, monospace !important;font-weight:bold;color:#444;background-color:#F7FDFA;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
-# .tg th{font-family:"Courier New", Courier, monospace !important;font-weight:normal;color:#fff;background-color:#26ADE4;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
-# .tg .tg-left{font-family:"Courier New", Courier, monospace !important;font-weight:normal;text-align:left;}
-# .tg .tg-right{font-family:"Courier New", Courier, monospace !important;font-weight:normal;text-align:right;}
-# </style>"""] + ['<table class="tg">'] + [header] + ["<tr><td class=tg-left>{i}</td><td  class=tg-right>{x}</td><td class=tg-left>{c}</td><td class=tg-left>{p}</td><td class=tg-left>{t}</td></tr>".format(x=x, c=" ".join(map(str, c)), p=" ".join(map(str, p)), t=(t or ''), i=i) for i, x, c, t, p in zip(indices, vals, constr_matrix, ties, prirs)] + ["</table>"])
+    def _repr_html_(self, indices=None, iops=None, lx=None, li=None, lls=None):
+        """Representation of the parameter in html for notebook display."""
+        filter_ = self._current_slice_
+        vals = self.flat
+        if indices is None: indices = self._indices(filter_)
+        if iops is None:
+            ravi = self._raveled_index(filter_)
+            iops = OrderedDict([name, iop.properties_for(ravi)] for name, iop in self._index_operations.items())
+        if lls is None: lls = [self._max_len_names(iop, name) for name, iop in iops.items()]
+
+        header_format = """
+<tr>
+  <th><b>{i}</b></th>
+  <th><b>{x}</b></th>
+  <th><b>{iops}</b></th>
+</tr>"""
+        header = header_format.format(x=self.hierarchy_name(), i=__index_name__, iops="</b></th><th><b>".join(list(iops.keys())))  # nice header for printing
+        
+        to_print = ["""<style type="text/css">
+.tg  {padding:2px 3px;word-break:normal;border-collapse:collapse;border-spacing:0;border-color:#DCDCDC;margin:0px auto;width:100%;}
+.tg td{font-family:"Courier New", Courier, monospace !important;font-weight:bold;color:#444;background-color:#F7FDFA;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
+.tg th{font-family:"Courier New", Courier, monospace !important;font-weight:normal;color:#fff;background-color:#26ADE4;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
+.tg .tg-left{font-family:"Courier New", Courier, monospace !important;font-weight:normal;text-align:left;}
+.tg .tg-right{font-family:"Courier New", Courier, monospace !important;font-weight:normal;text-align:right;}
+</style>"""]
+        to_print.append('<table class="tg">')
+        to_print.append(header)
+
+        format_spec = self._format_spec(indices, iops, lx, li, lls, False)
+        format_spec[:2] = ["<tr><td class=tg-left>{i}</td>".format(i=format_spec[0]), "<td class=tg-right>{i}</td>".format(i=format_spec[1])]
+        for i in range(2, len(format_spec)):
+            format_spec[i] = '<td class=tg-left>{c}</td>'.format(c=format_spec[i])
+        format_spec = "".join(format_spec) + '</tr>'
+
+        for i in range(self.size):
+            to_print.append(format_spec.format(index=indices[i], value="{1:.{0}f}".format(__precision__, vals[i]), **dict((name, ' '.join(map(str, iops[name][i]))) for name in iops)))
+        return '\n'.join(to_print)
 
     def _format_spec(self, indices, iops, lx=None, li=None, lls=None, VT100=True):
         if li is None: li = self._max_len_index(indices)
