@@ -354,11 +354,11 @@ class ModelTest(unittest.TestCase):
         np.testing.assert_array_equal(self.testmodel['.*rbf'][1], m2['.*rbf'][1])
 
 
-class ErrorTest(unittest.TestCase):
-    def test_fail_param_dimension_change(self):
-        p = Param('test', np.random.normal(0,1,2))
-        m = Parameterized('test')
-        self.assertRaises(ValueError, m.link_parameter, p[:,None])
+#class ErrorTest(unittest.TestCase):
+#    def test_fail_param_dimension_change(self):
+#        p = Param('test', np.random.normal(0,1,2))
+#        m = Parameterized('test')
+#        self.assertRaises(ValueError, m.link_parameter, p[:,None])
         
 
 class ParameterizedTest(unittest.TestCase):

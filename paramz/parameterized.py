@@ -255,7 +255,7 @@ class Parameterized(Parameterizable):
         old_size = 0
         self._param_slices_ = []
         for i, p in enumerate(self.parameters):
-            if not p.param_array.flags['C_CONTIGUOUS'] or getattr(p, 'shape', None) != getattr(p, '_realshape_', None):
+            if not p.param_array.flags['C_CONTIGUOUS']:# getattr(p, 'shape', None) != getattr(p, '_realshape_', None):
                 raise ValueError("""
 Have you added an additional dimension to a Param object?
 
