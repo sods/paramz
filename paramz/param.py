@@ -1,21 +1,21 @@
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramax nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -151,7 +151,7 @@ class Param(Parameterizable, ObsAr):
 
     @gradient.setter
     def gradient(self, val):
-        self._gradient_array_[:] = val
+        self.gradient[:] = val
 
     #===========================================================================
     # Array operations -> done
@@ -241,7 +241,7 @@ class Param(Parameterizable, ObsAr):
     @property
     def num_params(self):
         return 0
-    
+
     def get_property_string(self, propname):
         prop = self._index_operations[propname]
         return [' '.join(map(lambda c: str(c[0]) if c[1].size == self._realsize_ else "{" + str(c[0]) + "}", prop.items()))]
@@ -266,16 +266,16 @@ class Param(Parameterizable, ObsAr):
             indices = indices[(slice(None),)+slice_index]
             indices = np.rollaxis(indices, 0, indices.ndim)
         return indices
-    
+
     def _max_len_names(self, gen, header):
         return reduce(lambda a, b: max(a, len(" ".join(map(str, b)))), gen, len(header))
-    
+
     def _max_len_values(self):
         return reduce(lambda a, b: max(a, len("{x:=.{0}g}".format(__precision__, x=b))), self.flat, len(self.hierarchy_name()))
-    
+
     def _max_len_index(self, ind):
         return reduce(lambda a, b: max(a, len(str(b))), ind, len(__index_name__))
-    
+
     def _short(self):
         # short string to print
         name = self.hierarchy_name()
@@ -303,7 +303,7 @@ class Param(Parameterizable, ObsAr):
   <th><b>{iops}</b></th>
 </tr>"""
         header = header_format.format(x=self.hierarchy_name(), i=__index_name__, iops="</b></th><th><b>".join(list(iops.keys())))  # nice header for printing
-        
+
         to_print = ["""<style type="text/css">
 .tg  {padding:2px 3px;word-break:normal;border-collapse:collapse;border-spacing:0;border-color:#DCDCDC;margin:0px auto;width:100%;}
 .tg td{font-family:"Courier New", Courier, monospace !important;font-weight:bold;color:#444;background-color:#F7FDFA;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
@@ -338,7 +338,7 @@ class Param(Parameterizable, ObsAr):
             f = '{{{1}!s:^{0}}}'.format(l, opname)
             format_spec.append(f)
         return format_spec
-        
+
 
     def __str__(self, indices=None, iops=None, lx=None, li=None, lls=None, only_name=False, VT100=True):
         filter_ = self._current_slice_
@@ -348,14 +348,14 @@ class Param(Parameterizable, ObsAr):
             ravi = self._raveled_index(filter_)
             iops = OrderedDict([name, iop.properties_for(ravi)] for name, iop in self._index_operations.items())
         if lls is None: lls = [self._max_len_names(iop, name) for name, iop in iops.items()]
-        
+
         format_spec = '  |  '.join(self._format_spec(indices, iops, lx, li, lls, VT100))
 
         to_print = []
-        
+
         if not only_name: to_print.append(format_spec.format(index=__index_name__, value=self.hierarchy_name(), **dict((name, name) for name in iops)))
         else: to_print.append(format_spec.format(index='-'*li, value=self.hierarchy_name(), **dict((name, '-'*l) for name, l in zip(iops, lls))))
-        
+
         for i in range(self.size):
             to_print.append(format_spec.format(index=indices[i], value="{1:.{0}f}".format(__precision__, vals[i]), **dict((name, ' '.join(map(str, iops[name][i]))) for name in iops)))
         return '\n'.join(to_print)
@@ -483,10 +483,10 @@ class ParamConcatenation(object):
     __ne__ = lambda self, val: self.values() != val
     __gt__ = lambda self, val: self.values() > val
     __ge__ = lambda self, val: self.values() >= val
-    
+
     def __str__(self, *args, **kwargs):
         params = self.params
-        
+
         indices = [p._indices() for p in params]
         lx = max([p._max_len_values() for p in params])
         li = max([p._max_len_index(i) for p, i in zip(params, indices)])
@@ -508,7 +508,7 @@ class ParamConcatenation(object):
 
         strings = []
         start = True
-        
+
         for i in range(len(params)):
             strings.append(params[i].__str__(indices=indices[i], iops=params_iops[i], lx=lx, li=li, lls=lls, only_name=(not start)))
             start = False
