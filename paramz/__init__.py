@@ -37,6 +37,15 @@ from .core.observable_array import ObsAr
 from paramz import transformations as constraints
 from . import caching, optimization
 from . import examples
+from cPickle import UnpicklingError
+
+def _unpickle(file_or_path, pickle, strcl, p3kw):
+    if isinstance(file_or_path, strcl):
+        with open(file_or_path, 'rb') as f:
+            m = pickle.load(f, **p3kw)
+    else:
+        m = pickle.load(file_or_path, **p3kw)
+    return m
 
 def load(file_or_path):
     """
@@ -48,14 +57,14 @@ def load(file_or_path):
         import cPickle as pickle
         strcl = basestring
         p3kw = {}
+        return _unpickle(file_or_path, pickle, strcl, p3kw)
     except ImportError: #python3
         import pickle
         strcl = str
         p3kw = dict(encoding='latin1')
+        return _unpickle(file_or_path, pickle, strcl, p3kw)
+    except UnpicklingError:
+        import pickle
+        return _unpickle(file_or_path, pickle, strcl, p3kw)
 
-    if isinstance(file_or_path, strcl):
-        with open(file_or_path, 'rb') as f:
-            m = pickle.load(f, **p3kw)
-    else:
-        m = pickle.load(file_or_path, **p3kw)
     return m
