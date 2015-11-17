@@ -37,7 +37,6 @@ from .core.observable_array import ObsAr
 from paramz import transformations as constraints
 from . import caching, optimization
 from . import examples
-from cPickle import UnpicklingError
 
 def _unpickle(file_or_path, pickle, strcl, p3kw):
     if isinstance(file_or_path, strcl):
@@ -53,6 +52,7 @@ def load(file_or_path):
 
     :param file_name: path/to/file.pickle
     """
+    from pickle import UnpicklingError
     try:
         import cPickle as pickle
         strcl = basestring
