@@ -63,8 +63,6 @@ def load(file_or_path):
         strcl = str
         p3kw = dict(encoding='latin1')
         return _unpickle(file_or_path, pickle, strcl, p3kw)
-    except UnpicklingError:
+    except UnpicklingError: # pragma: no coverage
         import pickle
         return _unpickle(file_or_path, pickle, strcl, p3kw)
-
-    return m

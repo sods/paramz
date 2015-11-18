@@ -69,7 +69,7 @@ def test_parameter_modify_in_init():
     assert(m.constraints[transformations.Logexp()].tolist() == [1])
     m.randomize()
     assert(m.p1 == val)
-    
+
 class P(Parameterized):
     def __init__(self, name, **kwargs):
         super(P, self).__init__(name=name)
@@ -93,7 +93,7 @@ class ModelTest(unittest.TestCase):
             def parameters_changed(self):
                 self._obj = (self.param_array**2).sum()
                 self.gradient[:] = 2*self.param_array
-        
+
         self.testmodel = M('testmodel')
         self.testmodel.kern = Parameterized('rbf')
         self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
@@ -176,8 +176,8 @@ class ModelTest(unittest.TestCase):
         testmodel = M("test", var=Param('test', np.random.normal(0,1,(20))))
         testmodel.optimize_restarts(2, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=True)
         self.assertRaises(ValueError, testmodel.optimize_restarts, 1, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=False)
-        
-        
+
+
     def test_raveled_index(self):
         self.assertListEqual(self.testmodel._raveled_index_for(self.testmodel['.*variance']).tolist(), [1, 2])
 
@@ -199,7 +199,7 @@ class ModelTest(unittest.TestCase):
     def test_updates(self):
         val = float(self.testmodel.objective_function())
         self.testmodel.toggle_update()
-        self.testmodel.kern.randomize()
+        self.testmodel.kern.randomize(np.random.normal, loc=1, scale=.2)
         self.testmodel.likelihood.randomize()
         self.assertEqual(val, self.testmodel.objective_function())
         self.testmodel.update_model(True)
@@ -239,6 +239,8 @@ class ModelTest(unittest.TestCase):
         self.assertTrue(self.testmodel.checkgrad())
         self.assertTrue(self.testmodel.rbf.variance.checkgrad(1))
         self.assertTrue(self.testmodel.rbf.variance.checkgrad())
+        self.assertTrue(self.testmodel._checkgrad(verbose=1))
+        self.assertTrue(self.testmodel._checkgrad(verbose=0))
 
     def test_printing(self):
         print(self.testmodel.hierarchy_name(False))
@@ -304,7 +306,7 @@ class ModelTest(unittest.TestCase):
         pars = self.testmodel[:].copy()
         self.testmodel.rbf[:] = None
         np.testing.assert_array_equal(self.testmodel[:], pars)
-    
+
     def test_set_error(self):
         self.assertRaises(ValueError, self.testmodel.__setitem__, slice(None), 'test')
 
@@ -323,7 +325,7 @@ class ModelTest(unittest.TestCase):
         self.assertIsInstance(self.testmodel['.*rbf$'], Parameterized)
         self.assertIs(self.testmodel['rbf.variance'], self.testmodel.rbf.variance)
         self.assertIs(self.testmodel['rbf$'], self.testmodel.rbf)
-            
+
     def test_likelihood_set(self):
         m = self.testmodel
         m2 = self.testmodel.copy()
@@ -344,7 +346,7 @@ class ModelTest(unittest.TestCase):
         m.kern.lengthscale.randomize()
         m2.kern.lengthscale = m.kern['.*lengthscale']
         np.testing.assert_equal(m.log_likelihood(), m2.log_likelihood())
-        
+
         np.testing.assert_array_equal(self.testmodel[''].values(), m2[''].values())
         np.testing.assert_array_equal(self.testmodel[:], m2[''].values())
         np.testing.assert_array_equal(self.testmodel[''].values(), m2[:])
@@ -359,16 +361,16 @@ class ModelTest(unittest.TestCase):
 #        p = Param('test', np.random.normal(0,1,2))
 #        m = Parameterized('test')
 #        self.assertRaises(ValueError, m.link_parameter, p[:,None])
-        
+
 
 class ParameterizedTest(unittest.TestCase):
 
     def setUp(self):
         self.rbf = Parameterized('rbf')
         self.rbf.lengthscale = Param('lengthscale', np.random.uniform(.1, 1), transformations.Logexp())
-        self.rbf.variance = Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()) 
+        self.rbf.variance = Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp())
         self.rbf.link_parameters(self.rbf.variance, self.rbf.lengthscale)
-        
+
         self.white = P('white', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
         self.param = Param('param', np.random.uniform(0,1,(10,5)), transformations.Logistic(0, 1))
 
@@ -377,7 +379,7 @@ class ParameterizedTest(unittest.TestCase):
         self.test1.param = self.param
         self.test1.kern = Parameterized('add')
         self.test1.kern.link_parameters(self.rbf, self.white)
-        
+
         self.test1.link_parameter(self.test1.kern)
         self.test1.link_parameter(self.param, 0)
 
@@ -389,7 +391,7 @@ class ParameterizedTest(unittest.TestCase):
         # add.rbf.lengthscale  |        1.0  |  0.0,1.0 +ve  |         |
         # add.white.variance   |        1.0  |  0.0,1.0 +ve  |         |
         #=============================================================================
-        
+
     def test_unfixed_param_array(self):
         self.test1.param_array[:] = 0.1
         np.testing.assert_array_equal(self.test1.unfixed_param_array, [0.1]*53)
@@ -397,16 +399,16 @@ class ParameterizedTest(unittest.TestCase):
         self.test1.kern.rbf.lengthscale.fix()
         np.testing.assert_array_equal(self.test1.kern.unfixed_param_array, [0.1, 0.1])
         np.testing.assert_array_equal(self.test1.unfixed_param_array, [0.1]*52)
-        
+
     def test_set_param_array(self):
         self.assertRaises(AttributeError, setattr, self.test1, 'param_array', 0)
-    
+
     def test_fixed_optimizer_copy(self):
         self.test1[:] = 0.1
         self.test1.unconstrain()
         np.testing.assert_array_equal(self.test1.kern.white.optimizer_array, [0.1])
         self.test1.kern.constrain(transformations.__fixed__)
-        
+
         np.testing.assert_array_equal(self.test1.optimizer_array, [0.1]*50)
         np.testing.assert_array_equal(self.test1.optimizer_array, self.test1.param.optimizer_array)
 
@@ -424,17 +426,17 @@ class ParameterizedTest(unittest.TestCase):
         self.test1.param.fix()
         self.test1.kern.rbf.lengthscale.fix()
         self.assertSequenceEqual(self.test1._get_param_names_transformed().tolist(), ['test_parameterized.add.rbf.variance[[0]]', 'test_parameterized.add.white.variance[[0]]'])
-        
+
     def test_num_params(self):
         self.assertEqual(self.test1.num_params, 2)
         self.assertEqual(self.test1.add.num_params, 2)
         self.assertEqual(self.test1.add.white.num_params, 1)
         self.assertEqual(self.test1.add.rbf.num_params, 2)
-        
+
     def test_index_operations(self):
         self.assertRaises(AttributeError, self.test1.add_index_operation, 'constraints', None)
         self.assertRaises(AttributeError, self.test1.remove_index_operation, 'not_an_index_operation')
-        
+
     def test_names(self):
         self.test1.unlink_parameter(self.test1.kern)
         newname = 'this@is a+new name!'
@@ -444,7 +446,7 @@ class ParameterizedTest(unittest.TestCase):
         self.assertSequenceEqual(self.test1.kern.hierarchy_name(False), 'test_parameterized.'+newname)
         self.assertSequenceEqual(self.test1.kern.hierarchy_name(True), 'test_parameterized.'+adjust_name_for_printing(newname))
         self.assertRaises(NameError, adjust_name_for_printing, '%')
-        
+
     def test_traverse_parents(self):
         c = []
         self.test1.kern.rbf.traverse_parents(lambda x: c.append(x.name))
@@ -452,7 +454,7 @@ class ParameterizedTest(unittest.TestCase):
         c = []
         self.test1.kern.white.variance.traverse_parents(lambda x: c.append(x.name))
         self.assertSequenceEqual(c, ['test_parameterized', 'param', 'add', 'rbf', 'variance', 'lengthscale', 'white'])
-        
+
     def test_names_already_exist(self):
         self.test1.kern.name = 'newname'
         self.test1.p = Param('newname', 1.22345)
@@ -469,7 +471,7 @@ class ParameterizedTest(unittest.TestCase):
         self.test1.kern.rbf.variance.name = 'variance'
         self.assertSequenceEqual(self.test1.kern.rbf.lengthscale.name, 'variance_2')
         self.assertSequenceEqual(self.test1.kern.rbf.variance.name, 'variance')
-        
+
 
     def test_add_parameter(self):
         self.assertEquals(self.rbf._parent_index_, 0)

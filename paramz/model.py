@@ -305,7 +305,7 @@ class Model(Parameterized):
         if not verbose:
             # make sure only to test the selected parameters
             if target_param is None:
-                transformed_index = range(len(x))
+                transformed_index = np.arange(len(x))
             else:
                 transformed_index = self._raveled_index_for(target_param)
                 if self._has_fixes():

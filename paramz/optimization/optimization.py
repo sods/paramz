@@ -128,7 +128,7 @@ class opt_lbfgsb(Optimizer):
         self.status = rcstrings[opt_result[2]['warnflag']]
 
         #a more helpful error message is available in opt_result in the Error case
-        if opt_result[2]['warnflag']==2:
+        if opt_result[2]['warnflag']==2: # pragma: no coverage, this is not needed to be covered
             self.status = 'Error' + str(opt_result[2]['task'])
 
 class opt_bfgs(Optimizer):
@@ -192,16 +192,16 @@ class opt_simplex(Optimizer):
 #     def __init__(self, *args, **kwargs):
 #         Optimizer.__init__(self, *args, **kwargs)
 #         self.opt_name = "Rasmussen's Conjugate Gradient"
-# 
+#
 #     def opt(self, x_init, f_fp=None, f=None, fp=None):
 #         """
 #         Run Rasmussen's Conjugate Gradient optimizer
 #         """
-# 
+#
 #         assert f_fp != None, "Rasmussen's minimizer requires f_fp"
 #         statuses = ['Converged', 'Line search failed', 'Maximum number of f evaluations reached',
 #                 'NaNs in optimization']
-# 
+#
 #         opt_dict = {}
 #         if self.xtol is not None:
 #             print("WARNING: minimize doesn't have an xtol arg, so I'm going to ignore it")
@@ -209,14 +209,14 @@ class opt_simplex(Optimizer):
 #             print("WARNING: minimize doesn't have an ftol arg, so I'm going to ignore it")
 #         if self.gtol is not None:
 #             print("WARNING: minimize doesn't have an gtol arg, so I'm going to ignore it")
-# 
+#
 #         opt_result = rasm.minimize(x_init, f_fp, (), messages=self.messages,
 #                                    maxnumfuneval=self.max_f_eval)
 #         self.x_opt = opt_result[0]
 #         self.f_opt = opt_result[1][-1]
 #         self.funct_eval = opt_result[2]
 #         self.status = statuses[opt_result[3]]
-# 
+#
 #         self.trace = opt_result[1]
 
 class opt_SCG(Optimizer):
@@ -231,7 +231,7 @@ class opt_SCG(Optimizer):
         assert not f is None
         assert not fp is None
 
-        opt_result = SCG(f, fp, x_init, 
+        opt_result = SCG(f, fp, x_init,
                          maxiters=self.max_iters,
                          max_f_eval=self.max_f_eval,
                          xtol=self.xtol, ftol=self.ftol,

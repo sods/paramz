@@ -8,21 +8,21 @@ Observable Pattern for patameterization
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramax nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -147,7 +147,7 @@ class OptimizationHandlable(Constrainable):
     def _transform_gradients_non_natural(self, g):
         """
         Transform the gradients by multiplying the gradient factor for each
-        constraint to it.
+        constraint to it, using the theta transformed natural gradient.
         """
         #py3 fix
         #[np.put(g, i, c.gradfactor_non_natural(self.param_array[i], g[i])) for c, i in self.constraints.iteritems() if c != __fixed__]
@@ -324,13 +324,13 @@ class Parameterizable(OptimizationHandlable):
         See *visitor pattern* in literature. This is implemented in pre-order fashion.
 
         Example::
-            
+
             #Collect all children:
-    
+
             children = []
             self.traverse(children.append)
             print children
-            
+
         """
         if not self.__visited:
             visit(self, *args, **kwargs)
@@ -341,7 +341,7 @@ class Parameterizable(OptimizationHandlable):
     def _traverse(self, visit, *args, **kwargs):
         for c in self.parameters:
             c.traverse(visit, *args, **kwargs)
-        
+
 
     def traverse_parents(self, visit, *args, **kwargs):
         """
@@ -402,15 +402,14 @@ class Parameterizable(OptimizationHandlable):
         if pname not in dir(self):
             self.__dict__[pname] = param
             self._added_names_.add(pname)
-        elif pname in self.__dict__:
+        else: # pname in self.__dict__
             if pname in self._added_names_:
                 other = self.__dict__[pname]
-                if not (param is other):
-                    del self.__dict__[pname]
-                    self._added_names_.remove(pname)
-                    warn_and_retry(other)
-                    warn_and_retry(param, _name_digit.match(other.name))
-            return
+                #if not (param is other):
+                #    del self.__dict__[pname]
+                #    self._added_names_.remove(pname)
+                #    warn_and_retry(other)
+                #    warn_and_retry(param, _name_digit.match(other.name))
 
     def _remove_parameter_name(self, param=None, pname=None):
         assert param is None or pname is None, "can only delete either param by name, or the name of a param"
@@ -470,9 +469,20 @@ class Parameterizable(OptimizationHandlable):
         """
         pass
 
-    def save(self, filename, ftype='HDF5'):
+    def save(self, filename, ftype='HDF5'): # pragma: no coverage
         """
         Save all the model parameters into a file (HDF5 by default).
+
+        This is not supported yet. We are working on having a consistent,
+        human readable way of saving and loading GPy models. This only
+        saves the parameter array to a hdf5 file. In order
+        to load the model again, use the same script for building the model
+        you used to build this model. Then load the param array from this hdf5
+        file and set the parameters of the created model:
+
+            >>> m[:] = h5_file['param_array']
+
+        This is less then optimal, we are working on a better solution to that.
         """
         from ..param import Param
 
