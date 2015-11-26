@@ -50,14 +50,17 @@ class Constrainable(Indexable):
     def constrain_fixed(self, value=None, warning=True, trigger_parent=True):
         """
         Constrain this parameter to be fixed to the current value it carries.
+        
+        This does not override the previous constraints, so unfixing will
+        restore the constraint set before fixing.
 
         :param warning: print a warning for overwriting constraints.
         """
         if value is not None:
             self[:] = value
 
-        index = self.unconstrain()
-        index = self._add_to_index_operations(self.constraints, index, __fixed__, warning)
+        #index = self.unconstrain()
+        index = self._add_to_index_operations(self.constraints, np.empty(0), __fixed__, warning)
         self._highest_parent_._set_fixed(self, index)
         self.notify_observers(self, None if trigger_parent else -np.inf)
         return index
@@ -66,9 +69,14 @@ class Constrainable(Indexable):
     def unconstrain_fixed(self):
         """
         This parameter will no longer be fixed.
+        
+        If there was a constraint on this parameter when fixing it, 
+        it will be constraint with that previous constraint.
         """
         unconstrained = self.unconstrain(__fixed__)
         self._highest_parent_._set_unfixed(self, unconstrained)
+        #if self._default_constraint_ is not None:
+        #    return self.constrain(self._default_constraint_)
         return unconstrained
     unfix = unconstrain_fixed
 
