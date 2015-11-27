@@ -223,16 +223,68 @@ class ModelTest(unittest.TestCase):
         np.testing.assert_equal(variances, self.testmodel['.*var'].values())
 
     def test_fix_unfix(self):
+        default_constraints = dict(self.testmodel.constraints.items())
         fixed = self.testmodel.kern.lengthscale.fix()
         self.assertListEqual(fixed.tolist(), [0])
         unfixed = self.testmodel.kern.lengthscale.unfix()
         self.testmodel.kern.lengthscale.constrain_positive()
         self.assertListEqual(unfixed.tolist(), [0])
-
+        
         fixed = self.testmodel.kern.fix()
         self.assertListEqual(fixed.tolist(), [0,1])
         unfixed = self.testmodel.kern.unfix()
         self.assertListEqual(unfixed.tolist(), [0,1])
+        #print default_constraints
+        test_constraints = dict(self.testmodel.constraints.items())
+        for k in default_constraints:
+            np.testing.assert_array_equal(default_constraints[k], test_constraints[k])
+
+    def test_fix_unfix_constraints(self):
+        self.testmodel.constrain_bounded(0,1)
+        self.testmodel.kern.variance.constrain_positive()
+        self.testmodel.likelihood.constrain_bounded(0.3, 0.7)
+        before_constraints = dict(self.testmodel.constraints.items())
+        
+        self.testmodel.fix()
+        
+        test_constraints = dict(self.testmodel.constraints.items())
+        for k in before_constraints:
+            np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
+        np.testing.assert_array_equal(test_constraints[transformations.__fixed__], [0,1,2])
+
+        
+        # Assert fixing works and does not randomize the - say - lengthscale:
+        val = float(self.testmodel.kern.lengthscale)
+        self.testmodel.randomize()
+        self.assertEqual(val, self.testmodel.kern.lengthscale)
+        
+        self.testmodel.unfix()
+
+        test_constraints = dict(self.testmodel.constraints.items()) 
+        for k in before_constraints:
+            np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
+
+    def test_fix_constrain(self):
+        # save the constraints as they where:
+        before_constraints = dict(self.testmodel.constraints.items())
+        # fix
+        self.testmodel.fix()
+
+        test_constraints = dict(self.testmodel.constraints.items())
+        # make sure fixes are in place:
+        np.testing.assert_array_equal(test_constraints[transformations.__fixed__], [0,1,2])
+        # make sure, the constraints still exist
+        for k in before_constraints:
+            np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
+        
+        # override fix and previous constraint:
+        self.testmodel.likelihood.constrain_bounded(0,1)
+        # lik not fixed anymore
+        np.testing.assert_array_equal(self.testmodel.constraints[transformations.__fixed__], [0,1])
+        # previous constraints still in place:
+        np.testing.assert_array_equal(self.testmodel.constraints[transformations.Logexp()], [0,1])
+        # lik bounded
+        np.testing.assert_array_equal(self.testmodel.constraints[transformations.Logistic(0,1)], [2])
 
     def test_checkgrad(self):
         self.assertTrue(self.testmodel.checkgrad(1))
