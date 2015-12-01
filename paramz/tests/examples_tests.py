@@ -30,7 +30,7 @@
 
 import unittest
 import numpy as np
-from ..examples import RidgeRegression, Lasso
+from ..examples import RidgeRegression, Lasso, Polynomial
 from ..param import Param
 
 class Test2D(unittest.TestCase):
@@ -44,8 +44,9 @@ class Test2D(unittest.TestCase):
         m.regularizer.lambda_ = 0.00001
         self.assertTrue(m.checkgrad())
         m.optimize('scg', gtol=0, ftol=0, xtol=0)
-        np.testing.assert_array_almost_equal(m.beta, beta, 4)
-        np.testing.assert_array_almost_equal(m.gradient, np.zeros(m.beta.shape[0]), 4)
+        np.testing.assert_array_almost_equal(m.regularizer.weights[1], beta[:,0], 4)
+        np.testing.assert_array_almost_equal(m.regularizer.weights[0], [0,0], 4)
+        np.testing.assert_array_almost_equal(m.gradient, np.zeros(m.weights.size), 4)
 
     def testLassoRegression(self):
         X = np.random.uniform(0,1,(20,2))
@@ -53,17 +54,18 @@ class Test2D(unittest.TestCase):
         Y = X.dot(beta)
         #Y += np.random.normal(0, .001, Y.shape)
 
-        m = RidgeRegression(X, Y, regularizer=Lasso(.00001, Param('beta', np.ones((X.shape[1], 1)))))
+        m = RidgeRegression(X, Y, regularizer=Lasso(.00001), basis=Polynomial(1))
         self.assertTrue(m.checkgrad())
         m.optimize()
-        np.testing.assert_array_almost_equal(m.regularizer.beta, beta, 4)
-        np.testing.assert_array_almost_equal(m.gradient, np.zeros(m.beta.shape[0]), 4)
+        np.testing.assert_array_almost_equal(m.regularizer.weights[1], beta[:,0], 4)
+        np.testing.assert_array_almost_equal(m.regularizer.weights[0], [0,0], 4)
+        np.testing.assert_array_almost_equal(m.gradient, np.zeros(m.weights.size), 4)
 
-        m = RidgeRegression(X, Y, regularizer=Lasso(.00001, np.ones(X.shape[1])))
-        self.assertTrue(m.checkgrad())
-        m.optimize()
-        np.testing.assert_array_almost_equal(m.regularizer.beta, beta, 4)
-        np.testing.assert_array_almost_equal(m.gradient, np.zeros(m.beta.shape[0]), 4)
+#         m = RidgeRegression(X, Y, regularizer=Lasso(.00001, np.ones(X.shape[1])))
+#         self.assertTrue(m.checkgrad())
+#         m.optimize()
+#         np.testing.assert_array_almost_equal(m.regularizer.weights[1], beta, 4)
+#         np.testing.assert_array_almost_equal(m.gradient, np.zeros(m.weights.shape[0]), 4)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testRidgeRegression']
