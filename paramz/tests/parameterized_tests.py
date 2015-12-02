@@ -135,7 +135,7 @@ class ModelTest(unittest.TestCase):
             self.testmodel.optimize_restarts(1, messages=1, optimizer=opt_tnc(), verbose=False)
             self.testmodel.optimize('tnc', messages=1, xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
-        self.assertListEqual(self.testmodel.optimization_runs[-1].__getstate__(), [])
+        self.assertDictEqual(self.testmodel.optimization_runs[-1].__getstate__(), {})
     def test_optimize_org_bfgs(self):
         import warnings
         with warnings.catch_warnings():
