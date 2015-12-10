@@ -121,7 +121,7 @@ class opt_lbfgsb(Optimizer):
         if self.bfgs_factor is not None:
             opt_dict['factr'] = self.bfgs_factor
 
-        opt_result = optimize.fmin_l_bfgs_b(f_fp, x_init, maxfun=self.max_iters, **opt_dict)
+        opt_result = optimize.fmin_l_bfgs_b(f_fp, x_init, maxfun=self.max_iters, maxiter=self.max_iters, **opt_dict)
         self.x_opt = opt_result[0]
         self.f_opt = f_fp(self.x_opt)[0]
         self.funct_eval = opt_result[2]['funcalls']
