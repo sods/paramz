@@ -4,21 +4,21 @@
 # Copyright (c) 2015, Max Zwiessele
 #
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramax nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -41,7 +41,7 @@ from numbers import Number
 class Cacher(object):
     def __init__(self, operation, limit=5, ignore_args=(), force_kwargs=()):
         """
-        Cache an `operation`. 
+        Cache an `operation`.
 
         :param callable operation: function to cache
         :param int limit: depth of cacher
@@ -98,9 +98,21 @@ class Cacher(object):
                     else:
                         cache_ids.remove(cache_id)
                         self.cached_input_ids[ind_id] = [ref, cache_ids]
-            del self.cached_outputs[cache_id]
-            del self.inputs_changed[cache_id]
-            del self.cached_inputs[cache_id]
+            try:
+                del self.cached_outputs[cache_id]
+            except KeyError:
+                # Was not cached before, possibly a keyboard interrupt
+                pass
+            try:
+                del self.inputs_changed[cache_id]
+            except KeyError:
+                # Was not cached before, possibly a keyboard interrupt
+                pass
+            try:
+                del self.cached_inputs[cache_id]
+            except KeyError:
+                # Was not cached before, possibly a keyboard interrupt
+                pass
 
     def add_to_cache(self, cache_id, inputs, output):
         """This adds cache_id to the cache, with inputs and output"""
