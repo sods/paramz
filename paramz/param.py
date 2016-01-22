@@ -276,16 +276,6 @@ class Param(Parameterizable, ObsAr):
     def _max_len_index(self, ind):
         return reduce(lambda a, b: max(a, len(str(b))), ind, len(__index_name__))
 
-    def _short(self):
-        # short string to print
-        name = self.hierarchy_name()
-        if self._realsize_ < 2:
-            return name
-        ind = self._indices()
-        if ind.size > 4: indstr = ','.join(map(str, ind[:2])) + "..." + ','.join(map(str, ind[-2:]))
-        else: indstr = ','.join(map(str, ind))
-        return name + '[' + indstr + ']'
-
     def _repr_html_(self, indices=None, iops=None, lx=None, li=None, lls=None):
         """Representation of the parameter in html for notebook display."""
         filter_ = self._current_slice_
@@ -470,8 +460,8 @@ class ParamConcatenation(object):
         [param.unconstrain_bounded(lower, upper) for param in self.params]
     unconstrain_bounded.__doc__ = Param.unconstrain_bounded.__doc__
 
-    def untie(self, *ties):
-        [param.untie(*ties) for param in self.params]
+    #def untie(self, *ties):
+    #    [param.untie(*ties) for param in self.params]
 
     def checkgrad(self, verbose=False, step=1e-6, tolerance=1e-3):
         return self.params[0]._highest_parent_._checkgrad(self, verbose, step, tolerance)
