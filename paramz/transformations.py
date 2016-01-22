@@ -437,7 +437,7 @@ class NegativeLogexp(Transformation):
     def finv(self, f):
         return self.logexp.finv(-f)  # np.log(np.exp(-f) - 1.)
     def gradfactor(self, f, df):
-        return np.einsum('i,i->i', df, -self.logexp.gradfactor(-f))
+        return np.einsum('i,i->i', df, -self.logexp.gradfactor(-f, df))
     def initialize(self, f):
         return -self.logexp.initialize(f)  # np.abs(f)
     def __str__(self):
