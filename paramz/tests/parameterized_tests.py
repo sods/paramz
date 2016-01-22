@@ -222,6 +222,11 @@ class ModelTest(unittest.TestCase):
         self.testmodel.randomize()
         np.testing.assert_equal(variances, self.testmodel['.*var'].values())
 
+        self.testmodel[''] = 1.0
+        self.maxDiff = None
+        print self.testmodel[''].__str__(VT100=False)
+        self.assertSequenceEqual(self.testmodel[''].__str__(VT100=False), "  index  |          testmodel.rbf.lengthscale  |  constraints\n  [0]    |                         1.00000000  |   fixed +ve \n  -----  |             testmodel.rbf.variance  |  -----------\n  [0]    |                         1.00000000  |   fixed +ve \n  -----  |  testmodel.Gaussian_noise.variance  |  -----------\n  [0]    |                         1.00000000  |   fixed +ve ")
+
     def test_fix_unfix(self):
         default_constraints = dict(self.testmodel.constraints.items())
         fixed = self.testmodel.kern.lengthscale.fix()
@@ -229,7 +234,7 @@ class ModelTest(unittest.TestCase):
         unfixed = self.testmodel.kern.lengthscale.unfix()
         self.testmodel.kern.lengthscale.constrain_positive()
         self.assertListEqual(unfixed.tolist(), [0])
-        
+
         fixed = self.testmodel.kern.fix()
         self.assertListEqual(fixed.tolist(), [0,1])
         unfixed = self.testmodel.kern.unfix()
@@ -244,23 +249,23 @@ class ModelTest(unittest.TestCase):
         self.testmodel.kern.variance.constrain_positive()
         self.testmodel.likelihood.constrain_bounded(0.3, 0.7)
         before_constraints = dict(self.testmodel.constraints.items())
-        
+
         self.testmodel.fix()
-        
+
         test_constraints = dict(self.testmodel.constraints.items())
         for k in before_constraints:
             np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
         np.testing.assert_array_equal(test_constraints[transformations.__fixed__], [0,1,2])
 
-        
+
         # Assert fixing works and does not randomize the - say - lengthscale:
         val = float(self.testmodel.kern.lengthscale)
         self.testmodel.randomize()
         self.assertEqual(val, self.testmodel.kern.lengthscale)
-        
+
         self.testmodel.unfix()
 
-        test_constraints = dict(self.testmodel.constraints.items()) 
+        test_constraints = dict(self.testmodel.constraints.items())
         for k in before_constraints:
             np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
 
@@ -276,7 +281,7 @@ class ModelTest(unittest.TestCase):
         # make sure, the constraints still exist
         for k in before_constraints:
             np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
-        
+
         # override fix and previous constraint:
         self.testmodel.likelihood.constrain_bounded(0,1)
         # lik not fixed anymore

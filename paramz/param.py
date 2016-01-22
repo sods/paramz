@@ -484,7 +484,7 @@ class ParamConcatenation(object):
     __gt__ = lambda self, val: self.values() > val
     __ge__ = lambda self, val: self.values() >= val
 
-    def __str__(self, *args, **kwargs):
+    def __str__(self, **kwargs):
         params = self.params
 
         indices = [p._indices() for p in params]
@@ -495,22 +495,21 @@ class ParamConcatenation(object):
         params_iops = []
         for p in params:
             filter_ = p._current_slice_
-            ind = p._raveled_index(filter_)
-            i = 0
-            iops = OrderedDict()
-            for name, iop in p._index_operations.items():
-                if lls is None:
-                    lls = [0]*iop.size
-                iops[name] = iop.properties_for(ind)
-                lls[i] = max(lls[i], p._max_len_names(iops[name], name))
-                i += 1
+            ravi = p._raveled_index(filter_)
+            iops = OrderedDict([name, iop.properties_for(ravi)] for name, iop in p._index_operations.items())
+            _lls = [p._max_len_names(iop, name) for name, iop in iops.items()]
+            if lls is None:
+                lls = _lls
+            else:
+                for i in range(len(lls)):
+                    lls[i] = max(lls[i], _lls[i])
             params_iops.append(iops)
 
         strings = []
         start = True
 
         for i in range(len(params)):
-            strings.append(params[i].__str__(indices=indices[i], iops=params_iops[i], lx=lx, li=li, lls=lls, only_name=(not start)))
+            strings.append(params[i].__str__(indices=indices[i], iops=params_iops[i], lx=lx, li=li, lls=lls, only_name=(not start), **kwargs))
             start = False
             i += 1
 
@@ -518,41 +517,41 @@ class ParamConcatenation(object):
     def __repr__(self):
         return "\n".join(map(repr,self.params))
 
-    def __ilshift__(self, *args, **kwargs):
+    def __ilshift__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ilshift__(self.values(), *args, **kwargs)
 
-    def __irshift__(self, *args, **kwargs):
+    def __irshift__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__irshift__(self.values(), *args, **kwargs)
 
-    def __ixor__(self, *args, **kwargs):
+    def __ixor__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ixor__(self.values(), *args, **kwargs)
 
-    def __ipow__(self, *args, **kwargs):
+    def __ipow__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ipow__(self.values(), *args, **kwargs)
 
-    def __ifloordiv__(self, *args, **kwargs):
+    def __ifloordiv__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ifloordiv__(self.values(), *args, **kwargs)
 
-    def __isub__(self, *args, **kwargs):
+    def __isub__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__isub__(self.values(), *args, **kwargs)
 
-    def __ior__(self, *args, **kwargs):
+    def __ior__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ior__(self.values(), *args, **kwargs)
 
-    def __itruediv__(self, *args, **kwargs):
+    def __itruediv__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__itruediv__(self.values(), *args, **kwargs)
 
-    def __idiv__(self, *args, **kwargs):
+    def __idiv__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__idiv__(self.values(), *args, **kwargs)
 
-    def __iand__(self, *args, **kwargs):
+    def __iand__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__iand__(self.values(), *args, **kwargs)
 
-    def __imod__(self, *args, **kwargs):
+    def __imod__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__imod__(self.values(), *args, **kwargs)
 
-    def __iadd__(self, *args, **kwargs):
+    def __iadd__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__iadd__(self.values(), *args, **kwargs)
 
-    def __imul__(self, *args, **kwargs):
+    def __imul__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__imul__(self.values(), *args, **kwargs)
