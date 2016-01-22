@@ -212,6 +212,8 @@ class ModelTest(unittest.TestCase):
         self.assertEqual(val, self.testmodel.kern.lengthscale)
 
     def test_regular_expression_misc(self):
+        self.assertTrue(self.testmodel[''].checkgrad())
+
         self.testmodel.kern.lengthscale.fix()
         val = float(self.testmodel.kern.lengthscale)
         self.testmodel.randomize()
@@ -224,8 +226,9 @@ class ModelTest(unittest.TestCase):
 
         self.testmodel[''] = 1.0
         self.maxDiff = None
-        print self.testmodel[''].__str__(VT100=False)
-        self.assertSequenceEqual(self.testmodel[''].__str__(VT100=False), "  index  |          testmodel.rbf.lengthscale  |  constraints\n  [0]    |                         1.00000000  |   fixed +ve \n  -----  |             testmodel.rbf.variance  |  -----------\n  [0]    |                         1.00000000  |   fixed +ve \n  -----  |  testmodel.Gaussian_noise.variance  |  -----------\n  [0]    |                         1.00000000  |   fixed +ve ")
+
+        self.testmodel[''].unconstrain()
+        self.assertSequenceEqual(self.testmodel[''].__str__(VT100=False), "  index  |          testmodel.rbf.lengthscale  |  constraints\n  [0]    |                         1.00000000  |             \n  -----  |             testmodel.rbf.variance  |  -----------\n  [0]    |                         1.00000000  |             \n  -----  |  testmodel.Gaussian_noise.variance  |  -----------\n  [0]    |                         1.00000000  |             ")
 
     def test_fix_unfix(self):
         default_constraints = dict(self.testmodel.constraints.items())

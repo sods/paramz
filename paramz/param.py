@@ -473,7 +473,7 @@ class ParamConcatenation(object):
     def untie(self, *ties):
         [param.untie(*ties) for param in self.params]
 
-    def checkgrad(self, verbose=0, step=1e-6, tolerance=1e-3):
+    def checkgrad(self, verbose=False, step=1e-6, tolerance=1e-3):
         return self.params[0]._highest_parent_._checkgrad(self, verbose, step, tolerance)
     #checkgrad.__doc__ = Gradcheckable.checkgrad.__doc__
 
