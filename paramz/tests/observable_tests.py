@@ -20,6 +20,20 @@ class ParameterizedTest(Parameterized):
     def parameters_changed(self):
         self.params_changed_count += 1
 
+class TestMisc(unittest.TestCase):
+    def test_casting(self):
+        ints = np.array(range(10))
+        self.assertEqual(ints.dtype, np.int_)
+        floats = np.arange(0,5,.5)
+        self.assertEqual(floats.dtype, np.float_)
+        strings = np.array(list('testing'))
+        self.assertEqual(strings.dtype.type, np.str_)
+
+        self.assertEqual(ObsAr(ints).dtype, np.float_)
+        self.assertEqual(ObsAr(floats).dtype, np.float_)
+        self.assertEqual(ObsAr(strings).dtype.type, np.str_)
+
+
 class Test(unittest.TestCase):
 
     def setUp(self):
@@ -139,7 +153,7 @@ class Test(unittest.TestCase):
         self.par.notify_observers(0)
         self.assertEqual(self._first, self._trigger_priority, 'priority should be first')
         self.assertEqual(self._second, self._trigger, 'trigger should be second')
-        
+
     def testObsAr(self):
         o = ObsAr(np.random.normal(0,1,(10)))
         o[3:5] = 5
