@@ -22,6 +22,7 @@ exclude_lines =
     except NotImplementedError
     except NotImplemented
     except AssertionError
+    except KeyError
     raise ValueError
     pass
 
