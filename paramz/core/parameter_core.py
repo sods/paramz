@@ -166,30 +166,53 @@ class OptimizationHandlable(Constrainable):
 
     def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True, intermediate=False):
         """
-        Get the names of all parameters of this model.
+        Get the names of all parameters of this model or parameter. It starts
+        from the parameterized object you are calling this method on.
+
+        Note: This does not unravel multidimensional parameters,
+              use parameter_names_flat to unravel parameters!
 
         :param bool add_self: whether to add the own name in front of names
         :param bool adjust_for_printing: whether to call `adjust_name_for_printing` on names
         :param bool recursive: whether to traverse through hierarchy and append leaf node names
         :param bool intermediate: whether to add intermediate names, that is parameterized objects
         """
-        if adjust_for_printing: adjust = lambda x: adjust_name_for_printing(x)
+        if adjust_for_printing: adjust = adjust_name_for_printing
         else: adjust = lambda x: x
         names = []
-        if intermediate or (not recursive): names.extend([adjust(x.name) for x in self.parameters])
-        if intermediate or recursive: names.extend([xi for x in self.parameters for xi in x.parameter_names(add_self=True, adjust_for_printing=adjust_for_printing)])
+        if intermediate or (not recursive):
+            names.extend([adjust(x.name) for x in self.parameters])
+        if intermediate or recursive: names.extend([
+                xi for x in self.parameters for xi in
+                 x.parameter_names(add_self=True,
+                                   adjust_for_printing=adjust_for_printing,
+                                   recursive=True,
+                                   intermediate=False)])
         if add_self: names = map(lambda x: adjust(self.name) + "." + x, names)
         return names
 
-    def _get_param_names(self):
-        n = np.array([p.hierarchy_name() + '[' + str(i) + ']' for p in self.flattened_parameters for i in p._indices()])
-        return n
+    def parameter_names_flat(self, include_fixed=False):
+        """
+        Return the flattened parameter names for all subsequent parameters
+        of this parameter. We do not include the name for self here!
 
-    def _get_param_names_transformed(self):
-        n = self._get_param_names()
-        if self._has_fixes():
-            return n[self._fixes_]
-        return n
+        If you want the names for fixed parameters as well in this list,
+        set include_fixed to True.
+
+        :param bool include_fixed: whether to include fixed names here.
+        """
+        name_list = []
+        for p in self.flattened_parameters:
+            name = p.hierarchy_name()
+            if p.size > 1:
+                name_list.extend(["{}[{!s}]".format(name, i) for i in p._indices()])
+            else:
+                name_list.append(name)
+        name_list = np.array(name_list)
+
+        if not include_fixed and self._has_fixes():
+            return name_list[self._fixes_]
+        return name_list
 
     #===========================================================================
     # Randomizeable

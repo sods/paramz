@@ -227,8 +227,9 @@ class Param(Parameterizable, ObsAr):
         if self.size <= 1:
             return [str(self.view(np.ndarray)[0])]
         else: return [str(self.shape)]
-    def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True):
-        # this is just overwrighting the parameterized calls to parameter names, in order to maintain OOP
+    def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True, **kw):
+        # this is just overwrighting the parameterized calls to
+        # parameter names, in order to maintain OOP
         if adjust_for_printing:
             return [adjust_name_for_printing(self.name)]
         return [self.name]

@@ -496,11 +496,12 @@ class ParameterizedTest(unittest.TestCase):
         np.testing.assert_array_equal(self.test1.kern.white.optimizer_array, [])
 
     def test_param_names(self):
-        self.assertSequenceEqual(self.test1.kern.rbf._get_param_names_transformed().tolist(), ['test_parameterized.add.rbf.variance[[0]]', 'test_parameterized.add.rbf.lengthscale[[0]]'])
+        self.assertSequenceEqual(self.test1.kern.rbf.parameter_names_flat().tolist(), ['test_parameterized.add.rbf.variance', 'test_parameterized.add.rbf.lengthscale'])
 
         self.test1.param.fix()
         self.test1.kern.rbf.lengthscale.fix()
-        self.assertSequenceEqual(self.test1._get_param_names_transformed().tolist(), ['test_parameterized.add.rbf.variance[[0]]', 'test_parameterized.add.white.variance[[0]]'])
+        self.assertSequenceEqual(self.test1.parameter_names_flat().tolist(), ['test_parameterized.add.rbf.variance', 'test_parameterized.add.white.variance'])
+        self.assertEqual(self.test1.parameter_names_flat(include_fixed=True).size, self.test1.size)
 
     def test_num_params(self):
         self.assertEqual(self.test1.num_params, 2)

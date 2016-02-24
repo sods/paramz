@@ -307,11 +307,7 @@ class Model(Parameterized):
             if target_param is None:
                 transformed_index = np.arange(len(x))
             else:
-                transformed_index = self._raveled_index_for(target_param)
-                if self._has_fixes():
-                    indices = np.r_[:self.size]
-                    which = (transformed_index[:, None] == indices[self._fixes_][None, :]).nonzero()
-                    transformed_index = (indices - (~self._fixes_).cumsum())[transformed_index[which[0]]]
+                transformed_index = self._raveled_index_for_transformed(target_param)
 
                 if transformed_index.size == 0:
                     print("No free parameters to check")
@@ -338,7 +334,7 @@ class Model(Parameterized):
         else:
             # check the gradient of each parameter individually, and do some pretty printing
             try:
-                names = self._get_param_names()
+                names = self.parameter_names_flat()
             except NotImplementedError:
                 names = ['Variable %i' % i for i in range(len(x))]
             # Prepare for pretty-printing
@@ -356,24 +352,16 @@ class Model(Parameterized):
                 param_index = range(len(x))
                 transformed_index = param_index
             else:
-                param_index = self._raveled_index_for(target_param)
-                if self._has_fixes():
-                    indices = np.r_[:self.size]
-                    which = (param_index[:, None] == indices[self._fixes_][None, :]).nonzero()
-                    param_index = param_index[which[0]]
-                    transformed_index = (indices - (~self._fixes_).cumsum())[param_index]
-                    # print param_index, transformed_index
-                else:
-                    transformed_index = param_index
+                transformed_index = self._raveled_index_for_transformed(target_param)
 
-                if param_index.size == 0:
+                if transformed_index.size == 0:
                     print("No free parameters to check")
                     return
 
             gradient = self._grads(x).copy()
             np.where(gradient == 0, 1e-312, gradient)
             ret = True
-            for nind, xind in zip(param_index, transformed_index):
+            for xind in zip(transformed_index):
                 xx = x.copy()
                 xx[xind] += step
                 f1 = float(self._objective(xx))
@@ -392,13 +380,13 @@ class Model(Parameterized):
                 difference = np.abs(numerical_gradient - gradient[xind])
 
                 if (np.abs(1. - ratio) < tolerance) or np.abs(difference) < tolerance:
-                    formatted_name = "\033[92m {0} \033[0m".format(names[nind])
+                    formatted_name = "\033[92m {0} \033[0m".format(names[xind])
                     ret &= True
                 else:
-                    formatted_name = "\033[91m {0} \033[0m".format(names[nind])
+                    formatted_name = "\033[91m {0} \033[0m".format(names[xind])
                     ret &= False
                 if df_unstable:
-                    formatted_name = "\033[94m {0} \033[0m".format(names[nind])
+                    formatted_name = "\033[94m {0} \033[0m".format(names[xind])
 
                 r = '%.6f' % float(ratio)
                 d = '%.6f' % float(difference)
