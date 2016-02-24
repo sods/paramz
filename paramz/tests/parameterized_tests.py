@@ -10,11 +10,10 @@ from ..core.observable_array import ObsAr
 from ..core.index_operations import ParameterIndexOperations
 from ..core.nameable import adjust_name_for_printing
 from ..core import HierarchyError
-from paramz import transformations
+from .. import transformations
 from ..parameterized import Parameterized
-from ..param import Param
+from ..param import Param, ParamConcatenation
 from ..model import Model
-from paramz.param import ParamConcatenation
 
 class ArrayCoreTest(unittest.TestCase):
     def setUp(self):
@@ -35,7 +34,7 @@ def test_constraints_in_init():
     class Test(Parameterized):
         def __init__(self, name=None, parameters=[], *a, **kw):
             super(Test, self).__init__(name=name)
-            self.x = Param('x', np.random.uniform(0,1,(3,4)))
+            self.x = Param('x', np.random.uniform(0,1,(3,4)), transformations.__fixed__)
             self.x[0].constrain_bounded(0,1)
             self.link_parameter(self.x)
             self.x[1].fix()

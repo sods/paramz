@@ -142,6 +142,8 @@ class Constrainable(Indexable):
         """
         if isinstance(transform, Transformation):
             self.param_array[...] = transform.initialize(self.param_array)
+        elif transform == __fixed__:
+            return self.fix(warning=warning, trigger_parent=trigger_parent)
         else:
             raise ValueError('Can only constrain with paramz.transformations.Transformation object')
         reconstrained = self.unconstrain()
