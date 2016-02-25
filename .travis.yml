@@ -1,15 +1,19 @@
 sudo: false
+
 os:
 - osx
 - linux
+
 addons:
   apt_packages:
   - pandoc
+
 env:
 - PYTHON_VERSION=2.7
 - PYTHON_VERSION=3.3
 - PYTHON_VERSION=3.4
 - PYTHON_VERSION=3.5
+
 before_install:
 - export CONDA_CACHED=1
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export OS=Linux; elif [[ "$TRAVIS_OS_NAME"
@@ -26,21 +30,32 @@ before_install:
 - if [ ! -f $MINCONDA_CACHE_FILE ]; then export CONDA_CACHED=0; wget http://repo.continuum.io/miniconda/$MINICONDA-latest-$OS-x86_64.sh
   -O $MINCONDA_CACHE_FILE; bash $MINCONDA_CACHE_FILE -b -p $MINICONDA_INSTALL; fi;
 - export PATH="$MINICONDA_INSTALL/bin:$PATH";
+
 install:
-- conda install --yes python=$PYTHON_VERSION numpy=1.9 scipy=0.16 nose pip six matplotlib;
+- n=0
+  until [ $n -ge 5 ]
+  do # Retry 5 times, as weird 404 errors seem to popup...
+    conda install --yes python=$PYTHON_VERSION numpy=1.9 scipy=0.16 nose pip six matplotlib sphinx && break
+    n=$[$n+1]
+    sleep 15
+  done
 - pip install codecov
 - pip install pypandoc
 - python setup.py develop
+
 script:
 - coverage run travis_tests.py
+
 after_success:
 - codecov
+
 before_deploy:
 - cd doc
 - pip install sphinx_rtd_theme
 - sphinx-apidoc -o source/ ../paramz
 - make html
 - cd ../
+
 deploy:
   provider: pypi
   user: maxz
