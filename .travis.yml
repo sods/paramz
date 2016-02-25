@@ -1,4 +1,5 @@
-sudo: false
+sudo:
+ - false
 
 os:
 - osx
@@ -32,12 +33,7 @@ before_install:
 - export PATH="$MINICONDA_INSTALL/bin:$PATH";
 
 install:
-- n=0
-- until [ $n -ge 5 ];
-  do # Retry 5 times, as weird 404 errors seem to popup...
-    conda install --yes python=$PYTHON_VERSION numpy=1.9 scipy=0.16 nose pip six matplotlib sphinx && break;
-    n=$[$n+1];
-  done;
+- sh ./install_retry.sh
 - pip install codecov
 - pip install pypandoc
 - python setup.py develop
