@@ -350,12 +350,12 @@ class Model(Parameterized):
             print('\n'.join([header_string[0], separator]))
 
             if target_param is None:
-                raise("Wait, what??")
-            else:
-                transformed_index = self._raveled_index_for_transformed(target_param)
-                if transformed_index.size == 0:
-                    print("No free parameters to check")
-                    return
+                target_param = self
+            transformed_index = self._raveled_index_for_transformed(target_param)
+
+            if transformed_index.size == 0:
+                print("No free parameters to check")
+                return
 
             gradient = self._grads(x).copy()
             np.where(gradient == 0, 1e-312, gradient)
