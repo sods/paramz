@@ -18,14 +18,10 @@ env:
 before_install:
 - wget https://github.com/mzwiessele/travis_scripts/raw/master/download_miniconda.sh
 - wget https://github.com/mzwiessele/travis_scripts/raw/master/install_retry.sh
-- chmod ugo+x download_miniconda.sh
-- chmod ugo+x install_retry.sh
-- ./download_miniconda.sh
-- echo $MINICONDA_FILE
-- echo $PATH
+- source download_miniconda.sh
 
 install:
-- ./install_retry.sh
+- source install_retry.sh
 - pip install codecov
 - pip install pypandoc
 - python setup.py develop
