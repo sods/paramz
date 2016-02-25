@@ -19,6 +19,8 @@ before_install:
 - wget https://github.com/mzwiessele/travis_scripts/raw/master/download_miniconda.sh
 - wget https://github.com/mzwiessele/travis_scripts/raw/master/install_retry.sh
 - source download_miniconda.sh
+- echo $PATH
+- echo $MINICONDA_PATH
 
 install:
 - source install_retry.sh
