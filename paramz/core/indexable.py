@@ -131,7 +131,7 @@ class Indexable(Nameable, Updateable):
         what you are doing, do not use this method, it will have
         unexpected returns!
         """
-        ravi = self._raveled_index_for(self)
+        ravi = self._raveled_index_for(param)
         if self._has_fixes():
             fixes = self._fixes_
             ### Transformed indices, handling the offsets of previous fixes

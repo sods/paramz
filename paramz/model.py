@@ -348,12 +348,11 @@ class Model(Parameterized):
             header_string = list(map(lambda x: '|'.join(x), [header_string]))
             separator = '-' * len(header_string[0])
             print('\n'.join([header_string[0], separator]))
+
             if target_param is None:
-                param_index = range(len(x))
-                transformed_index = param_index
+                raise("Wait, what??")
             else:
                 transformed_index = self._raveled_index_for_transformed(target_param)
-
                 if transformed_index.size == 0:
                     print("No free parameters to check")
                     return
