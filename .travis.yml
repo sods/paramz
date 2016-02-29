@@ -20,9 +20,10 @@ before_install:
 - wget https://github.com/mzwiessele/travis_scripts/raw/master/install_retry.sh
 - source download_miniconda.sh
 - echo $PATH
-- echo $MINICONDA_PATH
+- echo $MINICONDA_INSTALL
 
 install:
+- echo $PATH
 - source install_retry.sh
 - pip install codecov
 - pip install pypandoc
