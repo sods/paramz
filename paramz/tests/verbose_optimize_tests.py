@@ -42,7 +42,7 @@ class Test(unittest.TestCase):
             def objective_function(self):
                 return 10
                 
-        self.vo = VerboseOptimization(Stub(), opt_bfgs(), 100, verbose=True)
+        self.vo = VerboseOptimization(Stub(), opt_bfgs(), -10, verbose=True)
 
     def test_timestrings(self):
         self.vo.print_out(0)
@@ -62,3 +62,5 @@ class Test(unittest.TestCase):
 
     def test_finish(self):
         self.assertEqual(self.vo.status, 'running')
+        
+        

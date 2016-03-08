@@ -187,7 +187,7 @@ class VerboseOptimization(object):
         else:
             self.current_gradient = np.nan
 
-    def finish(self, opt):
+    def finish(self, opt): # pragma: no cover
         import warnings
         warnings.warn('Finish now automatic, deprecating', DeprecationWarning)
         
