@@ -222,7 +222,7 @@ class Cache_this(object):
             if not hasattr(obj, 'cachers'):
                 obj.cachers = {}
             caches = obj.cachers
-            if caches.has_key(f):
+            if f in caches:
                 cacher = caches[f]
             else:
                 cacher = caches[f] = Cacher(f, self.limit, self.ignore_args, self.force_kwargs)
