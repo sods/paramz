@@ -207,30 +207,7 @@ class Cacher(object):
     def __name__(self):
         return self.operation.__name__
 
-from functools import partial, update_wrapper
-
-class Cacher_wrap(object):
-    def __init__(self, f, limit, ignore_args, force_kwargs):
-        self.limit = limit
-        self.ignore_args = ignore_args
-        self.force_kwargs = force_kwargs
-        self.f = f
-        update_wrapper(self, self.f)
-    def __get__(self, obj, objtype=None):
-        return partial(self, obj)
-    def __call__(self, *args, **kwargs):
-        obj = args[0]
-        # import ipdb;ipdb.set_trace()
-        try:
-            caches = obj.__cachers
-        except AttributeError:
-            caches = obj.__cachers = {}
-        try:
-            cacher = caches[self.f]
-        except KeyError:
-            cacher = caches[self.f] = Cacher(self.f, self.limit, self.ignore_args, self.force_kwargs)
-        return cacher(*args, **kwargs)
-
+import decorator
 class Cache_this(object):
     """
     A decorator which can be applied to bound methods in order to cache them
@@ -238,8 +215,18 @@ class Cache_this(object):
     def __init__(self, limit=5, ignore_args=(), force_kwargs=()):
         self.limit = limit
         self.ignore_args = ignore_args
-        self.force_args = force_kwargs
+        self.force_kwargs = force_kwargs
     def __call__(self, f):
-        newf = Cacher_wrap(f, self.limit, self.ignore_args, self.force_args)
-        update_wrapper(newf, f)
-        return newf
+        def g(obj, *args, **kw):
+            obj = args[0]
+            if not hasattr(obj, 'cachers'):
+                obj.cachers = {}
+            caches = obj.cachers
+            if caches.has_key(f):
+                cacher = caches[f]
+            else:
+                cacher = caches[f] = Cacher(f, self.limit, self.ignore_args, self.force_kwargs)
+            return cacher(*args, **kw)
+        g.__name__ = f.__name__
+        g.__doc__ = f.__doc__         
+        return decorator.decorate(f, g)
