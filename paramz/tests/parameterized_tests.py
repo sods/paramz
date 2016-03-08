@@ -14,6 +14,7 @@ from .. import transformations
 from ..parameterized import Parameterized
 from ..param import Param, ParamConcatenation
 from ..model import Model
+from unittest.case import SkipTest
 
 class ArrayCoreTest(unittest.TestCase):
     def setUp(self):
@@ -112,6 +113,7 @@ class ModelTest(unittest.TestCase):
         self.testmodel.kern.link_parameter(lengthscale)
         self.testmodel.kern.link_parameter(variance)
         self.testmodel.trigger_update()
+        self.reset_params = self.testmodel.param_array.copy()
         #=============================================================================
         # GP_regression.           |  Value  |  Constraint  |  Prior  |  Tied to
         # rbf.variance             |    1.0  |     +ve      |         |
@@ -142,6 +144,22 @@ class ModelTest(unittest.TestCase):
             self.testmodel.optimize('tnc', messages=1, xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
         self.assertDictEqual(self.testmodel.optimization_runs[-1].__getstate__(), {})
+    def test_optimize_climin(self):
+        try:
+            import climin
+        except ImportError:
+            raise SkipTest("climin not installed, skipping test")
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel.optimize('rprop', messages=1, xtol=0, ftol=0, gtol=1e-6)
+        np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel[:] = self.reset_params
+            self.testmodel.trigger_update()
+            self.testmodel.optimize('adadelta', messages=1, xtol=0, ftol=0, gtol=1e-6)
+        np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_org_bfgs(self):
         import warnings
         with warnings.catch_warnings():

@@ -35,7 +35,7 @@ class StochasticStorage(object):
 
     self.d has to be a list of lists:
     [dimension indices, nan indices for those dimensions]
-    so that the minibatches can be used as efficiently as possible.10
+    so that the minibatches can be used as efficiently as possible.
     '''
     def __init__(self, model):
         """
