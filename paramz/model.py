@@ -327,7 +327,7 @@ class Model(Parameterized):
             denominator = (2 * np.dot(dx, gradient))
             global_ratio = (f1 - f2) / np.where(denominator == 0., 1e-32, denominator)
             global_diff = np.abs(f1 - f2) < tolerance and np.allclose(gradient, 0, atol=tolerance)
-            if global_ratio is np.nan:
+            if global_ratio is np.nan: # pragma: no cover
                 global_ratio = 0
             return np.abs(1. - global_ratio) < tolerance or global_diff
         else:
@@ -369,21 +369,23 @@ class Model(Parameterized):
                 #the same
                 if f1 > 1e-15 or f1 < -1e-15 or f2 > 1e-15 or f2 < -1e-15:
                     df_ratio = np.abs((f1 - f2) / min(f1, f2))
-                else:
+                else: # pragma: no cover
                     df_ratio = 1.0
                 df_unstable = df_ratio < df_tolerance
                 numerical_gradient = (f1 - f2) / (2. * step)
-                if np.all(gradient[xind] == 0): ratio = (f1 - f2) == gradient[xind]
-                else: ratio = (f1 - f2) / (2. * step * gradient[xind])
+                if np.all(gradient[xind] == 0): # pragma: no cover 
+                    ratio = (f1 - f2) == gradient[xind]
+                else: 
+                    ratio = (f1 - f2) / (2. * step * gradient[xind])
                 difference = np.abs(numerical_gradient - gradient[xind])
 
                 if (np.abs(1. - ratio) < tolerance) or np.abs(difference) < tolerance:
                     formatted_name = "\033[92m {0} \033[0m".format(names[xind])
                     ret &= True
-                else:
+                else:  # pragma: no cover
                     formatted_name = "\033[91m {0} \033[0m".format(names[xind])
                     ret &= False
-                if df_unstable:
+                if df_unstable:  # pragma: no cover
                     formatted_name = "\033[94m {0} \033[0m".format(names[xind])
 
                 r = '%.6f' % float(ratio)

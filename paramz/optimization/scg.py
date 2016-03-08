@@ -90,7 +90,7 @@ def SCG(f, gradf, x, optargs=(), maxiters=500, max_f_eval=np.inf, xtol=None, fto
         # Calculate first and second directional derivatives.
         if success:
             mu = np.dot(d, gradnew)
-            if mu >= 0:
+            if mu >= 0:  # pragma: no cover
                 d = -gradnew
                 mu = np.dot(d, gradnew)
             kappa = np.dot(d, d)
@@ -102,7 +102,7 @@ def SCG(f, gradf, x, optargs=(), maxiters=500, max_f_eval=np.inf, xtol=None, fto
 
         # Increase effective curvature and evaluate step size alpha.
         delta = theta + beta * kappa
-        if delta <= 0:
+        if delta <= 0: # pragma: no cover
             delta = beta * kappa
             beta = beta - theta / kappa
 
