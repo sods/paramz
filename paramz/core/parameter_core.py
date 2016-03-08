@@ -144,16 +144,16 @@ class OptimizationHandlable(Constrainable):
         if self._has_fixes(): return g[self._fixes_]
         return g
 
-    def _transform_gradients_non_natural(self, g):
-        """
-        Transform the gradients by multiplying the gradient factor for each
-        constraint to it, using the theta transformed natural gradient.
-        """
-        #py3 fix
-        #[np.put(g, i, c.gradfactor_non_natural(self.param_array[i], g[i])) for c, i in self.constraints.iteritems() if c != __fixed__]
-        [np.put(g, i, c.gradfactor_non_natural(self.param_array[i], g[i])) for c, i in self.constraints.items() if c != __fixed__]
-        if self._has_fixes(): return g[self._fixes_]
-        return g
+    #def _transform_gradients_non_natural(self, g):
+    #    """
+    #    Transform the gradients by multiplying the gradient factor for each
+    #    constraint to it, using the theta transformed natural gradient.
+    #    """
+    #    #py3 fix
+    #    #[np.put(g, i, c.gradfactor_non_natural(self.param_array[i], g[i])) for c, i in self.constraints.iteritems() if c != __fixed__]
+    #    [np.put(g, i, c.gradfactor_non_natural(self.param_array[i], g[i])) for c, i in self.constraints.items() if c != __fixed__]
+    #    if self._has_fixes(): return g[self._fixes_]
+    #    return g
 
 
     @property
