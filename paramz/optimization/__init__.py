@@ -31,4 +31,4 @@
 #===============================================================================
 
 from .optimization import *
-from . import verbose_optimization, stochastics
+from . import verbose_optimization
