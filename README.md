@@ -5,7 +5,6 @@
 [![codecov](https://codecov.io/github/sods/paramz/coverage.svg?branch=master)](https://codecov.io/github/sods/paramz?branch=master)
 [![docStat](https://readthedocs.org/projects/paramz/badge/?version=latest)](http://paramz.readthedocs.org/en/latest/)
 
-
 Parameterization Framework for parameterized model creation and handling.
 
 This is a lightweight framework for using parameterized models. 
@@ -25,3 +24,6 @@ Features:
  - Jupyter notebook integration
  - Efficient storage of models, for reloading
  - Efficient caching included
+
+#### Coverage
+![codecov.io](https://codecov.io/github/sods/paramz/branch.svg?branch=master)
