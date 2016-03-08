@@ -238,6 +238,7 @@ class ModelTest(unittest.TestCase):
         val = float(self.testmodel.kern.lengthscale)
         self.testmodel.randomize()
         self.assertEqual(val, self.testmodel.kern.lengthscale)
+        self.testmodel.optimize(max_iters=2)
 
     def test_regular_expression_misc(self):
         self.assertTrue(self.testmodel[''].checkgrad())

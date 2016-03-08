@@ -47,13 +47,14 @@ class VerboseOptimization(object):
             self.maxiters = maxiters
             self.len_maxiters = len(str(maxiters))
             self.opt_name = opt.opt_name
+            self.opt = opt
             self.model.add_observer(self, self.print_status)
             self.status = 'running'
             self.clear = clear_after_finish
 
             self.update()
 
-            try:
+            try:# pragma: no cover
                 from IPython.display import display
                 from ipywidgets import IntProgress, HTML, Box, VBox, HBox, FlexBox
                 self.text = HTML(width='100%')
@@ -65,7 +66,7 @@ class VerboseOptimization(object):
                 # Not in Ipython notebook
                 self.ipython_notebook = False
 
-            if self.ipython_notebook:
+            if self.ipython_notebook:# pragma: no cover
                 left_col = VBox(children=[self.progress, self.text], padding=2, width='40%')
                 right_col = Box(children=[self.model_show], padding=2, width='60%')
                 self.hor_align = FlexBox(children = [left_col, right_col], width='100%', orientation='horizontal')
@@ -124,7 +125,7 @@ class VerboseOptimization(object):
             else:
                 ms = (seconds%1)*100
                 self.timestring = '{m:0>2d}m{s:0>2d}s{ms:0>2d}'.format(m=int(m), s=int(s), ms=int(ms))
-        if self.ipython_notebook:
+        if self.ipython_notebook: # pragma: no cover
             names_vals = [['optimizer', "{:s}".format(self.opt_name)],
                           ['runtime', "{:>s}".format(self.timestring)],
                           ['evaluation', "{:>0{l}}".format(self.iteration, l=self.len_maxiters)],
@@ -187,25 +188,28 @@ class VerboseOptimization(object):
             self.current_gradient = np.nan
 
     def finish(self, opt):
-        self.status = opt.status
-        if self.verbose and self.ipython_notebook:
-            if 'conv' in self.status.lower():
-                self.progress.bar_style = 'success'
-            elif self.iteration >= self.maxiters:
-                self.progress.bar_style = 'warning'
-            else:
-                self.progress.bar_style = 'danger'
-
+        import warnings
+        warnings.warn('Finish now automatic, deprecating', DeprecationWarning)
+        
     def __exit__(self, type, value, traceback):
         if self.verbose:
+            self.status = self.opt.status
+
             self.stop = time.time()
             self.model.remove_observer(self)
-            self.print_out(self.stop - self.start)
-
+            self.print_out(self.stop - self.start)            
+            
             if not self.ipython_notebook:
                 print()
                 print('Runtime: {}'.format("{:>9s}".format(self.timestring)))
                 print('Optimization status: {0}'.format(self.status))
                 print()
-            elif self.clear:
+            elif self.clear:# pragma: no cover
                 self.hor_align.close()
+            else:# pragma: no cover
+                if 'conv' in self.status.lower():
+                    self.progress.bar_style = 'success'
+                elif self.iteration >= self.maxiters:
+                    self.progress.bar_style = 'warning'
+                else:
+                    self.progress.bar_style = 'danger'
