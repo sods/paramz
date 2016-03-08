@@ -246,7 +246,7 @@ class opt_SCG(Optimizer):
 def _check_for_climin():
     try:
         import climin
-    except ImportError:
+    except ImportError: 
         raise ImportError("Need climin to run this optimizer. See https://github.com/BRML/climin.")
 
 class Opt_Adadelta(Optimizer):
@@ -272,6 +272,8 @@ class Opt_Adadelta(Optimizer):
                 self.x_opt =  opt.wrt
                 self.status = 'maximum number of function evaluations exceeded '
                 break
+        else: # pragma: no cover
+            pass
 
 class RProp(Optimizer):
     # We want the optimizer to know some things in the Optimizer implementation:
@@ -306,6 +308,8 @@ class RProp(Optimizer):
                 self.x_opt =  opt.wrt
                 self.status = 'maximum number of function evaluations exceeded'
                 break
+        else: # pragma: no cover
+            pass
 
 def get_optimizer(f_min):
 
