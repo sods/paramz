@@ -37,6 +37,7 @@ import weakref
 
 import sys
 
+_log_lim_val = np.log(np.finfo(np.float64).max)
 _exp_lim_val = np.finfo(np.float64).max
 _lim_val = 36.0
 epsilon = np.finfo(np.float64).resolution
@@ -103,20 +104,20 @@ class Transformation(object):
 class Logexp(Transformation):
     domain = _POSITIVE
     def f(self, x):
-        return np.where(x>_lim_val, x, np.log1p(np.exp(np.clip(x, -_lim_val, _lim_val)))) + epsilon
+        return np.where(x>_lim_val, x, np.log1p(np.exp(np.clip(x, -_log_lim_val, _lim_val)))) #+ epsilon
         #raises overflow warning: return np.where(x>_lim_val, x, np.log(1. + np.exp(x)))
     def finv(self, f):
-        return np.where(f>_lim_val, f, np.log(np.exp(f+1e-20) - 1.))
+        return np.where(f>_lim_val, f, np.log(np.expm1(f)))
     def gradfactor(self, f, df):
-        return np.einsum('i,i->i', df, np.where(f>_lim_val, 1., 1. - np.exp(-f)))
+        return df*np.where(f>_lim_val, 1.,  - np.expm1(-f))
     def initialize(self, f):
         if np.any(f < 0.):
             print("Warning: changing parameters to satisfy constraints")
         return np.abs(f)
     def log_jacobian(self, model_param):
-        return np.where(model_param>_lim_val, model_param, np.log(np.exp(model_param+1e-20) - 1.)) - model_param
+        return np.where(model_param>_lim_val, model_param, np.log(np.expm1(model_param))) - model_param
     def log_jacobian_grad(self, model_param):
-        return 1./(np.exp(model_param)-1.)
+        return 1./(np.expm1(model_param))
     def __str__(self):
         return '+ve'
 
