@@ -42,18 +42,17 @@ from functools import reduce
 logger = logging.getLogger("parameters changed meta")
 
 class ParametersChangedMeta(type):
+
     def __call__(self, *args, **kw):
         self._in_init_ = True
         #import ipdb;ipdb.set_trace()
+        initialize = kw.pop('initialize', True)
         self = super(ParametersChangedMeta, self).__call__(*args, **kw)
         #logger.debug("finished init")
         self._in_init_ = False
-        #logger.debug("connecting parameters")
-        self._highest_parent_._connect_parameters()
-        #self._highest_parent_._notify_parent_change()
-        self._highest_parent_._connect_fixes()
-        #logger.debug("calling parameters changed")
-        self.parameters_changed()
+        self._model_initialized_ = initialize
+        if initialize:
+            self.initialize_model()
         return self
 
 @six.add_metaclass(ParametersChangedMeta)
@@ -105,8 +104,8 @@ class Parameterized(Parameterizable):
     #__metaclass__ = ParametersChangedMeta
     #The six module is used to support both Python 2 and 3 simultaneously
     #===========================================================================
-    def __init__(self, name=None, parameters=[], *a, **kw):
-        super(Parameterized, self).__init__(name=name, *a, **kw)
+    def __init__(self, name=None, parameters=[]):
+        super(Parameterized, self).__init__(name=name)
         self.size = sum(p.size for p in self.parameters)
         self.add_observer(self, self._parameters_changed_notification, -100)
         if not self._has_fixes():
@@ -190,7 +189,7 @@ class Parameterized(Parameterizable):
                 parent = parent._parent_
             self._notify_parent_change()
 
-            if not self._in_init_:
+            if not self._in_init_ and self._highest_parent_._model_initialized_:
                 #self._connect_parameters()
                 #self._notify_parent_change()
 
@@ -290,7 +289,9 @@ All parameter arrays must be C_CONTIGUOUS
 
             self._add_parameter_name(p)
             old_size += p.size
-
+        
+        self._model_initialized_ = True
+        
     #===========================================================================
     # Get/set parameters:
     #===========================================================================

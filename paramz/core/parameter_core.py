@@ -284,6 +284,8 @@ class OptimizationHandlable(Constrainable):
 
             pi._propagate_param_grad(parray[pislice], garray[pislice])
             pi_old_size += pi.size
+            
+        self._model_initialized_ = True
 
     def _connect_parameters(self):
         pass
@@ -310,6 +312,13 @@ class Parameterizable(OptimizationHandlable):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.__visited = False # for traversing in reverse order we need to know if we were here already
 
+    def initialize_model(self):
+        #logger.debug("connecting parameters")
+        self._highest_parent_._notify_parent_change()
+        self._highest_parent_._connect_fixes()
+        self._highest_parent_._connect_parameters() #logger.debug("calling parameters changed")
+        self.parameters_changed()
+        
     @property
     def param_array(self):
         """

@@ -695,6 +695,50 @@ class ParameterizedTest(unittest.TestCase):
         print(self.param)
         print(self.test1[''])
 
+class InitTests(unittest.TestCase):
+    def setUp(self):
+        class M(Model):
+            def __init__(self, name, **kwargs):
+                super(M, self).__init__(name=name)
+                for k, val in kwargs.items():
+                    self.__setattr__(k, val)
+                    self.link_parameter(self.__getattribute__(k))
+            def objective_function(self):
+                return self._obj
+            def log_likelihood(self):
+                return -self.objective_function()
+            def parameters_changed(self):
+                self._obj = (self.param_array**2).sum()
+                self.gradient[:] = 2*self.param_array
+        self.testmodel = M('testmodel', initialize=False)
+        self.testmodel.kern = Parameterized('rbf', initialize=False)
+        print self.testmodel.kern._model_initialized_
+        self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()), initialize=False)
+        self.testmodel.link_parameter(self.testmodel.kern)
+        self.testmodel.link_parameter(self.testmodel.likelihood)
+        print self.testmodel.kern._model_initialized_
+        variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp())
+        lengthscale=Param('lengthscale', np.random.uniform(.1, 1, 1), transformations.Logexp())
+        self.testmodel.kern.variance = variance
+        self.testmodel.kern.lengthscale = lengthscale
+        self.testmodel.kern.link_parameter(lengthscale)
+        self.testmodel.kern.link_parameter(variance)
+    
+    def test_initialize(self):
+        self.assertFalse(self.testmodel.likelihood._model_initialized_)
+        self.assertFalse(self.testmodel.kern._model_initialized_)
+        self.assertRaises(AttributeError, self.testmodel.__str__)
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            self.assertRaises(RuntimeWarning, self.testmodel.checkgrad)
+        self.testmodel.initialize_model()
+        self.assertTrue(self.testmodel.likelihood._model_initialized_)
+        self.assertTrue(self.testmodel.kern._model_initialized_)
+        self.assertTrue(self.testmodel.checkgrad())
+
+
+
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_add_parameter']
     unittest.main()
