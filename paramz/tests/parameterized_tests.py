@@ -712,11 +712,9 @@ class InitTests(unittest.TestCase):
                 self.gradient[:] = 2*self.param_array
         self.testmodel = M('testmodel', initialize=False)
         self.testmodel.kern = Parameterized('rbf', initialize=False)
-        print self.testmodel.kern._model_initialized_
         self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()), initialize=False)
         self.testmodel.link_parameter(self.testmodel.kern)
         self.testmodel.link_parameter(self.testmodel.likelihood)
-        print self.testmodel.kern._model_initialized_
         variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp())
         lengthscale=Param('lengthscale', np.random.uniform(.1, 1, 1), transformations.Logexp())
         self.testmodel.kern.variance = variance
