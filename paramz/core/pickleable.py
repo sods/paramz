@@ -108,7 +108,7 @@ class Pickleable(object):
                        'logger',
                        'observers',
                        '_fixes_', # and fixes
-                       '_Cacher_wrap__cachers', # never pickle cachers
+                       'cachers', # never pickle cachers
                        ]
         dc = dict()
         #py3 fix

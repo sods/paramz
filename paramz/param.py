@@ -227,8 +227,9 @@ class Param(Parameterizable, ObsAr):
         if self.size <= 1:
             return [str(self.view(np.ndarray)[0])]
         else: return [str(self.shape)]
-    def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True):
-        # this is just overwrighting the parameterized calls to parameter names, in order to maintain OOP
+    def parameter_names(self, add_self=False, adjust_for_printing=False, recursive=True, **kw):
+        # this is just overwrighting the parameterized calls to
+        # parameter names, in order to maintain OOP
         if adjust_for_printing:
             return [adjust_name_for_printing(self.name)]
         return [self.name]
@@ -275,16 +276,6 @@ class Param(Parameterizable, ObsAr):
 
     def _max_len_index(self, ind):
         return reduce(lambda a, b: max(a, len(str(b))), ind, len(__index_name__))
-
-    def _short(self):
-        # short string to print
-        name = self.hierarchy_name()
-        if self._realsize_ < 2:
-            return name
-        ind = self._indices()
-        if ind.size > 4: indstr = ','.join(map(str, ind[:2])) + "..." + ','.join(map(str, ind[-2:]))
-        else: indstr = ','.join(map(str, ind))
-        return name + '[' + indstr + ']'
 
     def _repr_html_(self, indices=None, iops=None, lx=None, li=None, lls=None):
         """Representation of the parameter in html for notebook display."""
@@ -470,10 +461,10 @@ class ParamConcatenation(object):
         [param.unconstrain_bounded(lower, upper) for param in self.params]
     unconstrain_bounded.__doc__ = Param.unconstrain_bounded.__doc__
 
-    def untie(self, *ties):
-        [param.untie(*ties) for param in self.params]
+    #def untie(self, *ties):
+    #    [param.untie(*ties) for param in self.params]
 
-    def checkgrad(self, verbose=0, step=1e-6, tolerance=1e-3):
+    def checkgrad(self, verbose=False, step=1e-6, tolerance=1e-3):
         return self.params[0]._highest_parent_._checkgrad(self, verbose, step, tolerance)
     #checkgrad.__doc__ = Gradcheckable.checkgrad.__doc__
 
@@ -484,7 +475,7 @@ class ParamConcatenation(object):
     __gt__ = lambda self, val: self.values() > val
     __ge__ = lambda self, val: self.values() >= val
 
-    def __str__(self, *args, **kwargs):
+    def __str__(self, **kwargs):
         params = self.params
 
         indices = [p._indices() for p in params]
@@ -495,22 +486,21 @@ class ParamConcatenation(object):
         params_iops = []
         for p in params:
             filter_ = p._current_slice_
-            ind = p._raveled_index(filter_)
-            i = 0
-            iops = OrderedDict()
-            for name, iop in p._index_operations.items():
-                if lls is None:
-                    lls = [0]*iop.size
-                iops[name] = iop.properties_for(ind)
-                lls[i] = max(lls[i], p._max_len_names(iops[name], name))
-                i += 1
+            ravi = p._raveled_index(filter_)
+            iops = OrderedDict([name, iop.properties_for(ravi)] for name, iop in p._index_operations.items())
+            _lls = [p._max_len_names(iop, name) for name, iop in iops.items()]
+            if lls is None:
+                lls = _lls
+            else:
+                for i in range(len(lls)):
+                    lls[i] = max(lls[i], _lls[i])
             params_iops.append(iops)
 
         strings = []
         start = True
 
         for i in range(len(params)):
-            strings.append(params[i].__str__(indices=indices[i], iops=params_iops[i], lx=lx, li=li, lls=lls, only_name=(not start)))
+            strings.append(params[i].__str__(indices=indices[i], iops=params_iops[i], lx=lx, li=li, lls=lls, only_name=(not start), **kwargs))
             start = False
             i += 1
 
@@ -518,41 +508,41 @@ class ParamConcatenation(object):
     def __repr__(self):
         return "\n".join(map(repr,self.params))
 
-    def __ilshift__(self, *args, **kwargs):
+    def __ilshift__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ilshift__(self.values(), *args, **kwargs)
 
-    def __irshift__(self, *args, **kwargs):
+    def __irshift__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__irshift__(self.values(), *args, **kwargs)
 
-    def __ixor__(self, *args, **kwargs):
+    def __ixor__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ixor__(self.values(), *args, **kwargs)
 
-    def __ipow__(self, *args, **kwargs):
+    def __ipow__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ipow__(self.values(), *args, **kwargs)
 
-    def __ifloordiv__(self, *args, **kwargs):
+    def __ifloordiv__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ifloordiv__(self.values(), *args, **kwargs)
 
-    def __isub__(self, *args, **kwargs):
+    def __isub__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__isub__(self.values(), *args, **kwargs)
 
-    def __ior__(self, *args, **kwargs):
+    def __ior__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__ior__(self.values(), *args, **kwargs)
 
-    def __itruediv__(self, *args, **kwargs):
+    def __itruediv__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__itruediv__(self.values(), *args, **kwargs)
 
-    def __idiv__(self, *args, **kwargs):
+    def __idiv__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__idiv__(self.values(), *args, **kwargs)
 
-    def __iand__(self, *args, **kwargs):
+    def __iand__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__iand__(self.values(), *args, **kwargs)
 
-    def __imod__(self, *args, **kwargs):
+    def __imod__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__imod__(self.values(), *args, **kwargs)
 
-    def __iadd__(self, *args, **kwargs):
+    def __iadd__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__iadd__(self.values(), *args, **kwargs)
 
-    def __imul__(self, *args, **kwargs):
+    def __imul__(self, *args, **kwargs):#pragma: no cover
         self[:] = np.ndarray.__imul__(self.values(), *args, **kwargs)

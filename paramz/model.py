@@ -102,7 +102,6 @@ class Model(Parameterized):
 
         with VerboseOptimization(self, opt, maxiters=max_iters, verbose=messages, ipython_notebook=ipython_notebook, clear_after_finish=clear_after_finish) as vo:
             opt.run(start, f_fp=self._objective_grads, f=self._objective, fp=self._grads)
-            vo.finish(opt)
 
         self.optimization_runs.append(opt)
 
@@ -307,11 +306,7 @@ class Model(Parameterized):
             if target_param is None:
                 transformed_index = np.arange(len(x))
             else:
-                transformed_index = self._raveled_index_for(target_param)
-                if self._has_fixes():
-                    indices = np.r_[:self.size]
-                    which = (transformed_index[:, None] == indices[self._fixes_][None, :]).nonzero()
-                    transformed_index = (indices - (~self._fixes_).cumsum())[transformed_index[which[0]]]
+                transformed_index = self._raveled_index_for_transformed(target_param)
 
                 if transformed_index.size == 0:
                     print("No free parameters to check")
@@ -332,13 +327,13 @@ class Model(Parameterized):
             denominator = (2 * np.dot(dx, gradient))
             global_ratio = (f1 - f2) / np.where(denominator == 0., 1e-32, denominator)
             global_diff = np.abs(f1 - f2) < tolerance and np.allclose(gradient, 0, atol=tolerance)
-            if global_ratio is np.nan:
+            if global_ratio is np.nan: # pragma: no cover
                 global_ratio = 0
             return np.abs(1. - global_ratio) < tolerance or global_diff
         else:
             # check the gradient of each parameter individually, and do some pretty printing
             try:
-                names = self._get_param_names()
+                names = self.parameter_names_flat()
             except NotImplementedError:
                 names = ['Variable %i' % i for i in range(len(x))]
             # Prepare for pretty-printing
@@ -352,28 +347,19 @@ class Model(Parameterized):
             header_string = list(map(lambda x: '|'.join(x), [header_string]))
             separator = '-' * len(header_string[0])
             print('\n'.join([header_string[0], separator]))
-            if target_param is None:
-                param_index = range(len(x))
-                transformed_index = param_index
-            else:
-                param_index = self._raveled_index_for(target_param)
-                if self._has_fixes():
-                    indices = np.r_[:self.size]
-                    which = (param_index[:, None] == indices[self._fixes_][None, :]).nonzero()
-                    param_index = param_index[which[0]]
-                    transformed_index = (indices - (~self._fixes_).cumsum())[param_index]
-                    # print param_index, transformed_index
-                else:
-                    transformed_index = param_index
 
-                if param_index.size == 0:
-                    print("No free parameters to check")
-                    return
+            if target_param is None:
+                target_param = self
+            transformed_index = self._raveled_index_for_transformed(target_param)
+
+            if transformed_index.size == 0:
+                print("No free parameters to check")
+                return
 
             gradient = self._grads(x).copy()
             np.where(gradient == 0, 1e-312, gradient)
             ret = True
-            for nind, xind in zip(param_index, transformed_index):
+            for xind in zip(transformed_index):
                 xx = x.copy()
                 xx[xind] += step
                 f1 = float(self._objective(xx))
@@ -383,22 +369,24 @@ class Model(Parameterized):
                 #the same
                 if f1 > 1e-15 or f1 < -1e-15 or f2 > 1e-15 or f2 < -1e-15:
                     df_ratio = np.abs((f1 - f2) / min(f1, f2))
-                else:
+                else: # pragma: no cover
                     df_ratio = 1.0
                 df_unstable = df_ratio < df_tolerance
                 numerical_gradient = (f1 - f2) / (2. * step)
-                if np.all(gradient[xind] == 0): ratio = (f1 - f2) == gradient[xind]
-                else: ratio = (f1 - f2) / (2. * step * gradient[xind])
+                if np.all(gradient[xind] == 0): # pragma: no cover 
+                    ratio = (f1 - f2) == gradient[xind]
+                else: 
+                    ratio = (f1 - f2) / (2. * step * gradient[xind])
                 difference = np.abs(numerical_gradient - gradient[xind])
 
                 if (np.abs(1. - ratio) < tolerance) or np.abs(difference) < tolerance:
-                    formatted_name = "\033[92m {0} \033[0m".format(names[nind])
+                    formatted_name = "\033[92m {0} \033[0m".format(names[xind])
                     ret &= True
-                else:
-                    formatted_name = "\033[91m {0} \033[0m".format(names[nind])
+                else:  # pragma: no cover
+                    formatted_name = "\033[91m {0} \033[0m".format(names[xind])
                     ret &= False
-                if df_unstable:
-                    formatted_name = "\033[94m {0} \033[0m".format(names[nind])
+                if df_unstable:  # pragma: no cover
+                    formatted_name = "\033[94m {0} \033[0m".format(names[xind])
 
                 r = '%.6f' % float(ratio)
                 d = '%.6f' % float(difference)

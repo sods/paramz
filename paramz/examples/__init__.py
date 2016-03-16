@@ -1,1 +1,1 @@
-from .ridge_regression import RidgeRegression, Lasso, Ridge
+from .ridge_regression import RidgeRegression, Lasso, Ridge, Polynomial, Basis

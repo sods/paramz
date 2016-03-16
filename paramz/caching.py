@@ -1,18 +1,51 @@
-# Copyright (c) 2012, GPy authors (see AUTHORS.txt).
-# Licensed under the BSD 3-clause license (see LICENSE.txt)
-from .core.observable import Observable
+#===============================================================================
+# Copyright (c) 2014, GPy authors (see AUTHORS.txt).
+# Copyright (c) 2014, James Hensman, Max Zwiessele, Zhenwen Dai
+# Copyright (c) 2015, Max Zwiessele
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the name of paramax nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#===============================================================================
+
 import collections, weakref
 from functools import reduce
 from pickle import PickleError
 
+from .core.observable import Observable
+from numbers import Number
+
 class Cacher(object):
     def __init__(self, operation, limit=5, ignore_args=(), force_kwargs=()):
         """
-        Parameters:
-        ***********
+        Cache an `operation`.
+
         :param callable operation: function to cache
         :param int limit: depth of cacher
-        :param [int] ignore_args: list of indices, pointing at arguments to ignore in *args of operation(*args). This includes self!
+        :param [int] ignore_args: list of indices, pointing at arguments to ignore in `*args` of `operation(*args)`. This includes self, so make sure to ignore self, if it is not cachable and you do not want this to prevent caching!
         :param [str] force_kwargs: list of kwarg names (strings). If a kwarg with that name is given, the cacher will force recompute and wont cache anything.
         :param int verbose: verbosity level. 0: no print outs, 1: casual print outs, 2: debug level print outs
         """
@@ -55,20 +88,31 @@ class Cacher(object):
             cache_id = self.order.popleft()
             combined_args_kw = self.cached_inputs[cache_id]
             for ind in combined_args_kw:
-                if ind is not None:
-                    ind_id = self.id(ind)
-                    tmp = self.cached_input_ids.get(ind_id, None)
-                    if tmp is not None:
-                        ref, cache_ids = tmp
-                        if len(cache_ids) == 1 and ref() is not None:
-                            ref().remove_observer(self, self.on_cache_changed)
-                            del self.cached_input_ids[ind_id]
-                        else:
-                            cache_ids.remove(cache_id)
-                            self.cached_input_ids[ind_id] = [ref, cache_ids]
-            del self.cached_outputs[cache_id]
-            del self.inputs_changed[cache_id]
-            del self.cached_inputs[cache_id]
+                ind_id = self.id(ind)
+                tmp = self.cached_input_ids.get(ind_id, None)
+                if tmp is not None:
+                    ref, cache_ids = tmp
+                    if len(cache_ids) == 1 and ref() is not None:
+                        ref().remove_observer(self, self.on_cache_changed)
+                        del self.cached_input_ids[ind_id]
+                    else:
+                        cache_ids.remove(cache_id)
+                        self.cached_input_ids[ind_id] = [ref, cache_ids]
+            try:
+                del self.cached_outputs[cache_id]
+            except KeyError:
+                # Was not cached before, possibly a keyboard interrupt
+                pass
+            try:
+                del self.inputs_changed[cache_id]
+            except KeyError:
+                # Was not cached before, possibly a keyboard interrupt
+                pass
+            try:
+                del self.cached_inputs[cache_id]
+            except KeyError:
+                # Was not cached before, possibly a keyboard interrupt
+                pass
 
     def add_to_cache(self, cache_id, inputs, output):
         """This adds cache_id to the cache, with inputs and output"""
@@ -77,7 +121,7 @@ class Cacher(object):
         self.order.append(cache_id)
         self.cached_inputs[cache_id] = inputs
         for a in inputs:
-            if a is not None and not isinstance(a, int):
+            if a is not None and not isinstance(a, Number) and not isinstance(a, str):
                 ind_id = self.id(a)
                 v = self.cached_input_ids.get(ind_id, [weakref.ref(a), []])
                 v[1].append(cache_id)
@@ -104,23 +148,28 @@ class Cacher(object):
         inputs = self.combine_inputs(args, kw, self.ignore_args)
         cache_id = self.prepare_cache_id(inputs)
         # 2: if anything is not cachable, we will just return the operation, without caching
-        if reduce(lambda a, b: a or (not (isinstance(b, Observable) or b is None or isinstance(b,int))), inputs, False):
+        if reduce(lambda a, b: a or (not (isinstance(b, Observable) or b is None or isinstance(b, Number) or isinstance(b, str))), inputs, False):
 #             print 'WARNING: '+self.operation.__name__ + ' not cacheable!'
 #             print [not (isinstance(b, Observable)) for b in inputs]
             return self.operation(*args, **kw)
         # 3&4: check whether this cache_id has been cached, then has it changed?
-        try:
-            if(self.inputs_changed[cache_id]):
+        not_seen = not(cache_id in self.inputs_changed)
+        changed = (not not_seen) and self.inputs_changed[cache_id]
+        if changed or not_seen:
+            # If we need to compute, we compute the operation, but fail gracefully, if the operation has an error:
+            try:
+                new_output = self.operation(*args, **kw)
+            except:
+                self.reset()
+                raise
+            if(changed):
                 # 4: This happens, when elements have changed for this cache self.id
                 self.inputs_changed[cache_id] = False
-                self.cached_outputs[cache_id] = self.operation(*args, **kw)
-        except KeyError:
-            # 3: This is when we never saw this chache_id:
-            self.ensure_cache_length(cache_id)
-            self.add_to_cache(cache_id, inputs, self.operation(*args, **kw))
-        except:
-            self.reset()
-            raise
+                self.cached_outputs[cache_id] = new_output
+            else:  # not_seen is True, as one of the two has to be True:
+                # 3: This is when we never saw this chache_id:
+                self.ensure_cache_length(cache_id)
+                self.add_to_cache(cache_id, inputs, new_output)
         # 5: We have seen this cache_id and it is cached:
         return self.cached_outputs[cache_id]
 
@@ -131,11 +180,10 @@ class Cacher(object):
         this function gets 'hooked up' to the inputs when we cache them, and upon their elements being changed we update here.
         """
         for what in [direct, which]:
-            if what is not None:
-                ind_id = self.id(what)
-                _, cache_ids = self.cached_input_ids.get(ind_id, [None, []])
-                for cache_id in cache_ids:
-                    self.inputs_changed[cache_id] = True
+            ind_id = self.id(what)
+            _, cache_ids = self.cached_input_ids.get(ind_id, [None, []])
+            for cache_id in cache_ids:
+                self.inputs_changed[cache_id] = True
 
     def reset(self):
         """
@@ -159,30 +207,7 @@ class Cacher(object):
     def __name__(self):
         return self.operation.__name__
 
-from functools import partial, update_wrapper
-
-class Cacher_wrap(object):
-    def __init__(self, f, limit, ignore_args, force_kwargs):
-        self.limit = limit
-        self.ignore_args = ignore_args
-        self.force_kwargs = force_kwargs
-        self.f = f
-        update_wrapper(self, self.f)
-    def __get__(self, obj, objtype=None):
-        return partial(self, obj)
-    def __call__(self, *args, **kwargs):
-        obj = args[0]
-        # import ipdb;ipdb.set_trace()
-        try:
-            caches = obj.__cachers
-        except AttributeError:
-            caches = obj.__cachers = {}
-        try:
-            cacher = caches[self.f]
-        except KeyError:
-            cacher = caches[self.f] = Cacher(self.f, self.limit, self.ignore_args, self.force_kwargs)
-        return cacher(*args, **kwargs)
-
+import decorator
 class Cache_this(object):
     """
     A decorator which can be applied to bound methods in order to cache them
@@ -190,8 +215,18 @@ class Cache_this(object):
     def __init__(self, limit=5, ignore_args=(), force_kwargs=()):
         self.limit = limit
         self.ignore_args = ignore_args
-        self.force_args = force_kwargs
+        self.force_kwargs = force_kwargs
     def __call__(self, f):
-        newf = Cacher_wrap(f, self.limit, self.ignore_args, self.force_args)
-        update_wrapper(newf, f)
-        return newf
+        def g(obj, *args, **kw):
+            obj = args[0]
+            if not hasattr(obj, 'cachers'):
+                obj.cachers = {}
+            caches = obj.cachers
+            if f in caches:
+                cacher = caches[f]
+            else:
+                cacher = caches[f] = Cacher(f, self.limit, self.ignore_args, self.force_kwargs)
+            return cacher(*args, **kw)
+        g.__name__ = f.__name__
+        g.__doc__ = f.__doc__         
+        return decorator.decorate(f, g)

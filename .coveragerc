@@ -21,7 +21,9 @@ exclude_lines =
     raise DeprecationWarning
     except NotImplementedError
     except NotImplemented
+    except ImportError
     except AssertionError
+    except KeyError
     raise ValueError
     pass
 

@@ -1,21 +1,21 @@
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramax nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -36,18 +36,18 @@ from .observable import Observable
 class ObsAr(np.ndarray, Pickleable, Observable):
     """
     An ndarray which reports changes to its observers.
-    
+
     .. warning::
-       
+
        ObsAr tries to not ever give back an observable array itself. Thus,
-       if you want to preserve an ObsAr you need to work in memory. Let 
+       if you want to preserve an ObsAr you need to work in memory. Let
        `a` be an ObsAr and you want to add a random number `r` to it. You need to
        make sure it stays an ObsAr by working in memory (see numpy for details):
-       
+
        .. code-block:: python
-       
+
            a[:] += r
-    
+
     The observers can add themselves with a callable, which
     will be called every time this array changes. The callable
     takes exactly one argument, which is this array itself.
@@ -56,7 +56,12 @@ class ObsAr(np.ndarray, Pickleable, Observable):
     def __new__(cls, input_array, *a, **kw):
         # allways make a copy of input paramters, as we need it to be in C order:
         if not isinstance(input_array, ObsAr):
-            obj = np.atleast_1d(np.require(input_array, dtype=np.float64, requirements=['W', 'C'])).view(cls)
+            try:
+                # try to cast ints to floats
+                obj = np.atleast_1d(np.require(input_array, dtype=np.float_, requirements=['W', 'C'])).view(cls)
+            except ValueError:
+                # do we have other dtypes in the array?
+                obj = np.atleast_1d(np.require(input_array, requirements=['W', 'C'])).view(cls)
         else: obj = input_array
         super(ObsAr, obj).__init__(*a, **kw)
         return obj

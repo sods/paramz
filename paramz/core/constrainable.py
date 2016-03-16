@@ -1,21 +1,21 @@
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramz.core.constrainable nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -43,7 +43,7 @@ class Constrainable(Indexable):
     def __setstate__(self, state):
         Indexable.__setstate__(self, state)
         self._index_operations['constraints'] = self.constraints
-        
+
     #===========================================================================
     # Fixing Parameters:
     #===========================================================================
@@ -51,13 +51,16 @@ class Constrainable(Indexable):
         """
         Constrain this parameter to be fixed to the current value it carries.
 
+        This does not override the previous constraints, so unfixing will
+        restore the constraint set before fixing.
+
         :param warning: print a warning for overwriting constraints.
         """
         if value is not None:
             self[:] = value
 
-        index = self.unconstrain()
-        index = self._add_to_index_operations(self.constraints, index, __fixed__, warning)
+        #index = self.unconstrain()
+        index = self._add_to_index_operations(self.constraints, np.empty(0), __fixed__, warning)
         self._highest_parent_._set_fixed(self, index)
         self.notify_observers(self, None if trigger_parent else -np.inf)
         return index
@@ -66,9 +69,14 @@ class Constrainable(Indexable):
     def unconstrain_fixed(self):
         """
         This parameter will no longer be fixed.
+
+        If there was a constraint on this parameter when fixing it,
+        it will be constraint with that previous constraint.
         """
         unconstrained = self.unconstrain(__fixed__)
         self._highest_parent_._set_unfixed(self, unconstrained)
+        #if self._default_constraint_ is not None:
+        #    return self.constrain(self._default_constraint_)
         return unconstrained
     unfix = unconstrain_fixed
 
@@ -76,7 +84,7 @@ class Constrainable(Indexable):
         # Ensure that the fixes array is set:
         # Parameterized: ones(self.size)
         # Param: ones(self._realsize_
-        if (not hasattr(self, "_fixes_")) or (self._fixes_ is None) or (self._fixes_.size != self.size): 
+        if (not hasattr(self, "_fixes_")) or (self._fixes_ is None) or (self._fixes_.size != self.size):
             self._fixes_ = np.ones(self.size, dtype=bool)
             self._fixes_[self.constraints[__fixed__]] = FIXED
 
@@ -118,7 +126,7 @@ class Constrainable(Indexable):
         # you can retrieve the original param through this method, by passing
         # the copy here
         return self.parameters[param._parent_index_]
-    
+
         #===========================================================================
     # Constrain operations -> done
     #===========================================================================
@@ -134,6 +142,10 @@ class Constrainable(Indexable):
         """
         if isinstance(transform, Transformation):
             self.param_array[...] = transform.initialize(self.param_array)
+        elif transform == __fixed__:
+            return self.fix(warning=warning, trigger_parent=trigger_parent)
+        else:
+            raise ValueError('Can only constrain with paramz.transformations.Transformation object')
         reconstrained = self.unconstrain()
         added = self._add_to_index_operations(self.constraints, reconstrained, transform, warning)
         self.trigger_update(trigger_parent)

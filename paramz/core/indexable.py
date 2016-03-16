@@ -1,21 +1,21 @@
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramz.core.indexable nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -38,7 +38,9 @@ from collections import OrderedDict
 class Indexable(Nameable, Updateable):
     """
     Make an object constrainable with Priors and Transformations.
+
     TODO: Mappings!!
+
     Adding a constraint to a Parameter means to tell the highest parent that
     the constraint was added and making sure that all parameters covered
     by this object are indeed conforming to the constraint.
@@ -61,7 +63,7 @@ class Indexable(Nameable, Updateable):
             delattr(self, name)
         else:
             raise AttributeError("No index operation with the name {}".format(name))
-            
+
     def _disconnect_parent(self, *args, **kw):
         """
         From Parentable:
@@ -95,25 +97,63 @@ class Indexable(Nameable, Updateable):
             return self._offset_for(param._parent_) + param._parent_._offset_for(param)
         return 0
 
+    ### Global index operations (from highest_parent)
+    ### These indices are for gradchecking, so that we
+    ### can index the optimizer array and manipulate it directly
+    ### The indices here do not reflect the indices in
+    ### index_operations, as index operations handle
+    ### the offset themselves and can be set directly
+    ### without doing the offset.
     def _raveled_index_for(self, param):
         """
         get the raveled index for a param
         that is an int array, containing the indexes for the flattened
         param inside this parameterized logic.
+
+        !Warning! be sure to call this method on the highest parent of a hierarchy,
+        as it uses the fixes to do its work
         """
         from ..param import ParamConcatenation
         if isinstance(param, ParamConcatenation):
             return np.hstack((self._raveled_index_for(p) for p in param.params))
         return param._raveled_index() + self._offset_for(param)
 
+    def _raveled_index_for_transformed(self, param):
+        """
+        get the raveled index for a param for the transformed parameter array
+        (optimizer array).
+
+        that is an int array, containing the indexes for the flattened
+        param inside this parameterized logic.
+
+        !Warning! be sure to call this method on the highest parent of a hierarchy,
+        as it uses the fixes to do its work. If you do not know
+        what you are doing, do not use this method, it will have
+        unexpected returns!
+        """
+        ravi = self._raveled_index_for(param)
+        if self._has_fixes():
+            fixes = self._fixes_
+            ### Transformed indices, handling the offsets of previous fixes
+            transformed = (np.r_[:self.size] - (~fixes).cumsum())
+            return transformed[ravi[fixes[ravi]]]
+        else:
+            return ravi
+
+    ### These indices are just the raveled index for self
+    ### These are in the index_operations are used for them
+    ### The index_operations then handle the offsets themselves
+    ### This makes it easier to test and handle indices
+    ### as the index operations framework is in its own
+    ### corner and can be set significantly better without
+    ### being inside the parameterized scope.
     def _raveled_index(self):
         """
         Flattened array of ints, specifying the index of this object.
         This has to account for shaped parameters!
         """
         return np.r_[:self.size]
-
-
+    ######
 
 
 #===========================================================================
@@ -126,7 +166,7 @@ class Indexable(Nameable, Updateable):
 #         if self.has_parent():
 #             return self._highest_parent_.tie.label_buf[self._highest_parent_._raveled_index_for(self)].sum()>0
 #         return True
-# 
+#
 #     def tie_together(self):
 #         self._highest_parent_.tie.add_tied_parameter(self)
 #         self._highest_parent_._set_fixed(self,self._raveled_index())
@@ -185,8 +225,7 @@ class Indexable(Nameable, Updateable):
                 self._highest_parent_._set_unfixed(self, unconstrained)
 
         return removed
-    
+
     def __setstate__(self, state):
         self._index_operations = OrderedDict()
         super(Indexable, self).__setstate__(state)
-        

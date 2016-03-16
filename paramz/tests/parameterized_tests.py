@@ -10,11 +10,11 @@ from ..core.observable_array import ObsAr
 from ..core.index_operations import ParameterIndexOperations
 from ..core.nameable import adjust_name_for_printing
 from ..core import HierarchyError
-from paramz import transformations
+from .. import transformations
 from ..parameterized import Parameterized
-from ..param import Param
+from ..param import Param, ParamConcatenation
 from ..model import Model
-from paramz.param import ParamConcatenation
+from unittest.case import SkipTest
 
 class ArrayCoreTest(unittest.TestCase):
     def setUp(self):
@@ -35,9 +35,10 @@ def test_constraints_in_init():
     class Test(Parameterized):
         def __init__(self, name=None, parameters=[], *a, **kw):
             super(Test, self).__init__(name=name)
-            self.x = Param('x', np.random.uniform(0,1,(3,4)))
+            self.x = Param('x', np.random.uniform(0,1,(3,4)), transformations.__fixed__)
             self.x[0].constrain_bounded(0,1)
             self.link_parameter(self.x)
+            self.x.unfix()
             self.x[1].fix()
     t = Test()
     c = {transformations.Logistic(0,1): np.array([0, 1, 2, 3]), 'fixed': np.array([4, 5, 6, 7])}
@@ -56,11 +57,17 @@ def test_parameter_modify_in_init():
 
             self.p1.fix()
             self.p1.unfix()
+
+            self['.*param'].constrain_positive()
+
             self.p2.constrain_negative()
             self.p1.fix()
             self.p2.constrain_positive()
             self.p2.fix()
             self.p2.constrain_positive()
+
+            self['.*param1'].unconstrain(transformations.Logexp())
+
 
     m = TestLikelihood()
     print(m)
@@ -135,7 +142,28 @@ class ModelTest(unittest.TestCase):
             self.testmodel.optimize_restarts(1, messages=1, optimizer=opt_tnc(), verbose=False)
             self.testmodel.optimize('tnc', messages=1, xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
-        self.assertListEqual(self.testmodel.optimization_runs[-1].__getstate__(), [])
+        self.assertDictEqual(self.testmodel.optimization_runs[-1].__getstate__(), {})
+    def test_optimize_rprop(self):
+        try:
+            import climin
+        except ImportError:
+            raise SkipTest("climin not installed, skipping test")
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel.optimize('rprop', messages=1)
+        np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+    def test_optimize_ada(self):
+        try:
+            import climin
+        except ImportError:
+            raise SkipTest("climin not installed, skipping test")
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel.trigger_update()
+            self.testmodel.optimize('adadelta', messages=1, step_rate=1, momentum=1)
+        np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_org_bfgs(self):
         import warnings
         with warnings.catch_warnings():
@@ -177,23 +205,23 @@ class ModelTest(unittest.TestCase):
         testmodel.optimize_restarts(2, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=True)
         self.assertRaises(ValueError, testmodel.optimize_restarts, 1, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=False)
 
-
     def test_raveled_index(self):
         self.assertListEqual(self.testmodel._raveled_index_for(self.testmodel['.*variance']).tolist(), [1, 2])
+        self.assertListEqual(self.testmodel.kern.lengthscale._raveled_index_for(None).tolist(), [0])
 
     def test_constraints_testmodel(self):
-        self.testmodel.rbf.constrain_negative()
+        self.testmodel['.*rbf'].constrain_negative()
         self.assertListEqual(self.testmodel.constraints[transformations.NegativeLogexp()].tolist(), [0,1])
 
-        self.testmodel.rbf.lengthscale.constrain_bounded(0,1)
+        self.testmodel['.*lengthscale'].constrain_bounded(0,1)
         self.assertListEqual(self.testmodel.constraints[transformations.NegativeLogexp()].tolist(), [1])
         self.assertListEqual(self.testmodel.constraints[transformations.Logistic(0, 1)].tolist(), [0])
 
-        self.testmodel.unconstrain_negative()
+        self.testmodel[''].unconstrain_negative()
         self.assertListEqual(self.testmodel.constraints[transformations.NegativeLogexp()].tolist(), [])
         self.assertListEqual(self.testmodel.constraints[transformations.Logistic(0, 1)].tolist(), [0])
 
-        self.testmodel.rbf.lengthscale.unconstrain_bounded(0,1)
+        self.testmodel['.*lengthscale'].unconstrain_bounded(0,1)
         self.assertListEqual(self.testmodel.constraints[transformations.Logistic(0, 1)].tolist(), [])
 
     def test_updates(self):
@@ -205,13 +233,20 @@ class ModelTest(unittest.TestCase):
         self.testmodel.update_model(True)
         self.assertNotEqual(val, self.testmodel.objective_function())
 
+    def test_set_gradients(self):
+        self.testmodel.gradient = 10.
+        np.testing.assert_array_equal(self.testmodel.gradient, 10.)
+
     def test_fixing_optimize(self):
         self.testmodel.kern.lengthscale.fix()
         val = float(self.testmodel.kern.lengthscale)
         self.testmodel.randomize()
         self.assertEqual(val, self.testmodel.kern.lengthscale)
+        self.testmodel.optimize(max_iters=2)
 
     def test_regular_expression_misc(self):
+        self.assertTrue(self.testmodel[''].checkgrad())
+
         self.testmodel.kern.lengthscale.fix()
         val = float(self.testmodel.kern.lengthscale)
         self.testmodel.randomize()
@@ -222,17 +257,83 @@ class ModelTest(unittest.TestCase):
         self.testmodel.randomize()
         np.testing.assert_equal(variances, self.testmodel['.*var'].values())
 
+        self.testmodel[''] = 1.0
+        self.maxDiff = None
+
+        self.testmodel[''].unconstrain()
+        self.assertSequenceEqual(self.testmodel[''].__str__(VT100=False), "  index  |          testmodel.rbf.lengthscale  |  constraints\n  [0]    |                         1.00000000  |             \n  -----  |             testmodel.rbf.variance  |  -----------\n  [0]    |                         1.00000000  |             \n  -----  |  testmodel.Gaussian_noise.variance  |  -----------\n  [0]    |                         1.00000000  |             ")
+
     def test_fix_unfix(self):
-        fixed = self.testmodel.kern.lengthscale.fix()
+        default_constraints = dict(self.testmodel.constraints.items())
+        self.testmodel['.*lengthscale'].fix()
+        fixed = self.testmodel.constraints[transformations.__fixed__]
         self.assertListEqual(fixed.tolist(), [0])
         unfixed = self.testmodel.kern.lengthscale.unfix()
-        self.testmodel.kern.lengthscale.constrain_positive()
+        self.testmodel['.*lengthscale'].constrain_positive()
         self.assertListEqual(unfixed.tolist(), [0])
 
-        fixed = self.testmodel.kern.fix()
+        fixed = self.testmodel['.*rbf'].fix()
+        fixed = self.testmodel.constraints[transformations.__fixed__]
         self.assertListEqual(fixed.tolist(), [0,1])
+
         unfixed = self.testmodel.kern.unfix()
         self.assertListEqual(unfixed.tolist(), [0,1])
+
+        fixed = self.testmodel.constraints[transformations.__fixed__]
+        self.testmodel['.*rbf'].unfix()
+        np.testing.assert_array_equal(fixed, self.testmodel.constraints[transformations.__fixed__])
+
+        #print default_constraints
+        test_constraints = dict(self.testmodel.constraints.items())
+        for k in default_constraints:
+            np.testing.assert_array_equal(default_constraints[k], test_constraints[k])
+
+    def test_fix_unfix_constraints(self):
+        self.testmodel.constrain_bounded(0,1)
+        self.testmodel['.*variance'].constrain(transformations.Logexp())
+        self.testmodel['.*Gauss'].constrain_bounded(0.3, 0.7)
+        before_constraints = dict(self.testmodel.constraints.items())
+
+        self.testmodel.fix()
+
+        test_constraints = dict(self.testmodel.constraints.items())
+        for k in before_constraints:
+            np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
+        np.testing.assert_array_equal(test_constraints[transformations.__fixed__], [0,1,2])
+
+
+        # Assert fixing works and does not randomize the - say - lengthscale:
+        val = float(self.testmodel.kern.lengthscale)
+        self.testmodel.randomize()
+        self.assertEqual(val, self.testmodel.kern.lengthscale)
+
+        self.testmodel.unfix()
+
+        test_constraints = dict(self.testmodel.constraints.items())
+        for k in before_constraints:
+            np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
+
+    def test_fix_constrain(self):
+        # save the constraints as they where:
+        before_constraints = dict(self.testmodel.constraints.items())
+        # fix
+        self.testmodel.fix()
+
+        test_constraints = dict(self.testmodel.constraints.items())
+        # make sure fixes are in place:
+        np.testing.assert_array_equal(test_constraints[transformations.__fixed__], [0,1,2])
+        # make sure, the constraints still exist
+        for k in before_constraints:
+            np.testing.assert_array_equal(before_constraints[k], test_constraints[k])
+
+        # override fix and previous constraint:
+        self.testmodel.likelihood.constrain_bounded(0,1)
+        # lik not fixed anymore
+        np.testing.assert_array_equal(self.testmodel.constraints[transformations.__fixed__], [0,1])
+        # previous constraints still in place:
+        np.testing.assert_array_equal(self.testmodel.constraints[transformations.Logexp()], [0,1])
+        # lik bounded
+        np.testing.assert_array_equal(self.testmodel.constraints[transformations.Logistic(0,1)], [2])
 
     def test_checkgrad(self):
         self.assertTrue(self.testmodel.checkgrad(1))
@@ -392,6 +493,9 @@ class ParameterizedTest(unittest.TestCase):
         # add.white.variance   |        1.0  |  0.0,1.0 +ve  |         |
         #=============================================================================
 
+    def test_original(self):
+        self.assertIs(self.test1.param[[0]]._get_original(None), self.param)
+
     def test_unfixed_param_array(self):
         self.test1.param_array[:] = 0.1
         np.testing.assert_array_equal(self.test1.unfixed_param_array, [0.1]*53)
@@ -407,7 +511,8 @@ class ParameterizedTest(unittest.TestCase):
         self.test1[:] = 0.1
         self.test1.unconstrain()
         np.testing.assert_array_equal(self.test1.kern.white.optimizer_array, [0.1])
-        self.test1.kern.constrain(transformations.__fixed__)
+        self.test1.kern.fix()
+        #self.assertRaises(ValueError, self.test1.kern.constrain, transformations.__fixed__)
 
         np.testing.assert_array_equal(self.test1.optimizer_array, [0.1]*50)
         np.testing.assert_array_equal(self.test1.optimizer_array, self.test1.param.optimizer_array)
@@ -421,11 +526,12 @@ class ParameterizedTest(unittest.TestCase):
         np.testing.assert_array_equal(self.test1.kern.white.optimizer_array, [])
 
     def test_param_names(self):
-        self.assertSequenceEqual(self.test1.kern.rbf._get_param_names_transformed().tolist(), ['test_parameterized.add.rbf.variance[[0]]', 'test_parameterized.add.rbf.lengthscale[[0]]'])
+        self.assertSequenceEqual(self.test1.kern.rbf.parameter_names_flat().tolist(), ['test_parameterized.add.rbf.variance', 'test_parameterized.add.rbf.lengthscale'])
 
         self.test1.param.fix()
         self.test1.kern.rbf.lengthscale.fix()
-        self.assertSequenceEqual(self.test1._get_param_names_transformed().tolist(), ['test_parameterized.add.rbf.variance[[0]]', 'test_parameterized.add.white.variance[[0]]'])
+        self.assertSequenceEqual(self.test1.parameter_names_flat().tolist(), ['test_parameterized.add.rbf.variance', 'test_parameterized.add.white.variance'])
+        self.assertEqual(self.test1.parameter_names_flat(include_fixed=True).size, self.test1.size)
 
     def test_num_params(self):
         self.assertEqual(self.test1.num_params, 2)
