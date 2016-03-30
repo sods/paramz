@@ -324,7 +324,7 @@ def get_optimizer(f_min):
     #if rasm_available:
     #    optimizers['rasmussen'] = opt_rasm
 
-    for opt_name in optimizers.keys():
+    for opt_name in sorted(optimizers.keys()):
         if opt_name.lower().find(f_min.lower()) != -1:
             return optimizers[opt_name]
 
