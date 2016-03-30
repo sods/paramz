@@ -173,7 +173,7 @@ class VerboseOptimization(object):
         t = time.time()
         seconds = t-self.start
         #sys.stdout.write(" "*len(self.message))
-        if t-self._time > .3 or seconds < .2:
+        if t-self._time > 1. or seconds < .2:
             self.print_out(seconds)
             self._time = t
 
