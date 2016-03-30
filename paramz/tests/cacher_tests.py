@@ -38,14 +38,14 @@ class Test(unittest.TestCase):
         self.assertIs(cache(*ins), b)
         self.assertEqual(opcalls[0], 1)
         self.assertIn(ins, cache.cached_inputs.values())
-        
+
         self.assertRaises(TypeError, cache, 'this does not work', 2)
 
         # And the cacher should reset!
         self.assertDictEqual(cache.cached_input_ids, {}, )
         self.assertDictEqual(cache.cached_outputs, {}, )
         self.assertDictEqual(cache.inputs_changed, {}, )
-        
+
     def test_cached_atomic_str(self):
         i = "printing the cached value"
         print(self.cache(i))
@@ -69,6 +69,7 @@ class Test(unittest.TestCase):
         class O(object):
             @Cache_this(ignore_args=[0,3], force_kwargs=('force',))
             def __call__(self, x, y, ignore_this, force=False):
+                """Documentation"""
                 opcalls[0] += 1
                 opcalls[1] = ignore_this
                 if force is not False:
@@ -96,8 +97,22 @@ class Test(unittest.TestCase):
         self.assertEqual(opcalls[1], 4)
         self.assertEqual(opcalls[2], 'given2')
         np.testing.assert_array_equal(abnew, abforced)
-    
-    
+
+        try:
+            from inspect import signature, getdoc
+            self.assertEqual(signature(cache.__call__), signature(O.__call__))
+            self.assertEqual(getdoc(cache.__call__), getdoc(O.__call__))
+        except ImportError:
+            try:
+                from inspect import getfullargspec, getdoc
+                self.assertEqual(getfullargspec(cache.__call__), getfullargspec(O.__call__))
+                self.assertEqual(getdoc(cache.__call__), getdoc(O.__call__))
+            except ImportError:
+                from inspect import getargspec, getdoc
+                self.assertEqual(getargspec(cache.__call__), getargspec(O.__call__))
+                self.assertEqual(getdoc(cache.__call__), getdoc(O.__call__))
+
+
     def test_force_kwargs(self):
         # sum the operands and save a call to operation
         opcalls = [0]
@@ -115,11 +130,11 @@ class Test(unittest.TestCase):
         self.assertIs(ab, cache(a,b))
         self.assertIsNot(ab, cache(a,b,force='given'))
         self.assertEqual(opcalls[0], 2)
-        
+
     def test_reset_on_operation_error(self):
         # sum the operands and save a call to operation
         opcalls = [0]
-        
+
         def op(x, y, force=False):
             opcalls[0] += 1
             return x+y
@@ -147,7 +162,7 @@ class Test(unittest.TestCase):
         # Change the value:
         i[0] = 10
         # Has it changed?
-        self.assertTrue(self.cache.inputs_changed[id_])        
+        self.assertTrue(self.cache.inputs_changed[id_])
         # Call the cacher:
         self.cache(i)
         # Is it now updated?
@@ -167,7 +182,7 @@ class Test(unittest.TestCase):
         # Change the value:
         i[0] = 10
         # Has it changed?
-        self.assertTrue(self.cache.inputs_changed[id_])        
+        self.assertTrue(self.cache.inputs_changed[id_])
         # Call the cacher:
         old_c = self.cache(i, 1234)
         # Is it now updated?
@@ -178,7 +193,7 @@ class Test(unittest.TestCase):
         self.assertIs(old_c1235, self.cache(i, 1235))
         self.assertEqual(len(self.cache.cached_inputs), 2)
         # Put in a str:
-        # Stack of cache after next line: 1235, "another"        
+        # Stack of cache after next line: 1235, "another"
         another = self.cache(i, "another")
         self.assertIs(self.cache(i, "another"), another)
         self.assertEqual(len(self.cache.cached_inputs), 2)
@@ -193,19 +208,19 @@ class Test(unittest.TestCase):
         self.assertIsNot(old_c1235, self.cache(i, 1235))
         # This now pushed 'another' off the stack, so it should have created a new tuple
         self.assertIsNot(self.cache(i, "another"), another)
-        
+
     def test_sum_ObsAr(self):
         # create three random observables
         a = ObsAr(np.random.normal(0,1,(2,1)))
         b = ObsAr(np.random.normal(0,1,(2,1)))
         c = ObsAr(np.random.normal(0,1,(2,1)))
-        
+
         # sum the operands
         def op(x, y):
             return x+y
         # cacher caches two inputs
         cache = Cacher(op, 2)
-        
+
         # cacher ids for the three inputs
         _inputs = cache.combine_inputs((a, b), {}, ())
         id_ab = cache.prepare_cache_id(_inputs)
@@ -214,7 +229,7 @@ class Test(unittest.TestCase):
         _inputs = cache.combine_inputs((b, c), {}, ())
         id_bc = cache.prepare_cache_id(_inputs)
 
-        # start with testing the change and if the results 
+        # start with testing the change and if the results
         # actually are cached:
         ab = cache(a,b)
         np.testing.assert_array_equal(ab, a+b)
@@ -240,8 +255,8 @@ class Test(unittest.TestCase):
         self.assertIs(ab, cache(a, b))
         self.assertIn(id_bc, cache.inputs_changed)
         self.assertIn(id_ab, cache.inputs_changed)
-        self.assertNotIn(id_ac, cache.inputs_changed)        
-        
+        self.assertNotIn(id_ac, cache.inputs_changed)
+
     def test_name(self):
         assert(self.cache.__name__ == self.cache.operation.__name__)
 

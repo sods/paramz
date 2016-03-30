@@ -198,7 +198,8 @@ class OptimizationHandlable(Constrainable):
 
         If you want the names for fixed parameters as well in this list,
         set include_fixed to True.
-
+            if not hasattr(obj, 'cache'):
+                obj.cache = FunctionCacher()
         :param bool include_fixed: whether to include fixed names here.
         """
         name_list = []
@@ -284,7 +285,7 @@ class OptimizationHandlable(Constrainable):
 
             pi._propagate_param_grad(parray[pislice], garray[pislice])
             pi_old_size += pi.size
-            
+
         self._model_initialized_ = True
 
     def _connect_parameters(self):
@@ -318,7 +319,7 @@ class Parameterizable(OptimizationHandlable):
         self._highest_parent_._connect_fixes()
         self._highest_parent_._connect_parameters() #logger.debug("calling parameters changed")
         self.parameters_changed()
-        
+
     @property
     def param_array(self):
         """

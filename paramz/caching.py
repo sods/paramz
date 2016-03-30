@@ -49,6 +49,7 @@ class Cacher(object):
         :param [str] force_kwargs: list of kwarg names (strings). If a kwarg with that name is given, the cacher will force recompute and wont cache anything.
         :param int verbose: verbosity level. 0: no print outs, 1: casual print outs, 2: debug level print outs
         """
+        self.caching_enabled = True # Is the caching switched on, for this chacher?
         self.limit = int(limit)
         self.ignore_args = ignore_args
         self.force_kwargs = force_kwargs
@@ -65,6 +66,15 @@ class Cacher(object):
 
         self.cached_outputs = {}  # point from cache_ids to outputs
         self.inputs_changed = {}  # point from cache_ids to bools
+
+    def disable_caching(self):
+        "Disable the caching of this cacher. This also removes previously cached results"
+        self.caching_enabled = False
+        self.reset()
+
+    def enable_caching(self):
+        "Enable the caching of this cacher."
+        self.caching_enabled = True
 
     def id(self, obj):
         """returns the self.id of an object, to be used in caching individual self.ids"""
@@ -135,7 +145,8 @@ class Cacher(object):
         """
         #=======================================================================
         # !WARNING CACHE OFFSWITCH!
-        # return self.operation(*args, **kw)
+        if not self.caching_enabled:
+            return self.operation(*args, **kw)
         #=======================================================================
 
         # 1: Check whether we have forced recompute arguments:
@@ -207,6 +218,22 @@ class Cacher(object):
     def __name__(self):
         return self.operation.__name__
 
+class FunctionCache(dict):
+    def disable_caching(self):
+        "Disable the cache of this object. This also removes previously cached results"
+        for c in self.values():
+            c.disable_caching()
+
+    def enable_caching(self):
+        "Enable the cache of this object."
+        for c in self.values():
+            c.enable_caching()
+
+    def reset(self):
+        "Reset (delete) the cache of this object"
+        for c in self.values():
+            c.reset()
+
 import decorator
 class Cache_this(object):
     """
@@ -216,17 +243,19 @@ class Cache_this(object):
         self.limit = limit
         self.ignore_args = ignore_args
         self.force_kwargs = force_kwargs
+        self.f = None
     def __call__(self, f):
+        self.f = f
         def g(obj, *args, **kw):
             obj = args[0]
-            if not hasattr(obj, 'cachers'):
-                obj.cachers = {}
-            caches = obj.cachers
-            if f in caches:
-                cacher = caches[f]
+            if not hasattr(obj, 'cache'):
+                obj.cache = FunctionCache()
+            cache = obj.cache
+            if self.f in cache:
+                cacher = cache[self.f]
             else:
-                cacher = caches[f] = Cacher(f, self.limit, self.ignore_args, self.force_kwargs)
+                cacher = cache[self.f] = Cacher(self.f, self.limit, self.ignore_args, self.force_kwargs)
             return cacher(*args, **kw)
         g.__name__ = f.__name__
-        g.__doc__ = f.__doc__         
-        return decorator.decorate(f, g)
+        g.__doc__ = f.__doc__
+        return decorator.decorate(self.f, g)
