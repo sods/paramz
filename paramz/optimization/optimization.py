@@ -243,6 +243,12 @@ class opt_SCG(Optimizer):
         self.funct_eval = opt_result[2]
         self.status = opt_result[3]
 
+def _check_for_climin():
+    try:
+        import climin
+    except ImportError: 
+        raise ImportError("Need climin to run this optimizer. See https://github.com/BRML/climin.")
+
 class Opt_Adadelta(Optimizer):
     def __init__(self, step_rate=0.1, decay=0.9, momentum=0, *args, **kwargs):
         Optimizer.__init__(self, *args, **kwargs)
@@ -250,6 +256,9 @@ class Opt_Adadelta(Optimizer):
         self.step_rate=step_rate
         self.decay = decay
         self.momentum = momentum
+
+        _check_for_climin()
+
 
     def opt(self, x_init, f_fp=None, f=None, fp=None):
         assert not fp is None
@@ -263,6 +272,44 @@ class Opt_Adadelta(Optimizer):
                 self.x_opt =  opt.wrt
                 self.status = 'maximum number of function evaluations exceeded '
                 break
+        else: # pragma: no cover
+            pass
+
+class RProp(Optimizer):
+    # We want the optimizer to know some things in the Optimizer implementation:
+    def __init__(self, step_shrink=0.5, step_grow=1.2, min_step=1e-06, max_step=1, changes_max=0.1, *args, **kwargs):
+        super(RProp, self).__init__(*args, **kwargs)
+        self.opt_name = 'RProp (climin)'
+        self.step_shrink = step_shrink
+        self.step_grow = step_grow
+        self.min_step = min_step
+        self.max_step = max_step
+        self.changes_max = changes_max
+
+        _check_for_climin()
+        
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
+        # We only need the gradient of the 
+        assert not fp is None
+
+        import climin
+
+        # Do the optimization, giving previously stored parameters
+        opt = climin.rprop.Rprop(x_init, fp, 
+                                 step_shrink=self.step_shrink, step_grow=self.step_grow, 
+                                 min_step=self.min_step, max_step=self.max_step, 
+                                 changes_max=self.changes_max)
+
+        # Get the optimized state and transform it into Paramz readable format by setting
+        # values on this object:
+        # Important ones are x_opt and status:
+        for info in opt:
+            if info['n_iter']>=self.max_iters:
+                self.x_opt =  opt.wrt
+                self.status = 'maximum number of function evaluations exceeded'
+                break
+        else: # pragma: no cover
+            pass
 
 def get_optimizer(f_min):
 
@@ -271,7 +318,8 @@ def get_optimizer(f_min):
           'lbfgsb': opt_lbfgsb,
           'org-bfgs': opt_bfgs,
           'scg': opt_SCG,
-          'adadelta':Opt_Adadelta}
+          'adadelta':Opt_Adadelta,
+          'rprop':RProp}
 
     #if rasm_available:
     #    optimizers['rasmussen'] = opt_rasm

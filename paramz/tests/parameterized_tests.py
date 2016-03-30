@@ -14,6 +14,7 @@ from .. import transformations
 from ..parameterized import Parameterized
 from ..param import Param, ParamConcatenation
 from ..model import Model
+from unittest.case import SkipTest
 
 class ArrayCoreTest(unittest.TestCase):
     def setUp(self):
@@ -142,6 +143,27 @@ class ModelTest(unittest.TestCase):
             self.testmodel.optimize('tnc', messages=1, xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
         self.assertDictEqual(self.testmodel.optimization_runs[-1].__getstate__(), {})
+    def test_optimize_rprop(self):
+        try:
+            import climin
+        except ImportError:
+            raise SkipTest("climin not installed, skipping test")
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel.optimize('rprop', messages=1)
+        np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+    def test_optimize_ada(self):
+        try:
+            import climin
+        except ImportError:
+            raise SkipTest("climin not installed, skipping test")
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel.trigger_update()
+            self.testmodel.optimize('adadelta', messages=1, step_rate=1, momentum=1)
+        np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_org_bfgs(self):
         import warnings
         with warnings.catch_warnings():
@@ -183,9 +205,9 @@ class ModelTest(unittest.TestCase):
         testmodel.optimize_restarts(2, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=True)
         self.assertRaises(ValueError, testmodel.optimize_restarts, 1, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=False)
 
-
     def test_raveled_index(self):
         self.assertListEqual(self.testmodel._raveled_index_for(self.testmodel['.*variance']).tolist(), [1, 2])
+        self.assertListEqual(self.testmodel.kern.lengthscale._raveled_index_for(None).tolist(), [0])
 
     def test_constraints_testmodel(self):
         self.testmodel['.*rbf'].constrain_negative()
@@ -211,11 +233,16 @@ class ModelTest(unittest.TestCase):
         self.testmodel.update_model(True)
         self.assertNotEqual(val, self.testmodel.objective_function())
 
+    def test_set_gradients(self):
+        self.testmodel.gradient = 10.
+        np.testing.assert_array_equal(self.testmodel.gradient, 10.)
+
     def test_fixing_optimize(self):
         self.testmodel.kern.lengthscale.fix()
         val = float(self.testmodel.kern.lengthscale)
         self.testmodel.randomize()
         self.assertEqual(val, self.testmodel.kern.lengthscale)
+        self.testmodel.optimize(max_iters=2)
 
     def test_regular_expression_misc(self):
         self.assertTrue(self.testmodel[''].checkgrad())
@@ -465,6 +492,9 @@ class ParameterizedTest(unittest.TestCase):
         # add.rbf.lengthscale  |        1.0  |  0.0,1.0 +ve  |         |
         # add.white.variance   |        1.0  |  0.0,1.0 +ve  |         |
         #=============================================================================
+
+    def test_original(self):
+        self.assertIs(self.test1.param[[0]]._get_original(None), self.param)
 
     def test_unfixed_param_array(self):
         self.test1.param_array[:] = 0.1
