@@ -1,21 +1,21 @@
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramz.core.pickleable nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -108,7 +108,7 @@ class Pickleable(object):
                        'logger',
                        'observers',
                        '_fixes_', # and fixes
-                       'cachers', # never pickle cachers
+                       'cache', # never pickle the cache
                        ]
         dc = dict()
         #py3 fix
@@ -121,6 +121,8 @@ class Pickleable(object):
     def __setstate__(self, state):
         self.__dict__.update(state)
         from .lists_and_dicts import ObserverList
+        from ..caching import FunctionCache
         self.observers = ObserverList()
+        self.cache = FunctionCache()
         self._setup_observers()
         self._optimizer_copy_transformed = False

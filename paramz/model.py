@@ -299,6 +299,11 @@ class Model(Parameterized):
            If it is too small, e.g., smaller than 1e-12, the numerical gradients are usually
            not accurate enough for the tests (shown with blue).
         """
+        if not self._model_initialized_:
+            import warnings
+            warnings.warn("This model has not been initialized, try model.inititialize_model()", RuntimeWarning)
+            return False
+        
         x = self.optimizer_array.copy()
 
         if not verbose:

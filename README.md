@@ -6,8 +6,7 @@
 [![docStat](https://readthedocs.org/projects/paramz/badge/?version=latest)](http://paramz.readthedocs.org/en/latest/)
 
 Parameterization Framework for parameterized model creation and handling.
-
-This is a lightweight framework for using parameterized models. 
+This is a lightweight framework for using parameterized models.
 
 See examples model in `paramz.examples.<tab>`
 
@@ -25,5 +24,14 @@ Features:
  - Efficient storage of models, for reloading
  - Efficient caching included
 
-#### Coverage
+## Installation
+
+You can install this package via pip
+
+  pip install paramz
+
+There is regular update for this package, so make sure to keep up to date
+(Rerunning the install above will update the package and dependencies).
+
+#### Coverage development
 ![codecov.io](https://codecov.io/github/sods/paramz/branch.svg?branch=master)
