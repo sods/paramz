@@ -41,6 +41,7 @@ import logging
 from ..transformations import __fixed__, FIXED
 from .constrainable import Constrainable
 from .nameable import adjust_name_for_printing
+from ..caching import FunctionCache
 
 class OptimizationHandlable(Constrainable):
     """
@@ -198,7 +199,8 @@ class OptimizationHandlable(Constrainable):
 
         If you want the names for fixed parameters as well in this list,
         set include_fixed to True.
-
+            if not hasattr(obj, 'cache'):
+                obj.cache = FunctionCacher()
         :param bool include_fixed: whether to include fixed names here.
         """
         name_list = []
@@ -285,6 +287,8 @@ class OptimizationHandlable(Constrainable):
             pi._propagate_param_grad(parray[pislice], garray[pislice])
             pi_old_size += pi.size
 
+        self._model_initialized_ = True
+
     def _connect_parameters(self):
         pass
 
@@ -309,6 +313,21 @@ class Parameterizable(OptimizationHandlable):
         self._added_names_ = set()
         self.logger = logging.getLogger(self.__class__.__name__)
         self.__visited = False # for traversing in reverse order we need to know if we were here already
+        self.cache = FunctionCache()
+
+
+    def initialize_parameter(self):
+        """
+        Call this function to initialize the model, if you built it without initialization.
+
+        This HAS to be called manually before optmizing or it will be causing
+        unexpected behaviour, if not errors!
+        """
+        #logger.debug("connecting parameters")
+        self._highest_parent_._notify_parent_change()
+        self._highest_parent_._connect_fixes()
+        self._highest_parent_._connect_parameters() #logger.debug("calling parameters changed")
+        self.parameters_changed()
 
     @property
     def param_array(self):
@@ -382,6 +401,21 @@ class Parameterizable(OptimizationHandlable):
             self._parent_.traverse_parents(visit, *args, **kwargs)
             self._parent_.traverse(visit, *args, **kwargs)
             self.__visited = False
+
+    #===========================================================================
+    # Caching
+    #===========================================================================
+
+    def enable_caching(self):
+        def visit(self):
+            self.cache.enable_caching()
+        self.traverse(visit)
+
+    def disable_caching(self):
+        def visit(self):
+            self.cache.disable_caching()
+        self.traverse(visit)
+
 
     #=========================================================================
     # Gradient handling

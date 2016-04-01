@@ -91,19 +91,6 @@ class Param(Parameterizable, ObsAr):
         super(Param, self).__init__(name=name, default_constraint=default_constraint, *a, **kw)
         self._in_init_ = False
 
-    def build_pydot(self,G):
-        import pydot
-        node = pydot.Node(id(self), shape='trapezium', label=self.name)#, fontcolor='white', color='white')
-        G.add_node(node)
-        for _, o, _ in self.observers:
-            label = o.name if hasattr(o, 'name') else str(o)
-            observed_node = pydot.Node(id(o), label=label)
-            G.add_node(observed_node)
-            edge = pydot.Edge(str(id(self)), str(id(o)), color='darkorange2', arrowhead='vee')
-            G.add_edge(edge)
-
-        return node
-
     def __array_finalize__(self, obj):
         # see InfoArray.__array_finalize__ for comments
         if obj is None: return
@@ -237,9 +224,6 @@ class Param(Parameterizable, ObsAr):
     def flattened_parameters(self):
         return [self]
     @property
-    def parameter_shapes(self):
-        return [self.shape]
-    @property
     def num_params(self):
         return 0
 
@@ -255,17 +239,17 @@ class Param(Parameterizable, ObsAr):
         # get a int-array containing all indices in the first axis.
         if slice_index is None:
             slice_index = self._current_slice_
-        try:
-            indices = np.indices(self._realshape_, dtype=int)
-            indices = indices[(slice(None),)+slice_index]
-            indices = np.rollaxis(indices, 0, indices.ndim).reshape(-1,self._realndim_)
+        #try:
+        indices = np.indices(self._realshape_, dtype=int)
+        indices = indices[(slice(None),)+slice_index]
+        indices = np.rollaxis(indices, 0, indices.ndim).reshape(-1,self._realndim_)
             #print indices_
             #if not np.all(indices==indices__):
             #    import ipdb; ipdb.set_trace()
-        except:
-            indices = np.indices(self._realshape_, dtype=int)
-            indices = indices[(slice(None),)+slice_index]
-            indices = np.rollaxis(indices, 0, indices.ndim)
+        #except:
+        #    indices = np.indices(self._realshape_, dtype=int)
+        #    indices = indices[(slice(None),)+slice_index]
+        #    indices = np.rollaxis(indices, 0, indices.ndim)
         return indices
 
     def _max_len_names(self, gen, header):
@@ -351,6 +335,48 @@ class Param(Parameterizable, ObsAr):
             to_print.append(format_spec.format(index=indices[i], value="{1:.{0}f}".format(__precision__, vals[i]), **dict((name, ' '.join(map(str, iops[name][i]))) for name in iops)))
         return '\n'.join(to_print)
 
+    def build_pydot(self,G): # pragma: no cover
+        """
+        Build a pydot representation of this model. This needs pydot installed.
+
+        Example Usage:
+
+        np.random.seed(1000)
+        X = np.random.normal(0,1,(20,2))
+        beta = np.random.uniform(0,1,(2,1))
+        Y = X.dot(beta)
+        m = RidgeRegression(X, Y)
+        G = m.build_pydot()
+        G.write_png('example_hierarchy_layout.png')
+
+        The output looks like:
+
+        .. image:: example_hierarchy_layout.png
+
+        Rectangles are parameterized objects (nodes or leafs of hierarchy).
+
+        Trapezoids are param objects, which represent the arrays for parameters.
+
+        Black arrows show parameter hierarchical dependence. The arrow points
+        from parents towards children.
+
+        Orange arrows show the observer pattern. Self references (here) are
+        the references to the call to parameters changed and references upwards
+        are the references to tell the parents they need to update.
+        """
+        import pydot
+        node = pydot.Node(id(self), shape='trapezium', label=self.name)#, fontcolor='white', color='white')
+        G.add_node(node)
+        for _, o, _ in self.observers:
+            label = o.name if hasattr(o, 'name') else str(o)
+            observed_node = pydot.Node(id(o), label=label)
+            if str(id(o)) not in G.obj_dict['nodes']: # pragma: no cover
+                G.add_node(observed_node)
+            edge = pydot.Edge(str(id(self)), str(id(o)), color='darkorange2', arrowhead='vee')
+            G.add_edge(edge)
+
+        return node
+
 class ParamConcatenation(object):
     def __init__(self, params):
         """
@@ -396,15 +422,14 @@ class ParamConcatenation(object):
         if len(params)==1: return params[0]
         return ParamConcatenation(params)
 
-    def __setitem__(self, s, val, update=True):
+    def __setitem__(self, s, val):
         if isinstance(val, ParamConcatenation):
             val = val.values()
         ind = np.zeros(sum(self._param_sizes), dtype=bool); ind[s] = True;
         vals = self.values(); vals[s] = val
         for p, ps in zip(self.params, self._param_slices_):
             p.flat[ind[ps]] = vals[ps]
-        if update:
-            self.update_all_params()
+        self.update_all_params()
 
     def values(self):
         return np.hstack([p.param_array.flat for p in self.params])

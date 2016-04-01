@@ -91,7 +91,7 @@ autodoc_default_flags = ['members',
 autodoc_member_order = 'groupwise'
 add_function_parentheses = False
 add_module_names = False
-#modindex_common_prefix = ['GPy']
+modindex_common_prefix = ['paramz']
 show_authors = True
 
 # There are two options for replacing |today|: either, you set today to some
@@ -113,7 +113,7 @@ exclude_patterns = []
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
-#add_module_names = True
+add_module_names = False
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
@@ -188,10 +188,10 @@ html_static_path = ['_static']
 #html_additional_pages = {}
 
 # If false, no module index is generated.
-#html_domain_indices = True
+html_domain_indices = False
 
 # If false, no index is generated.
-#html_use_index = True
+html_use_index = False
 
 # If true, the index is split into individual pages for each letter.
 html_split_index = True

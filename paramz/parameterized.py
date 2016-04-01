@@ -1,21 +1,21 @@
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramax nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -42,18 +42,20 @@ from functools import reduce
 logger = logging.getLogger("parameters changed meta")
 
 class ParametersChangedMeta(type):
+
     def __call__(self, *args, **kw):
         self._in_init_ = True
         #import ipdb;ipdb.set_trace()
+        initialize = kw.pop('initialize', True)
         self = super(ParametersChangedMeta, self).__call__(*args, **kw)
         #logger.debug("finished init")
         self._in_init_ = False
-        #logger.debug("connecting parameters")
-        self._highest_parent_._connect_parameters()
-        #self._highest_parent_._notify_parent_change()
-        self._highest_parent_._connect_fixes()
-        #logger.debug("calling parameters changed")
-        self.parameters_changed()
+        self._model_initialized_ = initialize
+        if initialize:
+            self.initialize_parameter()
+        else:
+            import warnings
+            warnings.warn("Don't forget to initialize by self.initialize_parameter()!", RuntimeWarning)
         return self
 
 @six.add_metaclass(ParametersChangedMeta)
@@ -105,38 +107,14 @@ class Parameterized(Parameterizable):
     #__metaclass__ = ParametersChangedMeta
     #The six module is used to support both Python 2 and 3 simultaneously
     #===========================================================================
-    def __init__(self, name=None, parameters=[], *a, **kw):
-        super(Parameterized, self).__init__(name=name, *a, **kw)
+    def __init__(self, name=None, parameters=[]):
+        super(Parameterized, self).__init__(name=name)
         self.size = sum(p.size for p in self.parameters)
         self.add_observer(self, self._parameters_changed_notification, -100)
-        if not self._has_fixes():
-            self._fixes_ = None
+        self._fixes_ = None
         self._param_slices_ = []
         #self._connect_parameters()
         self.link_parameters(*parameters)
-
-    def build_pydot(self, G=None):
-        import pydot  # @UnresolvedImport
-        iamroot = False
-        if G is None:
-            G = pydot.Dot(graph_type='digraph', bgcolor=None)
-            iamroot=True
-        node = pydot.Node(id(self), shape='box', label=self.name)#, color='white')
-        G.add_node(node)
-        for child in self.parameters:
-            child_node = child.build_pydot(G)
-            G.add_edge(pydot.Edge(node, child_node))#, color='white'))
-
-        for _, o, _ in self.observers:
-            label = o.name if hasattr(o, 'name') else str(o)
-            observed_node = pydot.Node(id(o), label=label)
-            G.add_node(observed_node)
-            edge = pydot.Edge(str(id(self)), str(id(o)), color='darkorange2', arrowhead='vee')
-            G.add_edge(edge)
-
-        if iamroot:
-            return G
-        return node
 
     #===========================================================================
     # Add remove parameters:
@@ -165,7 +143,7 @@ class Parameterized(Parameterizable):
             # make sure the size is set
             if index is None:
                 start = sum(p.size for p in self.parameters)
-                for name, iop in self._index_operations.items(): 
+                for name, iop in self._index_operations.items():
                     iop.shift_right(start, param.size)
                     iop.update(param._index_operations[name], self.size)
                 param._parent_ = self
@@ -173,7 +151,7 @@ class Parameterized(Parameterizable):
                 self.parameters.append(param)
             else:
                 start = sum(p.size for p in self.parameters[:index])
-                for name, iop in self._index_operations.items(): 
+                for name, iop in self._index_operations.items():
                     iop.shift_right(start, param.size)
                     iop.update(param._index_operations[name], start)
                 param._parent_ = self
@@ -190,7 +168,7 @@ class Parameterized(Parameterizable):
                 parent = parent._parent_
             self._notify_parent_change()
 
-            if not self._in_init_:
+            if not self._in_init_ and self._highest_parent_._model_initialized_:
                 #self._connect_parameters()
                 #self._notify_parent_change()
 
@@ -227,7 +205,7 @@ class Parameterized(Parameterizable):
 
         param._disconnect_parent()
         param.remove_observer(self, self._pass_through_notify_observers)
-        for name, iop in self._index_operations.items(): 
+        for name, iop in self._index_operations.items():
             iop.shift_left(start, param.size)
 
         self._connect_parameters()
@@ -260,14 +238,14 @@ class Parameterized(Parameterizable):
 Have you added an additional dimension to a Param object?
 
   p[:,None], where p is of type Param does not work
-  and is expected to fail! Try increasing the 
+  and is expected to fail! Try increasing the
   dimensionality of the param array before making
   a Param out of it:
   p = Param("<name>", array[:,None])
 
-Otherwise this should not happen! 
-Please write an email to the developers with the code, 
-which reproduces this error. 
+Otherwise this should not happen!
+Please write an email to the developers with the code,
+which reproduces this error.
 All parameter arrays must be C_CONTIGUOUS
 """)
 
@@ -291,6 +269,8 @@ All parameter arrays must be C_CONTIGUOUS
             self._add_parameter_name(p)
             old_size += p.size
 
+        self._model_initialized_ = True
+
     #===========================================================================
     # Get/set parameters:
     #===========================================================================
@@ -310,8 +290,7 @@ All parameter arrays must be C_CONTIGUOUS
         if isinstance(name, (int, slice, tuple, np.ndarray)):
             return self.param_array[name]
         else:
-            if paramlist is None:
-                paramlist = self.grep_param_names(name)
+            paramlist = self.grep_param_names(name)
             if len(paramlist) < 1: raise AttributeError(name)
             if len(paramlist) == 1:
                 #if isinstance(paramlist[-1], Parameterized) and paramlist[-1].size > 0:
@@ -351,7 +330,7 @@ All parameter arrays must be C_CONTIGUOUS
         self._connect_parameters()
         self._connect_fixes()
         self._notify_parent_change()
-        self.parameters_changed()            
+        self.parameters_changed()
 
     def copy(self, memo=None):
         if memo is None:
@@ -378,7 +357,7 @@ All parameter arrays must be C_CONTIGUOUS
         for p in self.parameters:
             props.extend(p.get_property_string(propname))
         return props
- 
+
     @property
     def _description_str(self):
         return [xi for x in self.parameters for xi in x._description_str]
@@ -397,14 +376,14 @@ All parameter arrays must be C_CONTIGUOUS
 
         format_spec = self._format_spec(name, names, desc, iops, False)
         to_print = []
-        
+
         if header:
             to_print.append("<tr><th><b>" + '</b></th><th><b>'.join(format_spec).format(name=name, desc='value', **dict((name, name) for name in iops)) + "</b></th></tr>")
 
         format_spec = "<tr><td class=tg-left>" + format_spec[0] + '</td><td class=tg-right>' + format_spec[1] + '</td><td class=tg-center>' + '</td><td class=tg-center>'.join(format_spec[2:]) + "</td></tr>"
         for i in range(len(names)):
             to_print.append(format_spec.format(name=names[i], desc=desc[i], **dict((name, iops[name][i]) for name in iops)))
-        
+
         style = """<style type="text/css">
 .tg  {font-family:"Courier New", Courier, monospace !important;padding:2px 3px;word-break:normal;border-collapse:collapse;border-spacing:0;border-color:#DCDCDC;margin:0px auto;width:100%;}
 .tg td{font-family:"Courier New", Courier, monospace !important;font-weight:bold;color:#444;background-color:#F7FDFA;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#DCDCDC;}
@@ -418,9 +397,9 @@ All parameter arrays must be C_CONTIGUOUS
     def _format_spec(self, name, names, desc, iops, VT100=True):
         nl = max([len(str(x)) for x in names + [name]])
         sl = max([len(str(x)) for x in desc + ["value"]])
-        
+
         lls = [reduce(lambda a,b: max(a, len(b)), iops[opname], len(opname)) for opname in iops]
-        
+
         if VT100:
             format_spec = ["  \033[1m{{name!s:<{0}}}\033[0;0m".format(nl),"{{desc!s:>{0}}}".format(sl)]
         else:
@@ -434,23 +413,75 @@ All parameter arrays must be C_CONTIGUOUS
 
     def __str__(self, header=True, VT100=True):
         name = adjust_name_for_printing(self.name) + "."
-        names = self.parameter_names()
+        names = self.parameter_names(adjust_for_printing=True)
         desc = self._description_str
         iops = OrderedDict()
         for opname in self._index_operations:
             iops[opname] = self.get_property_string(opname)
 
         format_spec = '  |  '.join(self._format_spec(name, names, desc, iops, VT100))
-        
+
         to_print = []
-        
+
         if header:
             to_print.append(format_spec.format(name=name, desc='value', **dict((name, name) for name in iops)))
-        
+
         for i in range(len(names)):
             to_print.append(format_spec.format(name=names[i], desc=desc[i], **dict((name, iops[name][i]) for name in iops)))
         return '\n'.join(to_print)
-    
+
     pass
 
+    def build_pydot(self, G=None): # pragma: no cover
+        """
+        Build a pydot representation of this model. This needs pydot installed.
+
+        Example Usage:
+
+        np.random.seed(1000)
+        X = np.random.normal(0,1,(20,2))
+        beta = np.random.uniform(0,1,(2,1))
+        Y = X.dot(beta)
+        m = RidgeRegression(X, Y)
+        G = m.build_pydot()
+        G.write_png('example_hierarchy_layout.png')
+
+        The output looks like:
+
+        .. image:: ./example_hierarchy_layout.png
+
+        Rectangles are parameterized objects (nodes or leafs of hierarchy).
+
+        Trapezoids are param objects, which represent the arrays for parameters.
+
+        Black arrows show parameter hierarchical dependence. The arrow points
+        from parents towards children.
+
+        Orange arrows show the observer pattern. Self references (here) are
+        the references to the call to parameters changed and references upwards
+        are the references to tell the parents they need to update.
+        """
+        import pydot  # @UnresolvedImport
+        iamroot = False
+        if G is None:
+            G = pydot.Dot(graph_type='digraph', bgcolor=None)
+            iamroot=True
+        node = pydot.Node(id(self), shape='box', label=self.name)#, color='white')
+
+        G.add_node(node)
+        for child in self.parameters:
+            child_node = child.build_pydot(G)
+            G.add_edge(pydot.Edge(node, child_node))#, color='white'))
+
+        for _, o, _ in self.observers:
+            label = o.name if hasattr(o, 'name') else str(o)
+            observed_node = pydot.Node(id(o), label=label)
+            if str(id(o)) not in G.obj_dict['nodes']:
+                G.add_node(observed_node)
+            edge = pydot.Edge(str(id(self)), str(id(o)), color='darkorange2', arrowhead='vee')
+            G.add_edge(edge)
+
+        if iamroot:
+            return G
+        return node
 
