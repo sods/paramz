@@ -448,7 +448,7 @@ All parameter arrays must be C_CONTIGUOUS
 
         The output looks like:
 
-        .. image:: example_hierarchy_layout.png
+        .. image:: ./example_hierarchy_layout.png
 
         Rectangles are parameterized objects (nodes or leafs of hierarchy).
 
