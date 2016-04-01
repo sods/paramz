@@ -432,7 +432,7 @@ All parameter arrays must be C_CONTIGUOUS
 
     pass
 
-    def build_pydot(self, G=None):
+    def build_pydot(self, G=None): # pragma: no cover
         """
         Build a pydot representation of this model. This needs pydot installed.
 

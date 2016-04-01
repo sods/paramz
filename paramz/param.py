@@ -335,7 +335,7 @@ class Param(Parameterizable, ObsAr):
             to_print.append(format_spec.format(index=indices[i], value="{1:.{0}f}".format(__precision__, vals[i]), **dict((name, ' '.join(map(str, iops[name][i]))) for name in iops)))
         return '\n'.join(to_print)
 
-    def build_pydot(self,G):
+    def build_pydot(self,G): # pragma: no cover
         """
         Build a pydot representation of this model. This needs pydot installed.
 
