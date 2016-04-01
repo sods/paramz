@@ -68,18 +68,10 @@ class Cacher(object):
             # if the cache of the object is enabled, we want this cacher to
             # be enabled, if not told explicitly to not be.
             cache[self.operation] = self
-        self.order = collections.deque()
-        self.cached_inputs = {}  # point from cache_ids to a list of [ind_ids], which where used in cache cache_id
 
-        #=======================================================================
-        # point from each ind_id to [ref(obj), cache_ids]
-        # 0: a weak reference to the object itself
-        # 1: the cache_ids in which this ind_id is used (len will be how many times we have seen this ind_id)
-        self.cached_input_ids = {}
-        #=======================================================================
-
-        self.cached_outputs = {}  # point from cache_ids to outputs
-        self.inputs_changed = {}  # point from cache_ids to bools
+        self.cached_input_ids = {} # make sure reset can be run and we do not duplicate
+        # code. See reset for details on saved values.
+        self.reset()
 
     def disable_cacher(self):
         "Disable the caching of this cacher. This also removes previously cached results"
@@ -105,7 +97,7 @@ class Cacher(object):
         cache_id = "".join(self.id(a) for a in combined_args_kw)
         return cache_id
 
-    def ensure_cache_length(self, cache_id):
+    def ensure_cache_length(self):
         "Ensures the cache is within its limits and has one place free"
         if len(self.order) == self.limit:
             # we have reached the limit, so lets release one element
@@ -193,7 +185,7 @@ class Cacher(object):
                 self.cached_outputs[cache_id] = new_output
             else:  # not_seen is True, as one of the two has to be True:
                 # 3: This is when we never saw this chache_id:
-                self.ensure_cache_length(cache_id)
+                self.ensure_cache_length()
                 self.add_to_cache(cache_id, inputs, new_output)
         # 5: We have seen this cache_id and it is cached:
         return self.cached_outputs[cache_id]
@@ -215,9 +207,19 @@ class Cacher(object):
         Totally reset the cache
         """
         [a().remove_observer(self, self.on_cache_changed) if (a() is not None) else None for [a, _] in self.cached_input_ids.values()]
+
+        self.order = collections.deque()
+        self.cached_inputs = {}  # point from cache_ids to a list of [ind_ids], which where used in cache cache_id
+
+        #=======================================================================
+        # point from each ind_id to [ref(obj), cache_ids]
+        # 0: a weak reference to the object itself
+        # 1: the cache_ids in which this ind_id is used (len will be how many times we have seen this ind_id)
         self.cached_input_ids = {}
-        self.cached_outputs = {}
-        self.inputs_changed = {}
+        #=======================================================================
+
+        self.cached_outputs = {}  # point from cache_ids to outputs
+        self.inputs_changed = {}  # point from cache_ids to bools
 
     def __deepcopy__(self, memo=None):
         return Cacher(self.operation, self.limit, self.ignore_args, self.force_kwargs)
