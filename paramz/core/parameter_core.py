@@ -41,6 +41,7 @@ import logging
 from ..transformations import __fixed__, FIXED
 from .constrainable import Constrainable
 from .nameable import adjust_name_for_printing
+from ..caching import FunctionCache
 
 class OptimizationHandlable(Constrainable):
     """
@@ -312,8 +313,16 @@ class Parameterizable(OptimizationHandlable):
         self._added_names_ = set()
         self.logger = logging.getLogger(self.__class__.__name__)
         self.__visited = False # for traversing in reverse order we need to know if we were here already
+        self.cache = FunctionCache()
 
-    def initialize_model(self):
+
+    def initialize_parameter(self):
+        """
+        Call this function to initialize the model, if you built it without initialization.
+
+        This HAS to be called manually before optmizing or it will be causing
+        unexpected behaviour, if not errors!
+        """
         #logger.debug("connecting parameters")
         self._highest_parent_._notify_parent_change()
         self._highest_parent_._connect_fixes()
@@ -392,6 +401,21 @@ class Parameterizable(OptimizationHandlable):
             self._parent_.traverse_parents(visit, *args, **kwargs)
             self._parent_.traverse(visit, *args, **kwargs)
             self.__visited = False
+
+    #===========================================================================
+    # Caching
+    #===========================================================================
+
+    def enable_caching(self):
+        def visit(self):
+            self.cache.enable_caching()
+        self.traverse(visit)
+
+    def disable_caching(self):
+        def visit(self):
+            self.cache.disable_caching()
+        self.traverse(visit)
+
 
     #=========================================================================
     # Gradient handling

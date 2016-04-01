@@ -39,9 +39,14 @@ from .core.observable import Observable
 from numbers import Number
 
 class Cacher(object):
-    def __init__(self, operation, limit=5, ignore_args=(), force_kwargs=()):
+    def __init__(self, operation, limit=3, ignore_args=(), force_kwargs=(), cacher_enabled=True):
         """
-        Cache an `operation`.
+        Cache an `operation`. If the operation is a bound method we will
+        create a cache (FunctionCache) on that object in order to keep track
+        of the caches on instances.
+
+        Warning: If the instance already had a Cacher for the operation
+                 that Cacher will be overwritten by this Cacher!
 
         :param callable operation: function to cache
         :param int limit: depth of cacher
@@ -49,11 +54,20 @@ class Cacher(object):
         :param [str] force_kwargs: list of kwarg names (strings). If a kwarg with that name is given, the cacher will force recompute and wont cache anything.
         :param int verbose: verbosity level. 0: no print outs, 1: casual print outs, 2: debug level print outs
         """
-        self.caching_enabled = True # Is the caching switched on, for this chacher?
         self.limit = int(limit)
         self.ignore_args = ignore_args
         self.force_kwargs = force_kwargs
         self.operation = operation
+        self.cacher_enabled = cacher_enabled # Is the caching switched on, for this chacher?
+        if getattr(self.operation, '__self__', None) is not None:
+            obj = self.operation.__self__
+            if not hasattr(obj, 'cache'):
+                obj.cache = FunctionCache()
+            cache = obj.cache
+            self.cacher_enabled = (self.cacher_enabled and cache.caching_enabled)
+            # if the cache of the object is enabled, we want this cacher to
+            # be enabled, if not told explicitly to not be.
+            cache[self.operation] = self
         self.order = collections.deque()
         self.cached_inputs = {}  # point from cache_ids to a list of [ind_ids], which where used in cache cache_id
 
@@ -67,14 +81,14 @@ class Cacher(object):
         self.cached_outputs = {}  # point from cache_ids to outputs
         self.inputs_changed = {}  # point from cache_ids to bools
 
-    def disable_caching(self):
+    def disable_cacher(self):
         "Disable the caching of this cacher. This also removes previously cached results"
-        self.caching_enabled = False
+        self.cacher_enabled = False
         self.reset()
 
-    def enable_caching(self):
+    def enable_cacher(self):
         "Enable the caching of this cacher."
-        self.caching_enabled = True
+        self.cacher_enabled = True
 
     def id(self, obj):
         """returns the self.id of an object, to be used in caching individual self.ids"""
@@ -145,7 +159,7 @@ class Cacher(object):
         """
         #=======================================================================
         # !WARNING CACHE OFFSWITCH!
-        if not self.caching_enabled:
+        if not self.cacher_enabled:
             return self.operation(*args, **kw)
         #=======================================================================
 
@@ -218,16 +232,25 @@ class Cacher(object):
     def __name__(self):
         return self.operation.__name__
 
+    def __str__(self, *args, **kwargs):
+        return "Cacher({})\n  limit={}\n  \#cached={}".format(self.__name__, self.limit, len(self.cached_input_ids))
+
 class FunctionCache(dict):
+    def __init__(self, *args, **kwargs):
+        dict.__init__(self, *args, **kwargs)
+        self.caching_enabled = True
+
     def disable_caching(self):
         "Disable the cache of this object. This also removes previously cached results"
+        self.caching_enabled = False
         for c in self.values():
-            c.disable_caching()
+            c.disable_cacher()
 
     def enable_caching(self):
         "Enable the cache of this object."
+        self.caching_enabled = True
         for c in self.values():
-            c.enable_caching()
+            c.enable_cacher()
 
     def reset(self):
         "Reset (delete) the cache of this object"
@@ -254,7 +277,7 @@ class Cache_this(object):
             if self.f in cache:
                 cacher = cache[self.f]
             else:
-                cacher = cache[self.f] = Cacher(self.f, self.limit, self.ignore_args, self.force_kwargs)
+                cacher = cache[self.f] = Cacher(self.f, self.limit, self.ignore_args, self.force_kwargs, cacher_enabled=cache.caching_enabled)
             return cacher(*args, **kw)
         g.__name__ = f.__name__
         g.__doc__ = f.__doc__

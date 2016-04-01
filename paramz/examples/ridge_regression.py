@@ -26,10 +26,10 @@ class RidgeRegression(Model):
         super(RidgeRegression, self).__init__(name=name)
         assert X.ndim == 2, 'inputs need to be at least a column vector'
         assert Y.ndim == 2, 'inputs need to be at least a column vector'
-        
+
         self.X = ObsAr(X)
         self.Y = ObsAr(Y)
-        
+
         if basis is None:
             basis = Polynomial(1)
         self.basis = basis
@@ -37,9 +37,9 @@ class RidgeRegression(Model):
         if regularizer is None:
             regularizer = Ridge(1)
         self.regularizer = regularizer
-        
+
         self.regularizer.init(basis, X.shape[1])
-        
+
         self.link_parameters(self.regularizer, self.basis)
 
     @property
@@ -57,12 +57,12 @@ class RidgeRegression(Model):
     def phi(self, Xpred, degrees=None):
         """
         Compute the design matrix for this model
-        using the degrees given by the index array 
+        using the degrees given by the index array
         in degrees
-        
+
         :param array-like Xpred: inputs to compute the design matrix for
-        :param array-like degrees: array of degrees to use [default=range(self.degree+1)] 
-        :returns array-like phi: The design matrix [degree x #samples x #dimenisons] 
+        :param array-like degrees: array of degrees to use [default=range(self.degree+1)]
+        :returns array-like phi: The design matrix [degree x #samples x #dimenisons]
         """
         if degrees is None:
             degrees = range(self.basis.degree+1)
@@ -87,7 +87,7 @@ class RidgeRegression(Model):
             # gradient:
             self.weights.gradient[i] -= 2*(tmp_outer*tmp_X).sum(0)
         self._obj = (((tmp_outer)**2).sum() + self.regularizer.error.sum())
-        
+
         #self.reg_error = self.Y-self.X.dot(self.beta)
         # gradient for regularizer is already set by the regularizer!
         #self.beta.gradient[:] += (-2*self.reg_error*self.X).sum(0)[:,None]
@@ -104,41 +104,52 @@ class RidgeRegression(Model):
             tmp_outer += tmp_X.dot(self.weights[[i], :].T)
         return tmp_outer
 
-        
+
 
 class Basis(Parameterized):
-    def __init__(self, degree, name='polynomial'):
+    def __init__(self, degree, name='basis'):
         """
         Basis class for computing the design matrix phi(X). The weights are held
         in the regularizer, so that this only represents the design matrix.
         """
         super(Basis, self).__init__(name=name)
         self.degree = degree
+        # One way of setting up the caching is by the following, the
+        # other is by the decorator.
         self._basis = Cacher(self.basis, self.degree+1, [], [])
+        # If we do not set up the caching ourself, using the decorator, we
+        # cannot set the limit of the cacher easily to the degree+1.
+        # It could be done on runtime, by inspecting self.cache and setting
+        # the limit of the right cacher, but that is more complex then necessary
 
     def basis(self, X, i):
         """
-        Return the ith basis dimension. 
+        Return the ith basis dimension.
         In the polynomial case, this is X**index.
         You can write your own basis function here, inheriting from this class
         and the gradients will still check.
-        
-        Note: i will be zero for the first degree. This means we 
-        have also a bias in the model, which makes the problem of having an explicit 
-        bias obsolete. 
+
+        Note: i will be zero for the first degree. This means we
+        have also a bias in the model, which makes the problem of having an explicit
+        bias obsolete.
         """
-        raise NotImplementedError('Implement the basis you want to optimize over.')    
+        raise NotImplementedError('Implement the basis you want to optimize over.')
 
 class Polynomial(Basis):
+    def __init__(self, degree, name='polynomial'):
+        super(Polynomial, self).__init__(degree, name)
+
     def basis(self, X, i):
         return X**i
+
+
 
 class Regularizer(Parameterized):
     def __init__(self, lambda_, name='regularizer'):
         super(Regularizer, self).__init__(name=name)
         self.lambda_ = lambda_
         self._initialized = False
-    
+
     def init(self, basis, input_dim):
         if self._initialized:
             raise RuntimeError("already initialized, please use new object.")
@@ -156,16 +167,18 @@ class Regularizer(Parameterized):
         self.link_parameter(weights)
         self._initialized = True
         self.update_error()
-    
+
     def parameters_changed(self):
         if self._initialized:
             self.update_error()
+
     def update_error(self):
         raise NotImplementedError('Set the error `error` and gradient of weights in here')
 
 class Lasso(Regularizer):
     def __init__(self, lambda_, name='Lasso'):
         super(Lasso, self).__init__(lambda_, name)
+
     def update_error(self):
         self.error = self.lambda_*np.sum(np.abs(self.weights), 1)
         self.weights.gradient[:] = self.lambda_*np.sign(self.weights)
@@ -173,6 +186,7 @@ class Lasso(Regularizer):
 class Ridge(Regularizer):
     def __init__(self, lambda_, name='Ridge'):
         super(Ridge, self).__init__(lambda_, name)
+
     def update_error(self):
         self.error = self.lambda_*np.sum(self.weights**2, 1)
         self.weights.gradient[:] = self.lambda_*2*self.weights

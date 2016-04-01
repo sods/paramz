@@ -15,6 +15,7 @@ from ..parameterized import Parameterized
 from ..param import Param, ParamConcatenation
 from ..model import Model
 from unittest.case import SkipTest
+from paramz.caching import Cache_this
 
 class ArrayCoreTest(unittest.TestCase):
     def setUp(self):
@@ -47,7 +48,8 @@ def test_constraints_in_init():
 
 def test_parameter_modify_in_init():
     class TestLikelihood(Parameterized):
-        def __init__(self, param1 = 2., param2 = 3.):
+        def __init__(self, param1 = 2., param2 = 3., param3 = np.random.uniform(size=(2,2,2))):
+
             super(TestLikelihood, self).__init__("TestLike")
             self.p1 = Param('param1', param1)
             self.p2 = Param('param2', param2)
@@ -84,6 +86,11 @@ class P(Parameterized):
             self.__setattr__(k, val)
             self.link_parameter(self.__getattribute__(k))
 
+    @Cache_this()
+    def heres_johnny(self, ignore=1):
+        return 0
+
+
 class ModelTest(unittest.TestCase):
 
     def setUp(self):
@@ -99,10 +106,13 @@ class ModelTest(unittest.TestCase):
                 return -self.objective_function()
             def parameters_changed(self):
                 self._obj = (self.param_array**2).sum()
+                for p in self.parameters:
+                    if hasattr(p, 'heres_johnny'):
+                        p.heres_johnny()
                 self.gradient[:] = 2*self.param_array
 
         self.testmodel = M('testmodel')
-        self.testmodel.kern = Parameterized('rbf')
+        self.testmodel.kern = P('rbf')
         self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
         self.testmodel.link_parameter(self.testmodel.kern)
         self.testmodel.link_parameter(self.testmodel.likelihood)
@@ -119,6 +129,44 @@ class ModelTest(unittest.TestCase):
         # rbf.lengthscale          |    1.0  |     +ve      |         |
         # Gaussian_noise.variance  |    1.0  |     +ve      |         |
         #=============================================================================
+    def test_pydot(self):
+        try:
+            import pydot
+            G = self.testmodel.build_pydot()
+            testmodel_node_labels = set(['testmodel',
+ 'lengthscale',
+ 'variance',
+ 'Cacher(heres_johnny)\n  limit=5\n  \\#cached=1',
+ 'rbf',
+ 'Cacher(heres_johnny)\n  limit=5\n  \\#cached=1',
+ 'Gaussian_noise',
+ 'variance'])
+            testmodel_edges = set([tuple(e) for e in [['variance', 'Gaussian_noise'],
+ ['Gaussian_noise', 'Cacher(heres_johnny)\n  limit=5\n  \\#cached=1'],
+ ['rbf', 'rbf'],
+ ['Gaussian_noise', 'variance'],
+ ['testmodel', 'Gaussian_noise'],
+ ['lengthscale', 'rbf'],
+ ['rbf', 'lengthscale'],
+ ['rbf', 'testmodel'],
+ ['variance', 'rbf'],
+ ['testmodel', 'rbf'],
+ ['testmodel', 'testmodel'],
+ ['Gaussian_noise', 'testmodel'],
+ ['Gaussian_noise', 'Gaussian_noise'],
+ ['rbf', 'variance'],
+ ['rbf', 'Cacher(heres_johnny)\n  limit=5\n  \\#cached=1']]])
+
+            self.assertSetEqual(set([n.get_label() for n in G.get_nodes()]), testmodel_node_labels)
+
+            edges = set()
+            for e in G.get_edges():
+                points = e.obj_dict['points']
+                edges.add(tuple(G.get_node(p)[0].get_label() for p in points))
+
+            self.assertSetEqual(edges, testmodel_edges)
+        except ImportError:
+            raise SkipTest("pydot not available")
 
     def test_optimize_preferred(self):
         self.testmodel.update_toggle()
@@ -236,6 +284,8 @@ class ModelTest(unittest.TestCase):
     def test_set_gradients(self):
         self.testmodel.gradient = 10.
         np.testing.assert_array_equal(self.testmodel.gradient, 10.)
+        self.testmodel.kern.lengthscale.gradient = 15
+        np.testing.assert_array_equal(self.testmodel.gradient, [15., 10., 10.])
 
     def test_fixing_optimize(self):
         self.testmodel.kern.lengthscale.fix()
@@ -246,6 +296,12 @@ class ModelTest(unittest.TestCase):
 
     def test_regular_expression_misc(self):
         self.assertTrue(self.testmodel[''].checkgrad())
+
+        self.testmodel['.*rbf'][:] = 10
+        self.testmodel[''][2] = 11
+
+        np.testing.assert_array_equal(self.testmodel.param_array, [10,10,11])
+        np.testing.assert_((self.testmodel[''][:2] == [10,10]).all())
 
         self.testmodel.kern.lengthscale.fix()
         val = float(self.testmodel.kern.lengthscale)
@@ -335,6 +391,30 @@ class ModelTest(unittest.TestCase):
         # lik bounded
         np.testing.assert_array_equal(self.testmodel.constraints[transformations.Logistic(0,1)], [2])
 
+    def test_caching_offswitch(self):
+        self.assertEqual(len(self.testmodel.kern.cache), 1)
+        [self.assertEqual(len(c.cached_outputs), 1) for c in self.testmodel.kern.cache.values()]
+
+        self.testmodel.disable_caching()
+        self.testmodel.trigger_update()
+
+        [self.assertFalse(c.cacher_enabled) for c in self.testmodel.kern.cache.values()]
+        self.assertFalse(self.testmodel.kern.cache.caching_enabled)
+        self.assertFalse(self.testmodel.likelihood.cache.caching_enabled)
+
+        self.assertTrue(self.testmodel.checkgrad())
+
+        self.assertEqual(len(self.testmodel.kern.cache), 1)
+
+        [self.assertEqual(len(c.cached_outputs), 0) for c in self.testmodel.kern.cache.values()]
+
+        self.testmodel.enable_caching()
+        self.testmodel.trigger_update()
+
+        self.assertEqual(len(self.testmodel.kern.cache), 1)
+        [self.assertEqual(len(c.cached_outputs), 1) for c in self.testmodel.kern.cache.values()]
+
+
     def test_checkgrad(self):
         self.assertTrue(self.testmodel.checkgrad(1))
         self.assertTrue(self.testmodel.checkgrad())
@@ -345,6 +425,8 @@ class ModelTest(unittest.TestCase):
 
     def test_printing(self):
         print(self.testmodel.hierarchy_name(False))
+        self.assertEqual(self.testmodel.num_params, 2)
+        self.assertEqual(self.testmodel.kern.lengthscale.num_params, 0)
 
     def test_hierarchy_error(self):
         self.assertRaises(HierarchyError, self.testmodel.link_parameter, self.testmodel.parameters[0])
@@ -366,7 +448,7 @@ class ModelTest(unittest.TestCase):
 
     def test_likelihood_replicate(self):
         m = self.testmodel
-        m2 = self.testmodel.copy()
+        m2 = self.testmodel.copy(memo={})
 
         np.testing.assert_array_equal(self.testmodel[:], m2[:])
 
@@ -544,6 +626,7 @@ class ParameterizedTest(unittest.TestCase):
         self.assertRaises(AttributeError, self.test1.remove_index_operation, 'not_an_index_operation')
 
     def test_names(self):
+        self.assertSequenceEqual(self.test1.parameter_names(adjust_for_printing=True), self.test1.parameter_names(adjust_for_printing=False))
         self.test1.unlink_parameter(self.test1.kern)
         newname = 'this@is a+new name!'
         self.test1.kern.name = newname
@@ -710,9 +793,12 @@ class InitTests(unittest.TestCase):
             def parameters_changed(self):
                 self._obj = (self.param_array**2).sum()
                 self.gradient[:] = 2*self.param_array
-        self.testmodel = M('testmodel', initialize=False)
-        self.testmodel.kern = Parameterized('rbf', initialize=False)
-        self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()), initialize=False)
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel = M('testmodel', initialize=False)
+            self.testmodel.kern = Parameterized('rbf', initialize=False)
+            self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()), initialize=False)
         self.testmodel.link_parameter(self.testmodel.kern)
         self.testmodel.link_parameter(self.testmodel.likelihood)
         variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp())
@@ -721,7 +807,7 @@ class InitTests(unittest.TestCase):
         self.testmodel.kern.lengthscale = lengthscale
         self.testmodel.kern.link_parameter(lengthscale)
         self.testmodel.kern.link_parameter(variance)
-    
+
     def test_initialize(self):
         self.assertFalse(self.testmodel.likelihood._model_initialized_)
         self.assertFalse(self.testmodel.kern._model_initialized_)
@@ -729,8 +815,14 @@ class InitTests(unittest.TestCase):
         import warnings
         with warnings.catch_warnings():
             warnings.simplefilter("error")
+            # check the warning is being raised
             self.assertRaises(RuntimeWarning, self.testmodel.checkgrad)
-        self.testmodel.initialize_model()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            # check that the gradient checker just returns false
+            self.assertFalse(self.testmodel.checkgrad())
+            self.assertFalse(self.testmodel.kern.checkgrad())
+        self.testmodel.initialize_parameter()
         self.assertTrue(self.testmodel.likelihood._model_initialized_)
         self.assertTrue(self.testmodel.kern._model_initialized_)
         self.assertTrue(self.testmodel.checkgrad())
