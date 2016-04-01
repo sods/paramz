@@ -5,12 +5,15 @@
 [![codecov](https://codecov.io/github/sods/paramz/coverage.svg?branch=master)](https://codecov.io/github/sods/paramz?branch=master)
 [![docStat](https://readthedocs.org/projects/paramz/badge/?version=latest)](http://paramz.readthedocs.org/en/latest/)
 
+#### Coverage
+![codecov.io](https://codecov.io/github/sods/paramz/branch.svg?branch=master)
+
 Parameterization Framework for parameterized model creation and handling.
 This is a lightweight framework for using parameterized models.
 
 See examples model in `paramz.examples.<tab>`
 
-Features:
+### Features:
 
  - Easy model creation with parameters
  - Fast optimized access of parameters for optimization routines
@@ -33,5 +36,54 @@ You can install this package via pip
 There is regular update for this package, so make sure to keep up to date
 (Rerunning the install above will update the package and dependencies).
 
-#### Coverage development
-![codecov.io](https://codecov.io/github/sods/paramz/branch.svg?branch=master)
+## Supported Platforms:
+
+[<img src="https://www.python.org/static/community_logos/python-logo-generic.svg" height=40px>](https://www.python.org/)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2012.svg" height=40px>](http://www.microsoft.com/en-gb/windows)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/OS_X-Logo.svg" height=40px>](http://www.apple.com/osx/)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" height=40px>](https://en.wikipedia.org/wiki/List_of_Linux_distributions)
+
+Python 2.7, 3.3 and higher
+
+## Running unit tests:
+
+Ensure nose is installed via pip:
+
+    pip install nose
+
+Run nosetests from the root directory of the repository:
+
+    nosetests -v paramz/tests
+
+or using setuptools
+
+    python setup.py test
+
+## Compiling documentation:
+
+The documentation is stored in doc/ and is compiled with the Sphinx Python documentation generator, and is written in the reStructuredText format.
+
+The Sphinx documentation is available here: http://sphinx-doc.org/latest/contents.html
+
+**Installing dependencies:**
+
+To compile the documentation, first ensure that Sphinx is installed. On Debian-based systems, this can be achieved as follows:
+
+    sudo apt-get install python-pip
+    sudo pip install sphinx
+
+**Compiling documentation:**
+
+The documentation can be compiled as follows:
+
+    cd doc
+    sphinx-apidoc -o source/ ../GPy/
+    make html
+
+The HTML files are then stored in doc/build/html
+
+## Funding Acknowledgements
+
+Current support for the paramz software is coming through the following projects.
+
+* [EU FP7-PEOPLE Project Ref 316861](http://staffwww.dcs.shef.ac.uk/people/N.Lawrence/projects/mlpm/) "MLPM2012: Machine Learning for Personalized Medicine"
