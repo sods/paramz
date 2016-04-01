@@ -38,6 +38,14 @@ from pickle import PickleError
 from .core.observable import Observable
 from numbers import Number
 
+from config import config, NoOptionError
+try:
+    disable_caching = config.get('caching', 'disable_caching')
+    print("Caching disabled: {}".format(disable_caching) )
+except Exception:
+    # Caching enabled by default
+    disable_caching = False
+
 class Cacher(object):
     def __init__(self, operation, limit=5, ignore_args=(), force_kwargs=()):
         """
@@ -135,7 +143,8 @@ class Cacher(object):
         """
         #=======================================================================
         # !WARNING CACHE OFFSWITCH!
-        # return self.operation(*args, **kw)
+        if disable_caching:
+            return self.operation(*args, **kw)
         #=======================================================================
 
         # 1: Check whether we have forced recompute arguments:
