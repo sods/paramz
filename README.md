@@ -11,7 +11,7 @@
 Parameterization Framework for parameterized model creation and handling.
 This is a lightweight framework for using parameterized models.
 
-See examples model in `paramz.examples.<tab>`
+See examples model in 'paramz.examples.<tab>'
 
 ### Features:
 
@@ -37,11 +37,6 @@ There is regular update for this package, so make sure to keep up to date
 (Rerunning the install above will update the package and dependencies).
 
 ## Supported Platforms:
-
-[<img src="https://www.python.org/static/community_logos/python-logo-generic.svg" height=40px>](https://www.python.org/)
-[<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2012.svg" height=40px>](http://www.microsoft.com/en-gb/windows)
-[<img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/OS_X-Logo.svg" height=40px>](http://www.apple.com/osx/)
-[<img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" height=40px>](https://en.wikipedia.org/wiki/List_of_Linux_distributions)
 
 Python 2.7, 3.3 and higher
 
@@ -87,3 +82,4 @@ The HTML files are then stored in doc/build/html
 Current support for the paramz software is coming through the following projects.
 
 * [EU FP7-PEOPLE Project Ref 316861](http://staffwww.dcs.shef.ac.uk/people/N.Lawrence/projects/mlpm/) "MLPM2012: Machine Learning for Personalized Medicine"
+

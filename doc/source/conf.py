@@ -55,7 +55,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'paramz'
-copyright = u'2015, Max Zwiessele'
+copyright = u'Max Zwiessele, the Open-Data-science consortium'
 author = u'Max Zwiessele'
 
 # The version info for the project you're documenting, acts as replacement for
