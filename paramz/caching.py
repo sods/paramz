@@ -285,5 +285,5 @@ class Cache_this(object):
         try: # readthedocs weirdness.........
             from decorator import decorate  # @UnresolvedImport
             return decorate(self.f, g)
-        except AttributeError:
+        except (AttributeError, ImportError):
             return g
