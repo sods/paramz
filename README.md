@@ -3,7 +3,6 @@
 [![pypi](https://badge.fury.io/py/paramz.svg)](https://pypi.python.org/pypi/paramz)
 [![build](https://travis-ci.org/sods/paramz.svg?branch=master)](https://travis-ci.org/sods/paramz)
 [![codecov](https://codecov.io/github/sods/paramz/coverage.svg?branch=master)](https://codecov.io/github/sods/paramz?branch=master)
-[![docStat](https://readthedocs.org/projects/paramz/badge/?version=latest)](http://paramz.readthedocs.org/en/latest/)
 
 #### Coverage
 ![codecov.io](https://codecov.io/github/sods/paramz/branch.svg?branch=master)
@@ -54,7 +53,11 @@ or using setuptools
 
     python setup.py test
 
-## Compiling documentation:
+## Developer Documentation:
+
+http://pythonhosted.org/paramz/
+
+### Compiling documentation:
 
 The documentation is stored in doc/ and is compiled with the Sphinx Python documentation generator, and is written in the reStructuredText format.
 
