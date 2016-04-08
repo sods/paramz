@@ -259,7 +259,6 @@ class FunctionCache(dict):
         for c in self.values():
             c.reset()
 
-import decorator
 class Cache_this(object):
     """
     A decorator which can be applied to bound methods in order to cache them
@@ -283,4 +282,8 @@ class Cache_this(object):
             return cacher(*args, **kw)
         g.__name__ = f.__name__
         g.__doc__ = f.__doc__
-        return decorator.decorate(self.f, g)
+        from decorator import decorate  # @UnresolvedImport
+        try: # readthedocs weirdness.........
+            return decorate(self.f, g)
+        except AttributeError:
+            return self.f
