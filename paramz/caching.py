@@ -284,6 +284,7 @@ class Cache_this(object):
         g.__doc__ = f.__doc__
         try: # readthedocs weirdness.........
             from decorator import decorate  # @UnresolvedImport
-            return decorate(self.f, g)
+            g = decorate(self.f, g)
         except (AttributeError, ImportError):
-            return g
+            pass
+        return g
