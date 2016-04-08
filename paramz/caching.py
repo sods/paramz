@@ -282,8 +282,8 @@ class Cache_this(object):
             return cacher(*args, **kw)
         g.__name__ = f.__name__
         g.__doc__ = f.__doc__
-        from decorator import decorate  # @UnresolvedImport
         try: # readthedocs weirdness.........
+            from decorator import decorate  # @UnresolvedImport
             return decorate(self.f, g)
         except AttributeError:
             return g
