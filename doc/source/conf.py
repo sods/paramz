@@ -36,7 +36,7 @@ if on_rtd:
     (out, err) = proc.communicate()
     print "program output:", out
     #Lets regenerate our rst files from the source, -P adds private modules (i.e kern._src)
-    proc = subprocess.Popen("sphinx-apidoc -P -f -o . ../../GPy", stdout=subprocess.PIPE, shell=True)
+    proc = subprocess.Popen("sphinx-apidoc -P -f -o . ../../paramz", stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
     print "program output:", out
     #proc = subprocess.Popen("whereis numpy", stdout=subprocess.PIPE, shell=True)
