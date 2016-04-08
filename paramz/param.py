@@ -39,9 +39,12 @@ from collections import OrderedDict
 ###### printing
 #__constraints_name__ = "Constraint"
 __index_name__ = "index"
+try: # readthedocs weirdness
+    __precision__ = np.get_printoptions()['precision'] # numpy printing precision used, sublassing numpy ndarray after all
+except:
+    __precision__ = 8
 #__tie_name__ = "Tied to"
 #__priors_name__ = "Prior"
-__precision__ = np.get_printoptions()['precision'] # numpy printing precision used, sublassing numpy ndarray after all
 __print_threshold__ = 5
 ######
 
