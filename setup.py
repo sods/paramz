@@ -41,19 +41,19 @@ def read(fname):
     with codecs.open(fname, 'r', 'latin') as f:
         return f.read()
 
-def read_to_rst(fname):
-    try:
-        import pypandoc
-        rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
-        pypandoc.convert(read(fname), 'rst', format='md', outputfile=rstname)
-        with open(rstname, 'r') as f:
-            rststr = f.read()
-        return rststr
-        #return read(rstname)
-    except ImportError:
-        return read(fname)
+#def read_to_rst(fname):
+#    try:
+#        import pypandoc
+#        rstname = "{}.{}".format(os.path.splitext(fname)[0], 'rst')
+#         pypandoc.convert(read(fname), 'rst', format='md', outputfile=rstname)
+#         with open(rstname, 'r') as f:
+#             rststr = f.read()
+#         return rststr
+#         #return read(rstname)
+#     except ImportError:
+#         return read(fname)
 
-desc = read_to_rst('README.md')
+desc = read('README.rst')
 
 version_dummy = {}
 exec(read('paramz/__version__.py'), version_dummy)
