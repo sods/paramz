@@ -286,4 +286,4 @@ class Cache_this(object):
         try: # readthedocs weirdness.........
             return decorate(self.f, g)
         except AttributeError:
-            return self.f
+            return g
