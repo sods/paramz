@@ -32,7 +32,6 @@ import six # For metaclass support in Python 2 and 3 simultaneously
 import numpy; np = numpy
 from re import compile, _pattern_type
 
-from .param import ParamConcatenation
 from .core.parameter_core import Parameterizable, adjust_name_for_printing
 from .core import HierarchyError
 
@@ -299,6 +298,8 @@ All parameter arrays must be C_CONTIGUOUS
                 #    if len(paramlist) != 1:
                 #        return ParamConcatenation(paramlist)
                 return paramlist[-1]
+
+            from .param import ParamConcatenation
             return ParamConcatenation(paramlist)
 
     def __setitem__(self, name, value, paramlist=None):
