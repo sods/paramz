@@ -71,14 +71,14 @@ class Parameterized(with_metaclass(ParametersChangedMeta, Parameterizable)):
                              which match (!) regexp
         - print m['']:       prints details for all parameters
 
-        Fields::
+    Fields::
 
-            Name:       The name of the param, can be renamed!
-            Value:      Shape or value, if one-valued
-            Constrain:  constraint of the param, curly "{c}" brackets indicate
-                        some parameters are constrained by c. See detailed print
-                        to get exact constraints.
-            Tied_to:    which paramter it is tied to.
+        Name:       The name of the param, can be renamed!
+        Value:      Shape or value, if one-valued
+        Constrain:  constraint of the param, curly "{c}" brackets indicate
+                    some parameters are constrained by c. See detailed print
+                    to get exact constraints.
+        Tied_to:    which paramter it is tied to.
 
     Getting and setting parameters::
 
@@ -438,15 +438,15 @@ All parameter arrays must be C_CONTIGUOUS
         """
         Build a pydot representation of this model. This needs pydot installed.
 
-        Example Usage:
+        Example Usage::
 
-        np.random.seed(1000)
-        X = np.random.normal(0,1,(20,2))
-        beta = np.random.uniform(0,1,(2,1))
-        Y = X.dot(beta)
-        m = RidgeRegression(X, Y)
-        G = m.build_pydot()
-        G.write_png('example_hierarchy_layout.png')
+            np.random.seed(1000)
+            X = np.random.normal(0,1,(20,2))
+            beta = np.random.uniform(0,1,(2,1))
+            Y = X.dot(beta)
+            m = RidgeRegression(X, Y)
+            G = m.build_pydot()
+            G.write_png('example_hierarchy_layout.png')
 
         The output looks like:
 
