@@ -58,8 +58,9 @@ class ParametersChangedMeta(type):
             warnings.warn("Don't forget to initialize by self.initialize_parameter()!", RuntimeWarning)
         return self
 
-@six.add_metaclass(ParametersChangedMeta)
-class Parameterized(Parameterizable):
+from six import with_metaclass
+#@six.add_metaclass(ParametersChangedMeta)
+class Parameterized(with_metaclass(ParametersChangedMeta, Parameterizable)):
     """
     Say m is a handle to a parameterized class.
 

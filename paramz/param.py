@@ -28,7 +28,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-import itertools
 import numpy as np
 from .core.parameter_core import Parameterizable, adjust_name_for_printing
 from .core.observable_array import ObsAr
