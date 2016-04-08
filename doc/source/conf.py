@@ -20,7 +20,32 @@ import shlex
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../../'))
-sys.path.insert(0, os.path.abspath('../../paramz/'))
+#sys.path.insert(0, os.path.abspath('../../paramz/'))
+
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+#on_rtd = True
+if on_rtd:
+    # sys.path.append(os.path.abspath('../GPy'))
+
+    import subprocess
+
+    proc = subprocess.Popen("pwd", stdout=subprocess.PIPE, shell=True)
+    (out, err) = proc.communicate()
+    print "program output:", out
+    proc = subprocess.Popen("ls ../../", stdout=subprocess.PIPE, shell=True)
+    (out, err) = proc.communicate()
+    print "program output:", out
+    #Lets regenerate our rst files from the source, -P adds private modules (i.e kern._src)
+    proc = subprocess.Popen("sphinx-apidoc -P -f -o . ../../GPy", stdout=subprocess.PIPE, shell=True)
+    (out, err) = proc.communicate()
+    print "program output:", out
+    #proc = subprocess.Popen("whereis numpy", stdout=subprocess.PIPE, shell=True)
+    #(out, err) = proc.communicate()
+    #print "program output:", out
+    #proc = subprocess.Popen("whereis matplotlib", stdout=subprocess.PIPE, shell=True)
+    #(out, err) = proc.communicate()
+    #print "program output:", out
+
 
 # -- General configuration ------------------------------------------------
 
