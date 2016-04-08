@@ -64,7 +64,8 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
-MOCK_MODULES = ['numpy', 'scipy.linalg.blas', 'blas', 'scipy.optimize', 'scipy.optimize.linesearch', 'scipy.linalg',
+MOCK_MODULES = ['numpy', 'from numpy.linalg.linalg', 'scipy.linalg.blas', 'blas',
+                'scipy.optimize', 'scipy.optimize.linesearch', 'scipy.linalg',
                 'scipy', 'scipy.special', 'scipy.integrate', 'scipy.io', 'scipy.stats',
                 'sympy', 'sympy.utilities.iterables', 'sympy.utilities.lambdify',
                 'sympy.utilities', 'sympy.utilities.codegen', 'sympy.core.cache',
