@@ -315,7 +315,7 @@ class Model(Parameterized):
 
                 if transformed_index.size == 0:
                     print("No free parameters to check")
-                    return
+                    return True
 
             # just check the global ratio
             dx = np.zeros(x.shape)
@@ -359,7 +359,7 @@ class Model(Parameterized):
 
             if transformed_index.size == 0:
                 print("No free parameters to check")
-                return
+                return True
 
             gradient = self._grads(x).copy()
             np.where(gradient == 0, 1e-312, gradient)
