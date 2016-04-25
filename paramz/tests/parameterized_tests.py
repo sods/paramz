@@ -222,8 +222,8 @@ class ModelTest(unittest.TestCase):
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_fix(self):
         self.testmodel.fix()
-        self.assertIsNone(self.testmodel.checkgrad())
-        self.assertIsNone(self.testmodel.checkgrad(1))
+        self.assertIsTrue(self.testmodel.checkgrad())
+        self.assertIsTrue(self.testmodel.checkgrad(1))
         self.testmodel.optimize(messages=1)
     def test_optimize_cgd(self):
         self.assertRaises(KeyError, self.testmodel.optimize, 'cgd', messages=1)
