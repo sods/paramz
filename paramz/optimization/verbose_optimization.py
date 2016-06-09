@@ -45,7 +45,7 @@ class VerboseOptimization(object):
             self.iteration = current_iteration
             self.p_iter = self.iteration
             self.maxiters = maxiters
-            self.len_maxiters = len(str(maxiters))
+            self.len_maxiters = len(str(int(maxiters)))
             self.opt_name = opt.opt_name
             self.opt = opt
             self.model.add_observer(self, self.print_status)
@@ -190,15 +190,15 @@ class VerboseOptimization(object):
     def finish(self, opt): # pragma: no cover
         import warnings
         warnings.warn('Finish now automatic, deprecating', DeprecationWarning)
-        
+
     def __exit__(self, type, value, traceback):
         if self.verbose:
             self.status = self.opt.status
 
             self.stop = time.time()
             self.model.remove_observer(self)
-            self.print_out(self.stop - self.start)            
-            
+            self.print_out(self.stop - self.start)
+
             if not self.ipython_notebook:
                 print()
                 print('Runtime: {}'.format("{:>9s}".format(self.timestring)))
