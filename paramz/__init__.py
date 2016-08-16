@@ -38,6 +38,8 @@ from paramz import transformations as constraints
 from . import caching, optimization
 from . import examples
 
+from .__version__ import __version__
+
 def _unpickle(file_or_path, pickle, strcl, p3kw):
     if isinstance(file_or_path, strcl):
         with open(file_or_path, 'rb') as f:
