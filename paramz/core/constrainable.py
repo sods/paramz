@@ -87,6 +87,7 @@ class Constrainable(Indexable):
         if (not hasattr(self, "_fixes_")) or (self._fixes_ is None) or (self._fixes_.size != self.size):
             self._fixes_ = np.ones(self.size, dtype=bool)
             self._fixes_[self.constraints[__fixed__]] = FIXED
+        
 
     def _set_fixed(self, param, index):
         self._ensure_fixes()
@@ -104,6 +105,7 @@ class Constrainable(Indexable):
         fixed_indices = self.constraints[__fixed__]
         if fixed_indices.size > 0:
             self._ensure_fixes()
+            self._fixes_[:] = UNFIXED
             self._fixes_[fixed_indices] = FIXED
         else:
             self._fixes_ = None
