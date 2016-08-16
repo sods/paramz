@@ -282,14 +282,12 @@ class ModelTest(unittest.TestCase):
         self.assertListEqual(self.testmodel.constraints[transformations.NegativeLogexp()].tolist(), [1])
         
         cache_constraints = self.testmodel.constraints.copy()
-        #cache_str = str(self.testmodel)
-        
-        self.testmodel.unfix()
+
+        self.testmodel.unconstrain()
        
         self.assertListEqual(self.testmodel.constraints[transformations.__fixed__].tolist(), [])
         self.assertListEqual(self.testmodel.constraints[transformations.Logistic(0,1)].tolist(), [])
         self.assertListEqual(self.testmodel.constraints[transformations.NegativeLogexp()].tolist(), [])
-        self.testmodel.kern.unconstrain()
 
         self.testmodel.constraints = cache_constraints
         self.assertListEqual(self.testmodel.constraints[transformations.__fixed__].tolist(), [1,2])
