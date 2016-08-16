@@ -31,7 +31,7 @@ import numpy as np
 from .nameable import Nameable
 from .updateable import Updateable
 from ..transformations import __fixed__
-from operator import delitem
+from operator import delitem, itemgetter
 from functools import reduce
 from collections import OrderedDict
 
@@ -39,7 +39,7 @@ class Indexable(Nameable, Updateable):
     """
     Make an object constrainable with Priors and Transformations.
 
-    TODO: Mappings!!
+    TODO: Mappings!! (As in ties etc.)
 
     Adding a constraint to a Parameter means to tell the highest parent that
     the constraint was added and making sure that all parameters covered
@@ -54,13 +54,21 @@ class Indexable(Nameable, Updateable):
     def add_index_operation(self, name, operations):
         if name not in self._index_operations:
             self._index_operations[name] = operations
-            setattr(self, name, operations)
+            def do_raise(self, x):
+                self._index_operations.__setitem__(name, x)
+                self._notify_parent_change()
+                #raise AttributeError("Cannot set {name} directly, use the appropriate methods to set new {name}".format(name=name))
+            
+            setattr(Indexable, name, property(fget=lambda self: self._index_operations[name], 
+                                         fset=do_raise)) 
+            #x: self._index_operations.__setitem__(name, x)))
         else:
             raise AttributeError("An index operation with the name {} was already taken".format(name))
+        
     def remove_index_operation(self, name):
         if name in self._index_operations:
             delitem(self._index_operations, name)
-            delattr(self, name)
+            #delattr(self, name)
         else:
             raise AttributeError("No index operation with the name {}".format(name))
 

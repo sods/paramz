@@ -42,8 +42,8 @@ class Constrainable(Indexable):
 
     def __setstate__(self, state):
         Indexable.__setstate__(self, state)
-        self._index_operations['constraints'] = self.constraints
-
+        #self._index_operations['constraints'] = self.constraints
+    
     #===========================================================================
     # Fixing Parameters:
     #===========================================================================

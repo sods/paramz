@@ -108,9 +108,9 @@ class Param(Parameterizable, ObsAr):
         self._name = getattr(obj, '_name', None)
         self._gradient_array_ = getattr(obj, '_gradient_array_', None)
         self._update_on = getattr(obj, '_update_on', None)
-        self.constraints = getattr(obj, 'constraints', None)
-        self.priors = getattr(obj, 'priors', None)
         self._index_operations = getattr(obj, '_index_operations', None)
+        #self.constraints = getattr(obj, 'constraints', None)
+        #self.priors = getattr(obj, 'priors', None)
 
     @property
     def param_array(self):

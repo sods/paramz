@@ -272,6 +272,26 @@ class ModelTest(unittest.TestCase):
         self.testmodel['.*lengthscale'].unconstrain_bounded(0,1)
         self.assertListEqual(self.testmodel.constraints[transformations.Logistic(0, 1)].tolist(), [])
 
+    def test_constraints_set_direct(self):
+        self.testmodel['.*rbf'].constrain_negative()
+        self.testmodel['.*lengthscale'].constrain_bounded(0,1)
+        self.testmodel['.*variance'].fix()
+        cache_constraints = self.testmodel.constraints.copy()
+        cache_str = str(self.testmodel)
+        
+        self.testmodel.unfix()
+        
+        self.assertListEqual(self.testmodel.constraints[transformations.__fixed__].tolist(), [])
+        self.testmodel.kern.unconstrain()
+
+        self.testmodel.constraints = cache_constraints
+        self.assertListEqual(self.testmodel.constraints[transformations.__fixed__].tolist(), [1,2])
+
+        self.assertIs(self.testmodel.constraints, self.testmodel.likelihood.constraints._param_index_ops)
+        self.assertIs(self.testmodel.constraints, self.testmodel.kern.constraints._param_index_ops)
+        
+        self.assertSequenceEqual(cache_str, str(self.testmodel), None, str)
+
     def test_updates(self):
         val = float(self.testmodel.objective_function())
         self.testmodel.toggle_update()
