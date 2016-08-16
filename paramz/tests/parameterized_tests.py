@@ -293,6 +293,8 @@ class ModelTest(unittest.TestCase):
         self.assertListEqual(self.testmodel.constraints[transformations.__fixed__].tolist(), [1,2])
         self.assertListEqual(self.testmodel.constraints[transformations.Logistic(0,1)].tolist(), [0])
         self.assertListEqual(self.testmodel.constraints[transformations.NegativeLogexp()].tolist(), [1])
+        
+        self.assertListEqual(self.testmodel._fixes_.tolist(), [transformations.UNFIXED, transformations.FIXED, transformations.FIXED])
 
         self.assertIs(self.testmodel.constraints, self.testmodel.likelihood.constraints._param_index_ops)
         self.assertIs(self.testmodel.constraints, self.testmodel.kern.constraints._param_index_ops)
