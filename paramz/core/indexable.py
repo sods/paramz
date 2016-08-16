@@ -57,6 +57,7 @@ class Indexable(Nameable, Updateable):
             def do_raise(self, x):
                 self._index_operations.__setitem__(name, x)
                 self._notify_parent_change()
+                self._connect_fixes()
                 #raise AttributeError("Cannot set {name} directly, use the appropriate methods to set new {name}".format(name=name))
             
             setattr(Indexable, name, property(fget=lambda self: self._index_operations[name], 
