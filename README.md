@@ -27,7 +27,6 @@ See examples model in 'paramz.examples.<tab>'
  - Efficient caching included
 
 ## Installation
-
 You can install this package via pip
 
   pip install paramz
@@ -38,6 +37,35 @@ There is regular update for this package, so make sure to keep up to date
 ## Supported Platforms:
 
 Python 2.7, 3.3 and higher
+
+## Saving models in a consistent way across versions:
+
+As pickle is inconsistent across python versions and heavily dependent on class structure, it behaves inconsistent across versions. 
+Pickling as meant to serialize models within the same environment, and not to store models on disk to be used later on.
+
+To save a model it is best to save the m.param_array of it to disk (using numpy’s np.save).
+Additionally, you save the script, which creates the model. 
+In this script you can create the model using initialize=False as a keyword argument and with the data loaded as normal. 
+You then set the model parameters by setting m.param_array[:] = loaded_params as the previously saved parameters. 
+Then you initialize the model by m.initialize_parameter(), which will make the model usable. 
+Be aware that up to this point the model is in an inconsistent state and cannot be used to produce any results.
+
+```python
+# let X, Y be data loaded above
+# Model creation:
+m = paramz.examples.RidgeRegression(X, Y)
+m.optimize()
+# 1: Saving a model:
+np.save('model_save.npy', m.param_array)
+# 2: loading a model
+# Model creation, without initialization:
+m_load = paramz.examples.RidgeRegression(X, Y,initialize=False)
+m_load.update_model(False) # do not call the underlying expensive algebra on load
+m_load.initialize_parameter() # Initialize the parameters (connect the parameters up)
+m_load[:] = np.load('model_save.npy') # Load the parameters
+m_load.update_model(True) # Call the algebra only once
+print(m_load)
+```
 
 ## Running unit tests:
 
