@@ -306,7 +306,7 @@ class ModelTest(unittest.TestCase):
 
     def test_updates(self):
         val = float(self.testmodel.objective_function())
-        self.testmodel.toggle_update()
+        self.testmodel.update_toggle()
         self.testmodel.kern.randomize(np.random.normal, loc=1, scale=.2)
         self.testmodel.likelihood.randomize()
         self.assertEqual(val, self.testmodel.objective_function())
@@ -859,7 +859,59 @@ class InitTests(unittest.TestCase):
         self.assertTrue(self.testmodel.kern._model_initialized_)
         self.assertTrue(self.testmodel.checkgrad())
 
+    def test_load_initialized(self):
+        self.assertFalse(self.testmodel.likelihood._model_initialized_)
+        self.assertFalse(self.testmodel.kern._model_initialized_)
+        self.assertRaises(AttributeError, self.testmodel.__str__)
+        
+        # Model is not initialized, so we cannot set parameters:        
+        def err():
+            self.testmodel[:] = 2.
+        self.assertRaises(AttributeError, err)
+        
+        self.assertFalse(self.testmodel.likelihood._model_initialized_)
+        self.assertFalse(self.testmodel.kern._model_initialized_)
+        self.assertFalse(self.testmodel._model_initialized_)
+        
+        import warnings
+        #import ipdb;ipdb.set_trace()
+        #with warnings.catch_warnings():
+        #    warnings.simplefilter("error")
+        #    # check the warning is being raised
+        #    self.assertRaises(RuntimeWarning, self.testmodel.checkgrad)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            # check that the gradient checker just returns false
+            self.assertFalse(self.testmodel.checkgrad())
+            self.assertFalse(self.testmodel.kern.checkgrad())
+        
+        # Set updates off, so we do not call the expensive algebra
+        self.testmodel.update_model(False)
+        
+        # Still not initialized the model, so setting should not work:
+        self.assertRaises(AttributeError, err)
+        
+        # Now initialize the parameter connections:
+        self.testmodel.initialize_parameter()
+        # And set parameters, without updating
+        self.assertIsNone(err())
 
+        # Model has not been updated, even once, but the parameters are connected, so it tries to
+        # access the log likelihood, which does not exist:
+        self.assertRaises(AttributeError, self.testmodel.checkgrad)
+        self.assertRaises(AttributeError, self.testmodel.kern.checkgrad)
+        
+        # parameters are initialized
+        self.assertTrue(self.testmodel.likelihood._model_initialized_)
+        self.assertTrue(self.testmodel.kern._model_initialized_)
+        
+        # update the model now and check everything is working as expected:
+        
+        self.testmodel.update_model(True)
+        
+        np.testing.assert_allclose(self.testmodel.param_array, 2., 1e-4) 
+        self.assertTrue(self.testmodel.checkgrad())
+         
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_add_parameter']

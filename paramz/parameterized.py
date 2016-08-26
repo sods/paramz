@@ -49,7 +49,7 @@ class ParametersChangedMeta(type):
         self = super(ParametersChangedMeta, self).__call__(*args, **kw)
         #logger.debug("finished init")
         self._in_init_ = False
-        self._model_initialized_ = initialize
+        self._model_initialized_ = False
         if initialize:
             self.initialize_parameter()
         else:
@@ -226,6 +226,8 @@ class Parameterized(with_metaclass(ParametersChangedMeta, Parameterizable)):
         # to be used as parameters
         # it also sets the constraints for each parameter to the constraints
         # of their respective parents
+        self._model_initialized_ = True
+        
         if not hasattr(self, "parameters") or len(self.parameters) < 1:
             # no parameters for this class
             return
@@ -269,8 +271,6 @@ All parameter arrays must be C_CONTIGUOUS
             self._add_parameter_name(p)
             old_size += p.size
 
-        self._model_initialized_ = True
-
     #===========================================================================
     # Get/set parameters:
     #===========================================================================
@@ -303,6 +303,15 @@ All parameter arrays must be C_CONTIGUOUS
             return ParamConcatenation(paramlist)
 
     def __setitem__(self, name, value, paramlist=None):
+        if not self._model_initialized_:
+            raise AttributeError("""Model is not initialized, this change will only be reflected after initialization if in leaf. 
+
+If you are loading a model, set updates off, then initialize, then set the values, then update the model to be fully initialized: 
+>>> m.update_model(False)
+>>> m.initialize_parameter()
+>>> m[:] = loaded_parameters
+>>> m.update_model(True)
+""")
         if value is None:
             return # nothing to do here
         if isinstance(name, (slice, tuple, np.ndarray)):
