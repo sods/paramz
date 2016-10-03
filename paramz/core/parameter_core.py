@@ -292,9 +292,6 @@ class OptimizationHandlable(Constrainable):
     def _connect_parameters(self):
         pass
 
-    def __setstate__(self, state):
-        return super(OptimizationHandlable, self).__setstate__(state)
-
 
 _name_digit = re.compile("(?P<name>.*)_(?P<digit>\d+)$")
 class Parameterizable(OptimizationHandlable):

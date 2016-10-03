@@ -31,7 +31,7 @@ import numpy as np
 from .nameable import Nameable
 from .updateable import Updateable
 from ..transformations import __fixed__
-from operator import delitem, itemgetter
+from operator import delitem
 from functools import reduce
 from collections import OrderedDict
 
@@ -49,35 +49,45 @@ class Indexable(Nameable, Updateable):
     """
     def __init__(self, name, default_constraint=None, *a, **kw):
         super(Indexable, self).__init__(name=name, *a, **kw)
-        #self._index_operations = OrderedDict()
+        self._index_operations = OrderedDict()
 
-    @property
-    def _index_operations(self):
-        try:
-            return self._index_operations_dict
-        except AttributeError:
-            self._index_operations_dict = OrderedDict()
-        finally:
-            return self._index_operations_dict
-    @_index_operations.setter
-    def _index_operations(self, io):
-        self._index_operations_dict = io
+    def __setstate__(self, state):
+        super(Indexable, self).__setstate__(state)
+        for name in self._index_operations:
+            self._add_io(name, self._index_operations[name])
 
+    #@property
+    #def _index_operations(self):
+    #    try:
+    #        return self._index_operations_dict
+    #    except AttributeError:
+    #        self._index_operations_dict = OrderedDict()
+    #    return self._index_operations_dict
+    #@_index_operations.setter
+    #def _index_operations(self, io):
+    #    self._index_operations_dict = io
 
     def add_index_operation(self, name, operations):
-        if name not in self._index_operations:
-            self._index_operations[name] = operations
-            def do_raise(self, x):
-                self._index_operations.__setitem__(name, x)
-                self._connect_fixes()
-                self._notify_parent_change()
-                #raise AttributeError("Cannot set {name} directly, use the appropriate methods to set new {name}".format(name=name))
+        """
+        Add index operation with name to the operations given.
 
-            setattr(Indexable, name, property(fget=lambda self: self._index_operations[name],
-                                         fset=do_raise))
-            #x: self._index_operations.__setitem__(name, x)))
+        raises: attribute error if operations exist.
+        """
+        if name not in self._index_operations:
+            self._add_io(name, operations)
         else:
             raise AttributeError("An index operation with the name {} was already taken".format(name))
+
+    def _add_io(self, name, operations):
+        self._index_operations[name] = operations
+        def do_raise(self, x):
+            self._index_operations.__setitem__(name, x)
+            self._connect_fixes()
+            self._notify_parent_change()
+            #raise AttributeError("Cannot set {name} directly, use the appropriate methods to set new {name}".format(name=name))
+
+        setattr(Indexable, name, property(fget=lambda self: self._index_operations[name],
+                                     fset=do_raise))
 
     def remove_index_operation(self, name):
         if name in self._index_operations:
@@ -247,6 +257,3 @@ class Indexable(Nameable, Updateable):
                 self._highest_parent_._set_unfixed(self, unconstrained)
 
         return removed
-
-    def __setstate__(self, state):
-        return super(Indexable, self).__setstate__(state)

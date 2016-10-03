@@ -68,7 +68,12 @@ class Param(Parameterizable, ObsAr):
     Fixing parameters will fix them to the value they are right now. If you change
     the fixed value, it will be fixed to the new value!
 
-    Important Note:
+    Important Notes:
+
+    The array given into this, will be used as the Param object. That is, the
+    memory of the numpy array given will be the memory of this object. If
+    you want to make a new Param object you need to copy the input array!
+
     Multilevel indexing (e.g. self[:2][1:]) is not supported and might lead to unexpected behaviour.
     Try to index in one go, using boolean indexing or the numpy builtin
     np.index function.
@@ -108,7 +113,11 @@ class Param(Parameterizable, ObsAr):
         self._name = getattr(obj, '_name', None)
         self._gradient_array_ = getattr(obj, '_gradient_array_', None)
         self._update_on = getattr(obj, '_update_on', None)
-        self._index_operations = getattr(obj, '_index_operations', None)
+        try:
+            self._index_operations = obj._index_operations
+        except AttributeError:
+            pass
+        #self._index_operations = getattr(obj, '_index_operations', None)
         #self.constraints = getattr(obj, 'constraints', None)
         #self.priors = getattr(obj, 'priors', None)
 
