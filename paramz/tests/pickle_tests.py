@@ -112,6 +112,7 @@ class Test(ListDictTestCase):
         np.testing.assert_allclose(pcopy.linear.gradient_full, 10)
         self.assertSequenceEqual(str(par), str(pcopy))
 
+
     def _callback(self, what, which):
         what.count += 1
 

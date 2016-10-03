@@ -49,7 +49,20 @@ class Indexable(Nameable, Updateable):
     """
     def __init__(self, name, default_constraint=None, *a, **kw):
         super(Indexable, self).__init__(name=name, *a, **kw)
-        self._index_operations = OrderedDict()
+        #self._index_operations = OrderedDict()
+
+    @property
+    def _index_operations(self):
+        try:
+            return self._index_operations_dict
+        except AttributeError:
+            self._index_operations_dict = OrderedDict()
+        finally:
+            return self._index_operations_dict
+    @_index_operations.setter
+    def _index_operations(self, io):
+        self._index_operations_dict = io
+
 
     def add_index_operation(self, name, operations):
         if name not in self._index_operations:
@@ -59,13 +72,13 @@ class Indexable(Nameable, Updateable):
                 self._connect_fixes()
                 self._notify_parent_change()
                 #raise AttributeError("Cannot set {name} directly, use the appropriate methods to set new {name}".format(name=name))
-            
-            setattr(Indexable, name, property(fget=lambda self: self._index_operations[name], 
-                                         fset=do_raise)) 
+
+            setattr(Indexable, name, property(fget=lambda self: self._index_operations[name],
+                                         fset=do_raise))
             #x: self._index_operations.__setitem__(name, x)))
         else:
             raise AttributeError("An index operation with the name {} was already taken".format(name))
-        
+
     def remove_index_operation(self, name):
         if name in self._index_operations:
             delitem(self._index_operations, name)
@@ -236,5 +249,4 @@ class Indexable(Nameable, Updateable):
         return removed
 
     def __setstate__(self, state):
-        self._index_operations = OrderedDict()
-        super(Indexable, self).__setstate__(state)
+        return super(Indexable, self).__setstate__(state)

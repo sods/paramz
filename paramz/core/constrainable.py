@@ -41,9 +41,11 @@ class Constrainable(Indexable):
             self.constrain(self._default_constraint_)
 
     def __setstate__(self, state):
-        Indexable.__setstate__(self, state)
+        from .index_operations import ParameterIndexOperations
+        self.add_index_operation('constraints', ParameterIndexOperations())
+        return super(Constrainable, self).__setstate__(state)
         #self._index_operations['constraints'] = self.constraints
-    
+
     #===========================================================================
     # Fixing Parameters:
     #===========================================================================
@@ -87,7 +89,7 @@ class Constrainable(Indexable):
         if (not hasattr(self, "_fixes_")) or (self._fixes_ is None) or (self._fixes_.size != self.size):
             self._fixes_ = np.ones(self.size, dtype=bool)
             self._fixes_[self.constraints[__fixed__]] = FIXED
-        
+
 
     def _set_fixed(self, param, index):
         self._ensure_fixes()

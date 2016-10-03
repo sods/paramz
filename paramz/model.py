@@ -303,7 +303,7 @@ class Model(Parameterized):
             import warnings
             warnings.warn("This model has not been initialized, try model.inititialize_model()", RuntimeWarning)
             return False
-        
+
         x = self.optimizer_array.copy()
 
         if not verbose:
@@ -378,9 +378,9 @@ class Model(Parameterized):
                     df_ratio = 1.0
                 df_unstable = df_ratio < df_tolerance
                 numerical_gradient = (f1 - f2) / (2. * step)
-                if np.all(gradient[xind] == 0): # pragma: no cover 
+                if np.all(gradient[xind] == 0): # pragma: no cover
                     ratio = (f1 - f2) == gradient[xind]
-                else: 
+                else:
                     ratio = (f1 - f2) / (2. * step * gradient[xind])
                 difference = np.abs(numerical_gradient - gradient[xind])
 

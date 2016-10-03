@@ -333,6 +333,7 @@ All parameter arrays must be C_CONTIGUOUS
         self._connect_fixes()
         self._notify_parent_change()
         self.parameters_changed()
+        return self
 
     def copy(self, memo=None):
         if memo is None:
