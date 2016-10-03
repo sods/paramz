@@ -329,9 +329,9 @@ class Parameterizable(OptimizationHandlable):
         """
         #logger.debug("connecting parameters")
         self._highest_parent_._notify_parent_change()
-        self._highest_parent_._connect_fixes()
         self._highest_parent_._connect_parameters() #logger.debug("calling parameters changed")
-        self.parameters_changed()
+        self._highest_parent_._connect_fixes()
+        self.trigger_update()
 
     @property
     def param_array(self):
