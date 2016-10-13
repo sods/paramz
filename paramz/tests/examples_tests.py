@@ -48,6 +48,18 @@ class Test2D(unittest.TestCase):
         np.testing.assert_array_almost_equal(m.regularizer.weights[1], beta[:,0], 4)
         np.testing.assert_array_almost_equal(m.regularizer.weights[0], [0,0], 4)
         np.testing.assert_array_almost_equal(m.gradient, np.zeros(m.weights.size), 4)
+        
+        xpred = np.repeat(np.linspace(0,1,50)[:,None], 2, axis=1)
+        xpred[:, 1] = xpred[::-1, 1]
+        phi = m.phi(xpred)
+        np.testing.assert_array_almost_equal(phi[0], np.zeros_like(xpred), 4)
+        np.testing.assert_array_almost_equal(phi[1], xpred*beta.T)
+        for d in range(2):
+            phid = m.phi(xpred, [d])
+            np.testing.assert_array_equal(phi[d], phid[0])
+        
+        ypred = m.predict(xpred)
+        np.testing.assert_array_almost_equal(ypred, xpred.dot(beta))
 
     def testLassoRegression(self):
         np.random.seed(12345)

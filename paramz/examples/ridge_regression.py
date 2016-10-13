@@ -62,15 +62,16 @@ class RidgeRegression(Model):
 
         :param array-like Xpred: inputs to compute the design matrix for
         :param array-like degrees: array of degrees to use [default=range(self.degree+1)]
-        :returns array-like phi: The design matrix [degree x #samples x #dimenisons]
+        :returns array-like phi: The design matrix [degree x #samples x #dimensions]
         """
+        assert Xpred.shape[1] == self.X.shape[1], "Need to predict with same shape as training data."
         if degrees is None:
             degrees = range(self.basis.degree+1)
         tmp_phi = np.empty((len(degrees), Xpred.shape[0], Xpred.shape[1]))
         for i, w in enumerate(degrees):
             # Objective function
-            tmpX = self._phi(Xpred, i)
-            tmp_phi[i] = tmpX.dot(self.weights[[w], :].T)
+            tmpX = self._phi(Xpred, w)
+            tmp_phi[i] = tmpX * self.weights[[w], :]
         return tmp_phi
 
     def parameters_changed(self):
@@ -85,13 +86,11 @@ class RidgeRegression(Model):
         for i in range(self.degree+1):
             tmp_X = self._phi(self.X, i)
             # gradient:
+            # Note, that we updated the weights gradients
+            # in the basis first. So here we update
+            # and add in the gradient for the bound.
             self.weights.gradient[i] -= 2*(tmp_outer*tmp_X).sum(0)
         self._obj = (((tmp_outer)**2).sum() + self.regularizer.error.sum())
-
-        #self.reg_error = self.Y-self.X.dot(self.beta)
-        # gradient for regularizer is already set by the regularizer!
-        #self.beta.gradient[:] += (-2*self.reg_error*self.X).sum(0)[:,None]
-        #self._obj = (self.reg_error**2).sum() + self.regularizer.error
 
     def objective_function(self):
         return self._obj
