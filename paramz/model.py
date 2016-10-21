@@ -87,7 +87,7 @@ class Model(Parameterized):
             print("updates were off, setting updates on again")
             self.update_model(True)
 
-        if start == None:
+        if start is None:
             start = self.optimizer_array
 
         if optimizer is None:
