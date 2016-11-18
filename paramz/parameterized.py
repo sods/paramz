@@ -55,6 +55,8 @@ class ParametersChangedMeta(type):
         else:
             import warnings
             warnings.warn("Don't forget to initialize by self.initialize_parameter()!", RuntimeWarning)
+        from .util import _inherit_doc
+        self.__doc__ = (self.__doc__ or '') + _inherit_doc(self.__class__)
         return self
 
 from six import with_metaclass

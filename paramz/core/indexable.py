@@ -53,6 +53,16 @@ class Indexable(Nameable, Updateable):
 
     def __setstate__(self, state):
         super(Indexable, self).__setstate__(state)
+        # old index operations:
+        if not hasattr(self, "_index_operations"):
+            self._index_operations = OrderedDict()
+            from paramz.core.index_operations import ParameterIndexOperations, ParameterIndexOperationsView
+            from paramz import Param
+            if isinstance(self, Param):
+                state = state[1]
+            for name, io in state.iteritems():
+                if isinstance(io, (ParameterIndexOperations, ParameterIndexOperationsView)):
+                    self._index_operations[name] = io
         for name in self._index_operations:
             self._add_io(name, self._index_operations[name])
 
