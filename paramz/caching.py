@@ -34,6 +34,7 @@
 import collections, weakref
 from functools import reduce
 from pickle import PickleError
+from decorator import decorate  # @UnresolvedImport
 
 from .core.observable import Observable
 from numbers import Number
@@ -282,9 +283,5 @@ class Cache_this(object):
             return cacher(*args, **kw)
         g.__name__ = f.__name__
         g.__doc__ = f.__doc__
-        try: # readthedocs weirdness.........
-            from decorator import decorate  # @UnresolvedImport
-            g = decorate(self.f, g)
-        except (AttributeError, ImportError):
-            pass
+        g = decorate(self.f, g)
         return g
