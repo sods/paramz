@@ -38,7 +38,14 @@ from numpy.linalg.linalg import LinAlgError
 from . import optimization
 from .parameterized import Parameterized
 from .optimization.verbose_optimization import VerboseOptimization
+import multiprocessing as mp
 #from functools import reduce
+
+def opt_wrapper(args):
+    m = args[0]
+    kwargs = args[1]
+    return m.optimize(**kwargs)
+
 
 class Model(Parameterized):
     _fail_count = 0  # Count of failed optimization steps (see objective)
@@ -143,21 +150,14 @@ class Model(Parameterized):
         """
         initial_parameters = self.optimizer_array.copy()
 
-        import multiprocessing as mp
-
         if parallel: #pragma: no cover
             try:
-                def opt_wrapper(self, **kwargs):
-                    return self.optimize(**kwargs)
-                jobs = []
                 pool = mp.Pool(processes=num_processes)
-                for i in range(num_restarts):
-                    if i>0: self.randomize()
-                    job = pool.apply_async(opt_wrapper, args=(self,), kwds=kwargs)
-                    jobs.append(job)
-
-                pool.close()  # signal that no more data coming in
-                pool.join()  # wait for all the tasks to complete
+                obs = [self for i in range(num_restarts)]
+                [obs[i].randomize() for i in range(num_restarts-1)]
+                jobs = pool.map(opt_wrapper, [(o,kwargs) for o in obs])
+                pool.close()
+                pool.join()
             except KeyboardInterrupt:
                 print("Ctrl+c received, terminating and joining pool.")
                 pool.terminate()
@@ -169,7 +169,7 @@ class Model(Parameterized):
                     if i>0: self.randomize()
                     self.optimize(**kwargs)
                 else:#pragma: no cover
-                    self.optimization_runs.append(jobs[i].get())
+                    self.optimization_runs.append(jobs[i])
 
                 if verbose:
                     print(("Optimization restart {0}/{1}, f = {2}".format(i + 1, num_restarts, self.optimization_runs[-1].f_opt)))
