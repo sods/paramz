@@ -153,7 +153,7 @@ class Model(Parameterized):
         if parallel: #pragma: no cover
             try:
                 pool = mp.Pool(processes=num_processes)
-                obs = [self for i in range(num_restarts)]
+                obs = [self.copy() for i in range(num_restarts)]
                 [obs[i].randomize() for i in range(num_restarts-1)]
                 jobs = pool.map(opt_wrapper, [(o,kwargs) for o in obs])
                 pool.close()
