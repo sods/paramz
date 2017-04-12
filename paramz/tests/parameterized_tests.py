@@ -190,7 +190,7 @@ class ModelTest(unittest.TestCase):
             self.testmodel.optimize_restarts(1, messages=1, optimizer=opt_tnc(), verbose=False)
             self.testmodel.optimize('tnc', messages=1, xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
-        self.assertDictEqual(self.testmodel.optimization_runs[-1].__getstate__(), {})
+        # self.assertDictEqual(self.testmodel.optimization_runs[-1].__getstate__(), {})
     def test_optimize_rprop(self):
         try:
             import climin
@@ -252,6 +252,10 @@ class ModelTest(unittest.TestCase):
         testmodel = M("test", var=Param('test', np.random.normal(0,1,(20))))
         testmodel.optimize_restarts(2, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=True)
         self.assertRaises(ValueError, testmodel.optimize_restarts, 1, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=False)
+    def test_optimize_restarts(self):
+        m = self.testmodel.copy()
+        m.optimize_restarts(2, messages=0, xtol=0, ftol=0, gtol=1e-6, robust=False)
+        np.testing.assert_array_less(m.gradient, np.ones(self.testmodel.size)*1e-2)
 
     def test_raveled_index(self):
         self.assertListEqual(self.testmodel._raveled_index_for(self.testmodel['.*variance']).tolist(), [1, 2])
