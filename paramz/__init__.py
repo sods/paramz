@@ -56,16 +56,23 @@ def load(file_or_path):
     :param file_name: path/to/file.pickle
     """
     from pickle import UnpicklingError
-    try:
+    _python3 = True
+    try: 
         import cPickle as pickle
-        strcl = basestring
-        p3kw = {}
-        return _unpickle(file_or_path, pickle, strcl, p3kw)
+        _python3 = False
     except ImportError: #python3
         import pickle
-        strcl = str
-        p3kw = dict(encoding='latin1')
-        return _unpickle(file_or_path, pickle, strcl, p3kw)
+   
+    try:
+        if _python3:
+            strcl = str
+            p3kw = dict(encoding='latin1')
+            return _unpickle(file_or_path, pickle, strcl, p3kw)
+        else:
+            strcl = basestring
+            p3kw = {}
+            return _unpickle(file_or_path, pickle, strcl, p3kw)
+    
     except UnpicklingError: # pragma: no coverage
         import pickle
         return _unpickle(file_or_path, pickle, strcl, p3kw)
