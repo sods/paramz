@@ -132,7 +132,7 @@ class Parameterized(with_metaclass(ParametersChangedMeta, Parameterizable)):
         """
         if param in self.parameters and index is not None:
             self.unlink_parameter(param)
-            self.link_parameter(param, index)
+            return self.link_parameter(param, index)
         # elif param.has_parent():
         #    raise HierarchyError, "parameter {} already in another model ({}), create new object (or copy) for adding".format(param._short(), param._highest_parent_._short())
         elif param not in self.parameters:
@@ -177,7 +177,7 @@ class Parameterized(with_metaclass(ParametersChangedMeta, Parameterizable)):
                 self._highest_parent_._connect_parameters()
                 self._highest_parent_._notify_parent_change()
                 self._highest_parent_._connect_fixes()
-
+            return param
         else:
             raise HierarchyError("""Parameter exists already, try making a copy""")
 
@@ -443,8 +443,6 @@ If you are loading a model, set updates off, then initialize, then set the value
         for i in range(len(names)):
             to_print.append(format_spec.format(name=names[i], desc=desc[i], **dict((name, iops[name][i]) for name in iops)))
         return '\n'.join(to_print)
-
-    pass
 
     def build_pydot(self, G=None): # pragma: no cover
         """
