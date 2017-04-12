@@ -7,10 +7,14 @@ Changelog
 New
 ~~~
 
+- Added CHANGELOG from GITCHANGELOG. [mzwiessele]
+
 - Util for doc. [mzwiessele]
 
 Fix
 ~~~
+
+- Load swallowed the import errors from missing packages... [mzwiessele]
 
 - Added return for linking. [mzwiessele]
 
