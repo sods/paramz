@@ -14,6 +14,8 @@ New
 Fix
 ~~~
 
+- Added license in manifest for package distribution. [mzwiessele]
+
 - Load swallowed the import errors from missing packages... [mzwiessele]
 
 - Added return for linking. [mzwiessele]
@@ -34,6 +36,10 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.7.5 → 0.7.6. [mzwiessele]
+
+- Bump version: 0.7.4 → 0.7.5. [mzwiessele]
 
 - Bump version: 0.7.3 → 0.7.4. [mzwiessele]
 
