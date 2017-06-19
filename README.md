@@ -36,7 +36,7 @@ There is regular update for this package, so make sure to keep up to date
 
 ## Supported Platforms:
 
-Python 2.7, 3.3 and higher
+Python 2.7, 3.5 and higher
 
 ## Saving models in a consistent way across versions:
 
