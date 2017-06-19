@@ -7,6 +7,8 @@ Changelog
 New
 ~~~
 
+- Changelog now markdown. [mzwiessele]
+
 - Added CHANGELOG from GITCHANGELOG. [mzwiessele]
 
 - Util for doc. [mzwiessele]
@@ -36,6 +38,18 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.7.6 → 0.7.7. [mzwiessele]
+
+- Merge pull request #19 from zhenwendai/master. [Max Zwiessele]
+
+  add the support for Adam from climin
+
+- Add a unittest. [Zhenwen Dai]
+
+- Bump the version up. [Zhenwen Dai]
+
+- Add the support of adam. [Zhenwen Dai]
 
 - Bump version: 0.7.5 → 0.7.6. [mzwiessele]
 
