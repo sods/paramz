@@ -212,6 +212,17 @@ class ModelTest(unittest.TestCase):
             self.testmodel.trigger_update()
             self.testmodel.optimize('adadelta', messages=1, step_rate=1, momentum=1)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+    def test_optimize_adam(self):
+        try:
+            import climin
+        except ImportError:
+            raise SkipTest("climin not installed, skipping test")
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.testmodel.trigger_update()
+            self.testmodel.optimize('adam', messages=1, step_rate=1., momentum=1.)
+        np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
     def test_optimize_org_bfgs(self):
         import warnings
         with warnings.catch_warnings():
@@ -280,11 +291,11 @@ class ModelTest(unittest.TestCase):
         self.testmodel['.*rbf'].constrain_negative()
         self.testmodel['.*lengthscale'].constrain_bounded(0,1)
         self.testmodel['.*variance'].fix()
-        
+
         self.assertListEqual(self.testmodel.constraints[transformations.__fixed__].tolist(), [1,2])
         self.assertListEqual(self.testmodel.constraints[transformations.Logistic(0,1)].tolist(), [0])
         self.assertListEqual(self.testmodel.constraints[transformations.NegativeLogexp()].tolist(), [1])
-        
+
         cache_constraints = self.testmodel.constraints.copy()
 
         self.testmodel.unconstrain()
@@ -300,12 +311,12 @@ class ModelTest(unittest.TestCase):
         self.assertListEqual(self.testmodel.constraints[transformations.__fixed__].tolist(), [1,2])
         self.assertListEqual(self.testmodel.constraints[transformations.Logistic(0,1)].tolist(), [0])
         self.assertListEqual(self.testmodel.constraints[transformations.NegativeLogexp()].tolist(), [1])
-        
+
         self.assertListEqual(self.testmodel._fixes_.tolist(), [transformations.UNFIXED, transformations.FIXED, transformations.FIXED])
 
         self.assertIs(self.testmodel.constraints, self.testmodel.likelihood.constraints._param_index_ops)
         self.assertIs(self.testmodel.constraints, self.testmodel.kern.constraints._param_index_ops)
-        
+
         #self.assertSequenceEqual(cache_str, str(self.testmodel), None, str)
 
     def test_updates(self):
@@ -867,16 +878,16 @@ class InitTests(unittest.TestCase):
         self.assertFalse(self.testmodel.likelihood._model_initialized_)
         self.assertFalse(self.testmodel.kern._model_initialized_)
         self.assertRaises(AttributeError, self.testmodel.__str__)
-        
-        # Model is not initialized, so we cannot set parameters:        
+
+        # Model is not initialized, so we cannot set parameters:
         def err():
             self.testmodel[:] = 2.
         self.assertRaises(AttributeError, err)
-        
+
         self.assertFalse(self.testmodel.likelihood._model_initialized_)
         self.assertFalse(self.testmodel.kern._model_initialized_)
         self.assertFalse(self.testmodel._model_initialized_)
-        
+
         import warnings
         #import ipdb;ipdb.set_trace()
         #with warnings.catch_warnings():
@@ -888,13 +899,13 @@ class InitTests(unittest.TestCase):
             # check that the gradient checker just returns false
             self.assertFalse(self.testmodel.checkgrad())
             self.assertFalse(self.testmodel.kern.checkgrad())
-        
+
         # Set updates off, so we do not call the expensive algebra
         self.testmodel.update_model(False)
-        
+
         # Still not initialized the model, so setting should not work:
         self.assertRaises(AttributeError, err)
-        
+
         # Now initialize the parameter connections:
         self.testmodel.initialize_parameter()
         # And set parameters, without updating
@@ -904,18 +915,18 @@ class InitTests(unittest.TestCase):
         # access the log likelihood, which does not exist:
         self.assertRaises(AttributeError, self.testmodel.checkgrad)
         self.assertRaises(AttributeError, self.testmodel.kern.checkgrad)
-        
+
         # parameters are initialized
         self.assertTrue(self.testmodel.likelihood._model_initialized_)
         self.assertTrue(self.testmodel.kern._model_initialized_)
-        
+
         # update the model now and check everything is working as expected:
-        
+
         self.testmodel.update_model(True)
-        
-        np.testing.assert_allclose(self.testmodel.param_array, 2., 1e-4) 
+
+        np.testing.assert_allclose(self.testmodel.param_array, 2., 1e-4)
         self.assertTrue(self.testmodel.checkgrad())
-         
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_add_parameter']
