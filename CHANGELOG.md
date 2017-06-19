@@ -16,6 +16,8 @@ New
 Fix
 ~~~
 
+- Changing to python 3.6, supporting 3.5 still. [mzwiessele]
+
 - Added license in manifest for package distribution. [mzwiessele]
 
 - Load swallowed the import errors from missing packages... [mzwiessele]
@@ -38,6 +40,8 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.7.7 → 0.7.8. [mzwiessele]
 
 - Bump version: 0.7.6 → 0.7.7. [mzwiessele]
 
