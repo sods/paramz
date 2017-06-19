@@ -64,7 +64,7 @@ class Optimizer(object):
         return diagnostics
 
     def __getstate__(self):
-        return self.__dict__
+        return {}
 
 
 class opt_tnc(Optimizer):
@@ -311,6 +311,49 @@ class RProp(Optimizer):
         else: # pragma: no cover
             pass
 
+class Adam(Optimizer):
+    # We want the optimizer to know some things in the Optimizer implementation:
+    def __init__(self, step_rate=.0002,
+                                  decay=None,
+                                  decay_mom1=0.1,
+                                  decay_mom2=0.001,
+                                  momentum=0,
+                 offset=1e-8, *args, **kwargs):
+        super(Adam, self).__init__(*args, **kwargs)
+        self.opt_name = 'Adam (climin)'
+        self.step_rate = step_rate
+        self.decay = decay
+        self.decay_mom1 = decay_mom1
+        self.decay_mom2 = decay_mom2
+        self.momentum = momentum
+        self.offset = offset
+
+        _check_for_climin()
+        
+    def opt(self, x_init, f_fp=None, f=None, fp=None):
+        # We only need the gradient of the 
+        assert not fp is None
+
+        import climin
+
+        # Do the optimization, giving previously stored parameters
+        opt = climin.adam.Adam(x_init, fp,
+                               step_rate=self.step_rate, decay=self.decay,
+                               decay_mom1=self.decay_mom1, decay_mom2=self.decay_mom2,
+                               momentum=self.momentum,offset=self.offset)
+
+        # Get the optimized state and transform it into Paramz readable format by setting
+        # values on this object:
+        # Important ones are x_opt and status:
+        for info in opt:
+            if info['n_iter']>=self.max_iters:
+                self.x_opt =  opt.wrt
+                self.status = 'maximum number of function evaluations exceeded'
+                break
+        else: # pragma: no cover
+            pass
+
+
 def get_optimizer(f_min):
 
     optimizers = {'fmin_tnc': opt_tnc,
@@ -319,7 +362,8 @@ def get_optimizer(f_min):
           'org-bfgs': opt_bfgs,
           'scg': opt_SCG,
           'adadelta':Opt_Adadelta,
-          'rprop':RProp}
+                  'rprop':RProp,
+                  'adam':Adam}
 
     #if rasm_available:
     #    optimizers['rasmussen'] = opt_rasm
