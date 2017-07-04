@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.examples.ridge_regression</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.examples-module.html">Package&nbsp;examples</a> ::
+        Module&nbsp;ridge_regression
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.examples.ridge_regression-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="paramz.examples.ridge_regression-module.html">Module paramz.examples.ridge_regression</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 16 Oct 2015</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">@author: Max Zwiessele</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">numpy</tt> <tt class="py-keyword">as</tt> <tt class="py-name">np</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Module paramz.model=paramz.model-module.html"><a title="paramz.model" class="py-name" href="#" onclick="return doclink('link-0', 'model', 'link-0');">model</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class paramz.model.Model=paramz.model.Model-class.html"><a title="paramz.model.Model" class="py-name" href="#" onclick="return doclink('link-1', 'Model', 'link-1');">Model</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Package paramz.core=paramz.core-module.html"><a title="paramz.core" class="py-name" href="#" onclick="return doclink('link-2', 'core', 'link-2');">core</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module paramz.core.observable_array=paramz.core.observable_array-module.html"><a title="paramz.core.observable_array" class="py-name" href="#" onclick="return doclink('link-3', 'observable_array', 'link-3');">observable_array</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class paramz.core.observable_array.ObsAr=paramz.core.observable_array.ObsAr-class.html"><a title="paramz.core.observable_array.ObsAr" class="py-name" href="#" onclick="return doclink('link-4', 'ObsAr', 'link-4');">ObsAr</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module paramz.param=paramz.param-module.html"><a title="paramz.param" class="py-name" href="#" onclick="return doclink('link-5', 'param', 'link-5');">param</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class paramz.param.Param=paramz.param.Param-class.html"><a title="paramz.param.Param" class="py-name" href="#" onclick="return doclink('link-6', 'Param', 'link-6');">Param</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module paramz.caching=paramz.caching-module.html"><a title="paramz.caching" class="py-name" href="#" onclick="return doclink('link-7', 'caching', 'link-7');">caching</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Class paramz.caching.Cacher=paramz.caching.Cacher-class.html"><a title="paramz.caching.Cacher" class="py-name" href="#" onclick="return doclink('link-8', 'Cacher', 'link-8');">Cacher</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module paramz.parameterized=paramz.parameterized-module.html"><a title="paramz.parameterized" class="py-name" href="#" onclick="return doclink('link-9', 'parameterized', 'link-9');">parameterized</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name" targets="Class paramz.parameterized.Parameterized=paramz.parameterized.Parameterized-class.html"><a title="paramz.parameterized.Parameterized" class="py-name" href="#" onclick="return doclink('link-10', 'Parameterized', 'link-10');">Parameterized</a></tt> </tt>
+<a name="RidgeRegression"></a><div id="RidgeRegression-def"><a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt> <a class="py-toggle" href="#" id="RidgeRegression-toggle" onclick="return toggle('RidgeRegression');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html">RidgeRegression</a><tt class="py-op">(</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="RidgeRegression-expanded"><a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">    <tt class="py-docstring">'''</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">    Ridge regression with regularization.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">    For any regularization to work we to gradient based optimization.</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="RidgeRegression.__init__"></a><div id="RidgeRegression.__init__-def"><a name="L19"></a><tt class="py-lineno"> 19</tt> <a class="py-toggle" href="#" id="RidgeRegression.__init__-toggle" onclick="return toggle('RidgeRegression.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">X</tt><tt class="py-op">,</tt> <tt class="py-param">Y</tt><tt class="py-op">,</tt> <tt class="py-param">regularizer</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">basis</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">'ridge_regression'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RidgeRegression.__init__-expanded"><a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">        <tt class="py-docstring">'''</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">        :param array-like X: the inputs X of the regression problem</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">        :param array-like Y: the outputs Y</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">        :param :py:class:`paramz.examples.ridge_regression.Regularizer` regularizer: the regularizer to use</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">        :param str name: the name of this regression object</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">        '''</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-11" class="py-name" targets="Class paramz.examples.ridge_regression.RidgeRegression=paramz.examples.ridge_regression.RidgeRegression-class.html"><a title="paramz.examples.ridge_regression.RidgeRegression" class="py-name" href="#" onclick="return doclink('link-11', 'RidgeRegression', 'link-11');">RidgeRegression</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method paramz.caching.Cache_this.__init__()=paramz.caching.Cache_this-class.html#__init__,Method paramz.caching.Cacher.__init__()=paramz.caching.Cacher-class.html#__init__,Method paramz.caching.FunctionCache.__init__()=paramz.caching.FunctionCache-class.html#__init__,Method paramz.core.constrainable.Constrainable.__init__()=paramz.core.constrainable.Constrainable-class.html#__init__,Method paramz.core.gradcheckable.Gradcheckable.__init__()=paramz.core.gradcheckable.Gradcheckable-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperations.__init__()=paramz.core.index_operations.ParameterIndexOperations-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperationsView.__init__()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#__init__,Method paramz.core.indexable.Indexable.__init__()=paramz.core.indexable.Indexable-class.html#__init__,Method paramz.core.lists_and_dicts.IntArrayDict.__init__()=paramz.core.lists_and_dicts.IntArrayDict-class.html#__init__,Method paramz.core.lists_and_dicts.ObserverList.__init__()=paramz.core.lists_and_dicts.ObserverList-class.html#__init__,Method paramz.core.nameable.Nameable.__init__()=paramz.core.nameable.Nameable-class.html#__init__,Method paramz.core.observable.Observable.__init__()=paramz.core.observable.Observable-class.html#__init__,Method paramz.core.parameter_core.OptimizationHandlable.__init__()=paramz.core.parameter_core.OptimizationHandlable-class.html#__init__,Method paramz.core.parameter_core.Parameterizable.__init__()=paramz.core.parameter_core.Parameterizable-class.html#__init__,Method paramz.core.parentable.Parentable.__init__()=paramz.core.parentable.Parentable-class.html#__init__,Method paramz.core.pickleable.Pickleable.__init__()=paramz.core.pickleable.Pickleable-class.html#__init__,Method paramz.core.updateable.Updateable.__init__()=paramz.core.updateable.Updateable-class.html#__init__,Method paramz.examples.ridge_regression.Basis.__init__()=paramz.examples.ridge_regression.Basis-class.html#__init__,Method paramz.examples.ridge_regression.Lasso.__init__()=paramz.examples.ridge_regression.Lasso-class.html#__init__,Method paramz.examples.ridge_regression.Polynomial.__init__()=paramz.examples.ridge_regression.Polynomial-class.html#__init__,Method paramz.examples.ridge_regression.Regularizer.__init__()=paramz.examples.ridge_regression.Regularizer-class.html#__init__,Method paramz.examples.ridge_regression.Ridge.__init__()=paramz.examples.ridge_regression.Ridge-class.html#__init__,Method paramz.examples.ridge_regression.RidgeRegression.__init__()=paramz.examples.ridge_regression.RidgeRegression-class.html#__init__,Method paramz.model.Model.__init__()=paramz.model.Model-class.html#__init__,Method paramz.optimization.optimization.Adam.__init__()=paramz.optimization.optimization.Adam-class.html#__init__,Method paramz.optimization.optimization.Opt_Adadelta.__init__()=paramz.optimization.optimization.Opt_Adadelta-class.html#__init__,Method paramz.optimization.optimization.Optimizer.__init__()=paramz.optimization.optimization.Optimizer-class.html#__init__,Method paramz.optimization.optimization.RProp.__init__()=paramz.optimization.optimization.RProp-class.html#__init__,Method paramz.optimization.optimization.opt_SCG.__init__()=paramz.optimization.optimization.opt_SCG-class.html#__init__,Method paramz.optimization.optimization.opt_bfgs.__init__()=paramz.optimization.optimization.opt_bfgs-class.html#__init__,Method paramz.optimization.optimization.opt_lbfgsb.__init__()=paramz.optimization.optimization.opt_lbfgsb-class.html#__init__,Method paramz.optimization.optimization.opt_simplex.__init__()=paramz.optimization.optimization.opt_simplex-class.html#__init__,Method paramz.optimization.optimization.opt_tnc.__init__()=paramz.optimization.optimization.opt_tnc-class.html#__init__,Method paramz.optimization.verbose_optimization.VerboseOptimization.__init__()=paramz.optimization.verbose_optimization.VerboseOptimization-class.html#__init__,Method paramz.param.Param.__init__()=paramz.param.Param-class.html#__init__,Method paramz.param.ParamConcatenation.__init__()=paramz.param.ParamConcatenation-class.html#__init__,Method paramz.parameterized.Parameterized.__init__()=paramz.parameterized.Parameterized-class.html#__init__,Method paramz.tests.parameterized_tests.P.__init__()=paramz.tests.parameterized_tests.P-class.html#__init__,Method paramz.ties_and_remappings.Tie.__init__()=paramz.ties_and_remappings.Tie-class.html#__init__,Method paramz.transformations.LogexpClipped.__init__()=paramz.transformations.LogexpClipped-class.html#__init__,Method paramz.transformations.Logistic.__init__()=paramz.transformations.Logistic-class.html#__init__,Method paramz.transformations.NormalEta.__init__()=paramz.transformations.NormalEta-class.html#__init__,Method paramz.transformations.NormalNaturalAntti.__init__()=paramz.transformations.NormalNaturalAntti-class.html#__init__,Method paramz.transformations.NormalNaturalThroughEta.__init__()=paramz.transformations.NormalNaturalThroughEta-class.html#__init__,Method paramz.transformations.NormalNaturalThroughTheta.__init__()=paramz.transformations.NormalNaturalThroughTheta-class.html#__init__,Method paramz.transformations.NormalNaturalWhooot.__init__()=paramz.transformations.NormalNaturalWhooot-class.html#__init__,Method paramz.transformations.NormalTheta.__init__()=paramz.transformations.NormalTheta-class.html#__init__"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-12', '__init__', 'link-12');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-13" class="py-name" targets="Variable paramz.core.nameable.Nameable.name=paramz.core.nameable.Nameable-class.html#name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-13', 'name', 'link-13');">name</a></tt><tt class="py-op">=</tt><tt id="link-14" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-14', 'name', 'link-13');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-name">X</tt><tt class="py-op">.</tt><tt class="py-name">ndim</tt> <tt class="py-op">==</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-string">'inputs need to be at least a column vector'</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-name">Y</tt><tt class="py-op">.</tt><tt class="py-name">ndim</tt> <tt class="py-op">==</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-string">'inputs need to be at least a column vector'</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">X</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="paramz.core.observable_array.ObsAr" class="py-name" href="#" onclick="return doclink('link-15', 'ObsAr', 'link-4');">ObsAr</a></tt><tt class="py-op">(</tt><tt class="py-name">X</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">Y</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="paramz.core.observable_array.ObsAr" class="py-name" href="#" onclick="return doclink('link-16', 'ObsAr', 'link-4');">ObsAr</a></tt><tt class="py-op">(</tt><tt class="py-name">Y</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-17" class="py-name" targets="Method paramz.examples.ridge_regression.Basis.basis()=paramz.examples.ridge_regression.Basis-class.html#basis,Method paramz.examples.ridge_regression.Polynomial.basis()=paramz.examples.ridge_regression.Polynomial-class.html#basis"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-17', 'basis', 'link-17');">basis</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">            <tt id="link-18" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-18', 'basis', 'link-17');">basis</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name" targets="Class paramz.examples.ridge_regression.Polynomial=paramz.examples.ridge_regression.Polynomial-class.html"><a title="paramz.examples.ridge_regression.Polynomial" class="py-name" href="#" onclick="return doclink('link-19', 'Polynomial', 'link-19');">Polynomial</a></tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-20', 'basis', 'link-17');">basis</a></tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-21', 'basis', 'link-17');">basis</a></tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">regularizer</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">            <tt class="py-name">regularizer</tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name" targets="Class paramz.examples.ridge_regression.Ridge=paramz.examples.ridge_regression.Ridge-class.html"><a title="paramz.examples.ridge_regression.Ridge" class="py-name" href="#" onclick="return doclink('link-22', 'Ridge', 'link-22');">Ridge</a></tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">regularizer</tt> <tt class="py-op">=</tt> <tt class="py-name">regularizer</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">regularizer</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method paramz.examples.ridge_regression.Regularizer.init()=paramz.examples.ridge_regression.Regularizer-class.html#init"><a title="paramz.examples.ridge_regression.Regularizer.init" class="py-name" href="#" onclick="return doclink('link-23', 'init', 'link-23');">init</a></tt><tt class="py-op">(</tt><tt id="link-24" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-24', 'basis', 'link-17');">basis</a></tt><tt class="py-op">,</tt> <tt class="py-name">X</tt><tt class="py-op">.</tt><tt class="py-name">shape</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method paramz.parameterized.Parameterized.link_parameters()=paramz.parameterized.Parameterized-class.html#link_parameters"><a title="paramz.parameterized.Parameterized.link_parameters" class="py-name" href="#" onclick="return doclink('link-25', 'link_parameters', 'link-25');">link_parameters</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">regularizer</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-26', 'basis', 'link-17');">basis</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="RidgeRegression.weights"></a><div id="RidgeRegression.weights-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="RidgeRegression.weights-toggle" onclick="return toggle('RidgeRegression.weights');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html#weights">weights</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression.weights-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RidgeRegression.weights-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">regularizer</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Variable paramz.examples.ridge_regression.RidgeRegression.weights=paramz.examples.ridge_regression.RidgeRegression-class.html#weights"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-27', 'weights', 'link-27');">weights</a></tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="RidgeRegression.degree"></a><div id="RidgeRegression.degree-def"><a name="L50"></a><tt class="py-lineno"> 50</tt> <a class="py-toggle" href="#" id="RidgeRegression.degree-toggle" onclick="return toggle('RidgeRegression.degree');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html#degree">degree</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression.degree-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RidgeRegression.degree-expanded"><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-28', 'basis', 'link-17');">basis</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Variable paramz.examples.ridge_regression.RidgeRegression.degree=paramz.examples.ridge_regression.RidgeRegression-class.html#degree"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-29', 'degree', 'link-29');">degree</a></tt> </tt>
+</div><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="RidgeRegression._phi"></a><div id="RidgeRegression._phi-def"><a name="L54"></a><tt class="py-lineno"> 54</tt> <a class="py-toggle" href="#" id="RidgeRegression._phi-toggle" onclick="return toggle('RidgeRegression._phi');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html#_phi">_phi</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression._phi-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RidgeRegression._phi-expanded"><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-30', 'basis', 'link-17');">basis</a></tt><tt class="py-op">.</tt><tt class="py-name">_basis</tt> </tt>
+</div><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"> </tt>
+<a name="RidgeRegression.phi"></a><div id="RidgeRegression.phi-def"><a name="L57"></a><tt class="py-lineno"> 57</tt> <a class="py-toggle" href="#" id="RidgeRegression.phi-toggle" onclick="return toggle('RidgeRegression.phi');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html#phi">phi</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">Xpred</tt><tt class="py-op">,</tt> <tt class="py-param">degrees</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression.phi-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RidgeRegression.phi-expanded"><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">        Compute the design matrix for this model</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">        using the degrees given by the index array</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">        in degrees</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">        :param array-like Xpred: inputs to compute the design matrix for</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">        :param array-like degrees: array of degrees to use [default=range(self.degree+1)]</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">        :returns array-like phi: The design matrix [degree x #samples x #dimensions]</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-name">Xpred</tt><tt class="py-op">.</tt><tt class="py-name">shape</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">X</tt><tt class="py-op">.</tt><tt class="py-name">shape</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">"Need to predict with same shape as training data."</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">degrees</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-name">degrees</tt> <tt class="py-op">=</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-31', 'basis', 'link-17');">basis</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-32', 'degree', 'link-29');">degree</a></tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-name">tmp_phi</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">empty</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">degrees</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">Xpred</tt><tt class="py-op">.</tt><tt class="py-name">shape</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">Xpred</tt><tt class="py-op">.</tt><tt class="py-name">shape</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt><tt class="py-op">,</tt> <tt class="py-name">w</tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt><tt class="py-name">degrees</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">            <tt class="py-comment"># Objective function</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">            <tt class="py-name">tmpX</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Variable paramz.examples.ridge_regression.RidgeRegression._phi=paramz.examples.ridge_regression.RidgeRegression-class.html#_phi"><a title="paramz.examples.ridge_regression.RidgeRegression._phi" class="py-name" href="#" onclick="return doclink('link-33', '_phi', 'link-33');">_phi</a></tt><tt class="py-op">(</tt><tt class="py-name">Xpred</tt><tt class="py-op">,</tt> <tt class="py-name">w</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">            <tt class="py-name">tmp_phi</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">tmpX</tt> <tt class="py-op">*</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-34', 'weights', 'link-27');">weights</a></tt><tt class="py-op">[</tt><tt class="py-op">[</tt><tt class="py-name">w</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">tmp_phi</tt> </tt>
+</div><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="RidgeRegression.parameters_changed"></a><div id="RidgeRegression.parameters_changed-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="RidgeRegression.parameters_changed-toggle" onclick="return toggle('RidgeRegression.parameters_changed');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html#parameters_changed">parameters_changed</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression.parameters_changed-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RidgeRegression.parameters_changed-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">tmp_outer</tt> <tt class="py-op">=</tt> <tt class="py-number">0.</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-35', 'degree', 'link-29');">degree</a></tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">            <tt class="py-comment"># Objective function</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">            <tt class="py-name">tmp_X</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression._phi" class="py-name" href="#" onclick="return doclink('link-36', '_phi', 'link-33');">_phi</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">X</tt><tt class="py-op">,</tt> <tt class="py-name">i</tt><tt class="py-op">)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">            <tt class="py-name">target_f</tt> <tt class="py-op">=</tt> <tt class="py-name">tmp_X</tt><tt class="py-op">.</tt><tt class="py-name">dot</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-37', 'weights', 'link-27');">weights</a></tt><tt class="py-op">[</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">T</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">            <tt class="py-name">tmp_outer</tt> <tt class="py-op">+=</tt> <tt class="py-name">target_f</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-name">tmp_outer</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">Y</tt><tt class="py-op">-</tt><tt class="py-name">tmp_outer</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-38', 'degree', 'link-29');">degree</a></tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">            <tt class="py-name">tmp_X</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression._phi" class="py-name" href="#" onclick="return doclink('link-39', '_phi', 'link-33');">_phi</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">X</tt><tt class="py-op">,</tt> <tt class="py-name">i</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">            <tt class="py-comment"># gradient:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">            <tt class="py-comment"># Note, that we updated the weights gradients</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">            <tt class="py-comment"># in the basis first. So here we update</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">            <tt class="py-comment"># and add in the gradient for the bound.</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-40', 'weights', 'link-27');">weights</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Variable paramz.core.parameter_core.Parameterizable.gradient=paramz.core.parameter_core.Parameterizable-class.html#gradient,Variable paramz.param.Param.gradient=paramz.param.Param-class.html#gradient"><a title="paramz.core.parameter_core.Parameterizable.gradient
+paramz.param.Param.gradient" class="py-name" href="#" onclick="return doclink('link-41', 'gradient', 'link-41');">gradient</a></tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt> <tt class="py-op">-=</tt> <tt class="py-number">2</tt><tt class="py-op">*</tt><tt class="py-op">(</tt><tt class="py-name">tmp_outer</tt><tt class="py-op">*</tt><tt class="py-name">tmp_X</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_obj</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">tmp_outer</tt><tt class="py-op">)</tt><tt class="py-op">**</tt><tt class="py-number">2</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">regularizer</tt><tt class="py-op">.</tt><tt class="py-name">error</tt><tt class="py-op">.</tt><tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="RidgeRegression.objective_function"></a><div id="RidgeRegression.objective_function-def"><a name="L95"></a><tt class="py-lineno"> 95</tt> <a class="py-toggle" href="#" id="RidgeRegression.objective_function-toggle" onclick="return toggle('RidgeRegression.objective_function');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html#objective_function">objective_function</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression.objective_function-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RidgeRegression.objective_function-expanded"><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_obj</tt> </tt>
+</div><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"> </tt>
+<a name="RidgeRegression.predict"></a><div id="RidgeRegression.predict-def"><a name="L98"></a><tt class="py-lineno"> 98</tt> <a class="py-toggle" href="#" id="RidgeRegression.predict-toggle" onclick="return toggle('RidgeRegression.predict');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.RidgeRegression-class.html#predict">predict</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">Xnew</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RidgeRegression.predict-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RidgeRegression.predict-expanded"><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-name">tmp_outer</tt> <tt class="py-op">=</tt> <tt class="py-number">0.</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-42', 'degree', 'link-29');">degree</a></tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">            <tt class="py-comment"># Objective function</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">            <tt class="py-name">tmp_X</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression._phi" class="py-name" href="#" onclick="return doclink('link-43', '_phi', 'link-33');">_phi</a></tt><tt class="py-op">(</tt><tt class="py-name">Xnew</tt><tt class="py-op">,</tt> <tt class="py-name">i</tt><tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">            <tt class="py-name">tmp_outer</tt> <tt class="py-op">+=</tt> <tt class="py-name">tmp_X</tt><tt class="py-op">.</tt><tt class="py-name">dot</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-44', 'weights', 'link-27');">weights</a></tt><tt class="py-op">[</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">T</tt><tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">tmp_outer</tt> </tt>
+</div></div><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
+<a name="Basis"></a><div id="Basis-def"><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt> <a class="py-toggle" href="#" id="Basis-toggle" onclick="return toggle('Basis');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Basis-class.html">Basis</a><tt class="py-op">(</tt><tt class="py-base-class">Parameterized</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Basis-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Basis-expanded"><a name="Basis.__init__"></a><div id="Basis.__init__-def"><a name="L109"></a><tt class="py-lineno">109</tt> <a class="py-toggle" href="#" id="Basis.__init__-toggle" onclick="return toggle('Basis.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Basis-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">degree</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">'basis'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Basis.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Basis.__init__-expanded"><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-docstring">        Basis class for computing the design matrix phi(X). The weights are held</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-docstring">        in the regularizer, so that this only represents the design matrix.</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-45" class="py-name" targets="Class paramz.examples.ridge_regression.Basis=paramz.examples.ridge_regression.Basis-class.html"><a title="paramz.examples.ridge_regression.Basis" class="py-name" href="#" onclick="return doclink('link-45', 'Basis', 'link-45');">Basis</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-46', '__init__', 'link-12');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-47" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-47', 'name', 'link-13');">name</a></tt><tt class="py-op">=</tt><tt id="link-48" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-48', 'name', 'link-13');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-49', 'degree', 'link-29');">degree</a></tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-50', 'degree', 'link-29');">degree</a></tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-comment"># One way of setting up the caching is by the following, the</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-comment"># other is by the decorator.</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_basis</tt> <tt class="py-op">=</tt> <tt id="link-51" class="py-name"><a title="paramz.caching.Cacher" class="py-name" href="#" onclick="return doclink('link-51', 'Cacher', 'link-8');">Cacher</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-52', 'basis', 'link-17');">basis</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-53', 'degree', 'link-29');">degree</a></tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-comment"># If we do not set up the caching ourself, using the decorator, we</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-comment"># cannot set the limit of the cacher easily to the degree+1.</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-comment"># It could be done on runtime, by inspecting self.cache and setting</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-comment"># the limit of the right cacher, but that is more complex then necessary</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="Basis.basis"></a><div id="Basis.basis-def"><a name="L124"></a><tt class="py-lineno">124</tt> <a class="py-toggle" href="#" id="Basis.basis-toggle" onclick="return toggle('Basis.basis');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Basis-class.html#basis">basis</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">X</tt><tt class="py-op">,</tt> <tt class="py-param">i</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Basis.basis-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Basis.basis-expanded"><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-docstring">        Return the ith basis dimension.</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-docstring">        In the polynomial case, this is X**index.</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">        You can write your own basis function here, inheriting from this class</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">        and the gradients will still check.</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">        Note: i will be zero for the first degree. This means we</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">        have also a bias in the model, which makes the problem of having an explicit</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring">        bias obsolete.</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt><tt class="py-string">'Implement the basis you want to optimize over.'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"> </tt>
+<a name="Polynomial"></a><div id="Polynomial-def"><a name="L137"></a><tt class="py-lineno">137</tt> <a class="py-toggle" href="#" id="Polynomial-toggle" onclick="return toggle('Polynomial');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Polynomial-class.html">Polynomial</a><tt class="py-op">(</tt><tt class="py-base-class">Basis</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Polynomial-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Polynomial-expanded"><a name="Polynomial.__init__"></a><div id="Polynomial.__init__-def"><a name="L138"></a><tt class="py-lineno">138</tt> <a class="py-toggle" href="#" id="Polynomial.__init__-toggle" onclick="return toggle('Polynomial.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Polynomial-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">degree</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">'polynomial'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Polynomial.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Polynomial.__init__-expanded"><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-54" class="py-name"><a title="paramz.examples.ridge_regression.Polynomial" class="py-name" href="#" onclick="return doclink('link-54', 'Polynomial', 'link-19');">Polynomial</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-55', '__init__', 'link-12');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-56" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-56', 'degree', 'link-29');">degree</a></tt><tt class="py-op">,</tt> <tt id="link-57" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-57', 'name', 'link-13');">name</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="Polynomial.basis"></a><div id="Polynomial.basis-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="Polynomial.basis-toggle" onclick="return toggle('Polynomial.basis');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Polynomial-class.html#basis">basis</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">X</tt><tt class="py-op">,</tt> <tt class="py-param">i</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Polynomial.basis-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Polynomial.basis-expanded"><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">X</tt><tt class="py-op">**</tt><tt class="py-name">i</tt> </tt>
+</div></div><a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"> </tt>
+<a name="Regularizer"></a><div id="Regularizer-def"><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt> <a class="py-toggle" href="#" id="Regularizer-toggle" onclick="return toggle('Regularizer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Regularizer-class.html">Regularizer</a><tt class="py-op">(</tt><tt class="py-base-class">Parameterized</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Regularizer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Regularizer-expanded"><a name="Regularizer.__init__"></a><div id="Regularizer.__init__-def"><a name="L147"></a><tt class="py-lineno">147</tt> <a class="py-toggle" href="#" id="Regularizer.__init__-toggle" onclick="return toggle('Regularizer.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Regularizer-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lambda_</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">'regularizer'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Regularizer.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Regularizer.__init__-expanded"><a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-58" class="py-name" targets="Class paramz.examples.ridge_regression.Regularizer=paramz.examples.ridge_regression.Regularizer-class.html"><a title="paramz.examples.ridge_regression.Regularizer" class="py-name" href="#" onclick="return doclink('link-58', 'Regularizer', 'link-58');">Regularizer</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-59', '__init__', 'link-12');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-60" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-60', 'name', 'link-13');">name</a></tt><tt class="py-op">=</tt><tt id="link-61" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-61', 'name', 'link-13');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lambda_</tt> <tt class="py-op">=</tt> <tt class="py-name">lambda_</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_initialized</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="Regularizer.init"></a><div id="Regularizer.init-def"><a name="L152"></a><tt class="py-lineno">152</tt> <a class="py-toggle" href="#" id="Regularizer.init-toggle" onclick="return toggle('Regularizer.init');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Regularizer-class.html#init">init</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">basis</tt><tt class="py-op">,</tt> <tt class="py-param">input_dim</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Regularizer.init-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Regularizer.init-expanded"><a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_initialized</tt><tt class="py-op">:</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">(</tt><tt class="py-string">"already initialized, please use new object."</tt><tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt id="link-62" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-62', 'weights', 'link-27');">weights</a></tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">ones</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt id="link-63" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-63', 'basis', 'link-17');">basis</a></tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-64', 'degree', 'link-29');">degree</a></tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">input_dim</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">*</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">arange</tt><tt class="py-op">(</tt><tt id="link-65" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-65', 'basis', 'link-17');">basis</a></tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-66', 'degree', 'link-29');">degree</a></tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">,</tt><tt class="py-name">None</tt><tt class="py-op">]</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt id="link-67" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-67', 'basis', 'link-17');">basis</a></tt><tt class="py-op">.</tt><tt id="link-68" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.degree" class="py-name" href="#" onclick="return doclink('link-68', 'degree', 'link-29');">degree</a></tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">            <tt id="link-69" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-69', 'weights', 'link-27');">weights</a></tt><tt class="py-op">[</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> <tt class="py-op">/=</tt> <tt id="link-70" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-70', 'basis', 'link-17');">basis</a></tt><tt class="py-op">.</tt><tt id="link-71" class="py-name"><a title="paramz.examples.ridge_regression.Basis.basis
+paramz.examples.ridge_regression.Polynomial.basis" class="py-name" href="#" onclick="return doclink('link-71', 'basis', 'link-17');">basis</a></tt><tt class="py-op">(</tt><tt id="link-72" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-72', 'weights', 'link-27');">weights</a></tt><tt class="py-op">[</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">i</tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-73" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-73', 'weights', 'link-27');">weights</a></tt><tt class="py-op">,</tt> <tt id="link-74" class="py-name"><a title="paramz.param.Param" class="py-name" href="#" onclick="return doclink('link-74', 'Param', 'link-6');">Param</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-75" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-75', 'weights', 'link-27');">weights</a></tt><tt class="py-op">.</tt><tt class="py-name">ndim</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">                <tt id="link-76" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-76', 'weights', 'link-27');">weights</a></tt> <tt class="py-op">=</tt> <tt id="link-77" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-77', 'weights', 'link-27');">weights</a></tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">,</tt><tt class="py-name">None</tt><tt class="py-op">]</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">            <tt id="link-78" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-78', 'weights', 'link-27');">weights</a></tt> <tt class="py-op">=</tt> <tt id="link-79" class="py-name"><a title="paramz.param.Param" class="py-name" href="#" onclick="return doclink('link-79', 'Param', 'link-6');">Param</a></tt><tt class="py-op">(</tt><tt class="py-string">'weights'</tt><tt class="py-op">,</tt> <tt id="link-80" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-80', 'weights', 'link-27');">weights</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">            <tt class="py-keyword">assert</tt> <tt id="link-81" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-81', 'weights', 'link-27');">weights</a></tt><tt class="py-op">.</tt><tt class="py-name">ndim</tt> <tt class="py-op">==</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-string">'weights needs to be at least a column vector'</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-82', 'weights', 'link-27');">weights</a></tt> <tt class="py-op">=</tt> <tt id="link-83" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-83', 'weights', 'link-27');">weights</a></tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name" targets="Method paramz.parameterized.Parameterized.link_parameter()=paramz.parameterized.Parameterized-class.html#link_parameter"><a title="paramz.parameterized.Parameterized.link_parameter" class="py-name" href="#" onclick="return doclink('link-84', 'link_parameter', 'link-84');">link_parameter</a></tt><tt class="py-op">(</tt><tt id="link-85" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-85', 'weights', 'link-27');">weights</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_initialized</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-86" class="py-name" targets="Method paramz.examples.ridge_regression.Lasso.update_error()=paramz.examples.ridge_regression.Lasso-class.html#update_error,Method paramz.examples.ridge_regression.Regularizer.update_error()=paramz.examples.ridge_regression.Regularizer-class.html#update_error,Method paramz.examples.ridge_regression.Ridge.update_error()=paramz.examples.ridge_regression.Ridge-class.html#update_error"><a title="paramz.examples.ridge_regression.Lasso.update_error
+paramz.examples.ridge_regression.Regularizer.update_error
+paramz.examples.ridge_regression.Ridge.update_error" class="py-name" href="#" onclick="return doclink('link-86', 'update_error', 'link-86');">update_error</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"> </tt>
+<a name="Regularizer.parameters_changed"></a><div id="Regularizer.parameters_changed-def"><a name="L170"></a><tt class="py-lineno">170</tt> <a class="py-toggle" href="#" id="Regularizer.parameters_changed-toggle" onclick="return toggle('Regularizer.parameters_changed');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Regularizer-class.html#parameters_changed">parameters_changed</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Regularizer.parameters_changed-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Regularizer.parameters_changed-expanded"><a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_initialized</tt><tt class="py-op">:</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="paramz.examples.ridge_regression.Lasso.update_error
+paramz.examples.ridge_regression.Regularizer.update_error
+paramz.examples.ridge_regression.Ridge.update_error" class="py-name" href="#" onclick="return doclink('link-87', 'update_error', 'link-86');">update_error</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"> </tt>
+<a name="Regularizer.update_error"></a><div id="Regularizer.update_error-def"><a name="L174"></a><tt class="py-lineno">174</tt> <a class="py-toggle" href="#" id="Regularizer.update_error-toggle" onclick="return toggle('Regularizer.update_error');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Regularizer-class.html#update_error">update_error</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Regularizer.update_error-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Regularizer.update_error-expanded"><a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt><tt class="py-string">'Set the error `error` and gradient of weights in here'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"> </tt>
+<a name="Lasso"></a><div id="Lasso-def"><a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="Lasso-toggle" onclick="return toggle('Lasso');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Lasso-class.html">Lasso</a><tt class="py-op">(</tt><tt class="py-base-class">Regularizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Lasso-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Lasso-expanded"><a name="Lasso.__init__"></a><div id="Lasso.__init__-def"><a name="L178"></a><tt class="py-lineno">178</tt> <a class="py-toggle" href="#" id="Lasso.__init__-toggle" onclick="return toggle('Lasso.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Lasso-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lambda_</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">'Lasso'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Lasso.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Lasso.__init__-expanded"><a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-88" class="py-name" targets="Class paramz.examples.ridge_regression.Lasso=paramz.examples.ridge_regression.Lasso-class.html"><a title="paramz.examples.ridge_regression.Lasso" class="py-name" href="#" onclick="return doclink('link-88', 'Lasso', 'link-88');">Lasso</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-89" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-89', '__init__', 'link-12');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">lambda_</tt><tt class="py-op">,</tt> <tt id="link-90" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-90', 'name', 'link-13');">name</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"> </tt>
+<a name="Lasso.update_error"></a><div id="Lasso.update_error-def"><a name="L181"></a><tt class="py-lineno">181</tt> <a class="py-toggle" href="#" id="Lasso.update_error-toggle" onclick="return toggle('Lasso.update_error');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Lasso-class.html#update_error">update_error</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Lasso.update_error-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Lasso.update_error-expanded"><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">error</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lambda_</tt><tt class="py-op">*</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">abs</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-91" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-91', 'weights', 'link-27');">weights</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-92" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-92', 'weights', 'link-27');">weights</a></tt><tt class="py-op">.</tt><tt id="link-93" class="py-name"><a title="paramz.core.parameter_core.Parameterizable.gradient
+paramz.param.Param.gradient" class="py-name" href="#" onclick="return doclink('link-93', 'gradient', 'link-41');">gradient</a></tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lambda_</tt><tt class="py-op">*</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">sign</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-94" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-94', 'weights', 'link-27');">weights</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt>
+<a name="Ridge"></a><div id="Ridge-def"><a name="L185"></a><tt class="py-lineno">185</tt> <a class="py-toggle" href="#" id="Ridge-toggle" onclick="return toggle('Ridge');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Ridge-class.html">Ridge</a><tt class="py-op">(</tt><tt class="py-base-class">Regularizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Ridge-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Ridge-expanded"><a name="Ridge.__init__"></a><div id="Ridge.__init__-def"><a name="L186"></a><tt class="py-lineno">186</tt> <a class="py-toggle" href="#" id="Ridge.__init__-toggle" onclick="return toggle('Ridge.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Ridge-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lambda_</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">'Ridge'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Ridge.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Ridge.__init__-expanded"><a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-95" class="py-name"><a title="paramz.examples.ridge_regression.Ridge" class="py-name" href="#" onclick="return doclink('link-95', 'Ridge', 'link-22');">Ridge</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-96" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-96', '__init__', 'link-12');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">lambda_</tt><tt class="py-op">,</tt> <tt id="link-97" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-97', 'name', 'link-13');">name</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="Ridge.update_error"></a><div id="Ridge.update_error-def"><a name="L189"></a><tt class="py-lineno">189</tt> <a class="py-toggle" href="#" id="Ridge.update_error-toggle" onclick="return toggle('Ridge.update_error');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.examples.ridge_regression.Ridge-class.html#update_error">update_error</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Ridge.update_error-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Ridge.update_error-expanded"><a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">error</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lambda_</tt><tt class="py-op">*</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-98" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-98', 'weights', 'link-27');">weights</a></tt><tt class="py-op">**</tt><tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-99" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-99', 'weights', 'link-27');">weights</a></tt><tt class="py-op">.</tt><tt id="link-100" class="py-name"><a title="paramz.core.parameter_core.Parameterizable.gradient
+paramz.param.Param.gradient" class="py-name" href="#" onclick="return doclink('link-100', 'gradient', 'link-41');">gradient</a></tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lambda_</tt><tt class="py-op">*</tt><tt class="py-number">2</tt><tt class="py-op">*</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-101" class="py-name"><a title="paramz.examples.ridge_regression.RidgeRegression.weights" class="py-name" href="#" onclick="return doclink('link-101', 'weights', 'link-27');">weights</a></tt> </tt>
+</div></div><a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 12:00:19 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

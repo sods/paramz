@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.core.index_operations.ParameterIndexOperations</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.core-module.html">Package&nbsp;core</a> ::
+        <a href="paramz.core.index_operations-module.html">Module&nbsp;index_operations</a> ::
+        Class&nbsp;ParameterIndexOperations
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.core.index_operations.ParameterIndexOperations-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class ParameterIndexOperations</h1><p class="nomargin-top"><span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_paramz_c_7" name="uml_class_diagram_for_paramz_c_7">
+<area shape="rect" id="node1_15" href="paramz.core.index_operations.ParameterIndexOperations-class.html#size" title="paramz.core.index_operations.ParameterIndexOperations.size" alt="" coords="18,30,291,50"/>
+<area shape="rect" id="node1_16" href="paramz.core.index_operations.ParameterIndexOperations-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="18,53,291,73"/>
+<area shape="rect" id="node1_17" href="paramz.core.index_operations.ParameterIndexOperations-class.html#items" title="paramz.core.index_operations.ParameterIndexOperations.items" alt="" coords="18,73,291,93"/>
+<area shape="rect" id="node1_18" href="paramz.core.index_operations.ParameterIndexOperations-class.html#properties" title="paramz.core.index_operations.ParameterIndexOperations.properties" alt="" coords="18,93,291,113"/>
+<area shape="rect" id="node1_19" href="paramz.core.index_operations.ParameterIndexOperations-class.html#indices" title="paramz.core.index_operations.ParameterIndexOperations.indices" alt="" coords="18,113,291,133"/>
+<area shape="rect" id="node1_20" href="paramz.core.index_operations.ParameterIndexOperations-class.html#shift_right" title="paramz.core.index_operations.ParameterIndexOperations.shift_right" alt="" coords="18,133,291,153"/>
+<area shape="rect" id="node1_21" href="paramz.core.index_operations.ParameterIndexOperations-class.html#shift_left" title="paramz.core.index_operations.ParameterIndexOperations.shift_left" alt="" coords="18,153,291,173"/>
+<area shape="rect" id="node1_22" href="paramz.core.index_operations.ParameterIndexOperations-class.html#clear" title="paramz.core.index_operations.ParameterIndexOperations.clear" alt="" coords="18,173,291,193"/>
+<area shape="rect" id="node1_23" href="paramz.core.index_operations.ParameterIndexOperations-class.html#properties_for" title="Returns a list of properties, such that each entry in the list corresponds &#160;to the element of the index given." alt="" coords="18,193,291,213"/>
+<area shape="rect" id="node1_24" href="paramz.core.index_operations.ParameterIndexOperations-class.html#properties_dict_for" title="Return a dictionary, containing properties as keys and indices as index &#160;Thus, the indices for each constraint, which is contained will be collected as one dictionary" alt="" coords="18,213,291,233"/>
+<area shape="rect" id="node1_25" href="paramz.core.index_operations.ParameterIndexOperations-class.html#add" title="paramz.core.index_operations.ParameterIndexOperations.add" alt="" coords="18,233,291,253"/>
+<area shape="rect" id="node1_26" href="paramz.core.index_operations.ParameterIndexOperations-class.html#remove" title="paramz.core.index_operations.ParameterIndexOperations.remove" alt="" coords="18,253,291,273"/>
+<area shape="rect" id="node1_27" href="paramz.core.index_operations.ParameterIndexOperations-class.html#update" title="paramz.core.index_operations.ParameterIndexOperations.update" alt="" coords="18,273,291,293"/>
+<area shape="rect" id="node1_28" href="paramz.core.index_operations.ParameterIndexOperations-class.html#copy" title="paramz.core.index_operations.ParameterIndexOperations.copy" alt="" coords="18,293,291,313"/>
+<area shape="rect" id="node1_29" href="paramz.core.index_operations.ParameterIndexOperations-class.html#__str__" title="str(x)" alt="" coords="18,333,291,353"/>
+<area shape="rect" id="node1" href="paramz.core.index_operations.ParameterIndexOperations-class.html" title="This object wraps a dictionary, whos keys are _operations_ that we&#39;d like to apply to a parameter array, and whose values are np integer arrays which index the parameter array appropriately." alt="" coords="5,5,303,359"/>
+</map>
+  <img src="uml_class_diagram_for_paramz_c_7.gif" alt='' usemap="#uml_class_diagram_for_paramz_c_7" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>This object wraps a dictionary, whos keys are _operations_ that we'd 
+  like to apply to a parameter array, and whose values are np integer 
+  arrays which index the parameter array appropriately.</p>
+  <p>A model instance will contain one instance of this class for each 
+  thing that needs indexing (i.e. constraints, ties and priors). Parameters
+  within the model constain instances of the ParameterIndexOperationsView 
+  class, which can map from a 'local' index (starting 0) to this global 
+  index.</p>
+  <p>Here's an illustration:</p>
+<pre class="literalblock">
+   #=======================================================================
+   model : 0 1 2 3 4 5 6 7 8 9
+   key1: 4 5
+   key2: 7 8
+
+   param1: 0 1 2 3 4 5
+   key1: 2 3
+   key2: 5
+
+   param2: 0 1 2 3 4
+   key1: 0
+   key2: 2 3
+   #=======================================================================
+</pre>
+  <p>The views of this global index have a subset of the keys in this 
+  global (model) index.</p>
+  <p>Adding a new key (e.g. a constraint) to a view will cause the view to 
+  pass the new key to the global index, along with the local index and an 
+  offset. This global index then stores the key and the appropriate global 
+  index (which can be seen by the view).</p>
+  <p>See also: ParameterIndexOperationsView</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.index_operations.ParameterIndexOperations-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">constraints</span>=<span class="summary-sig-default">None</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="items"></a><span class="summary-sig-name">items</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.items">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="properties"></a><span class="summary-sig-name">properties</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.properties">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="indices"></a><span class="summary-sig-name">indices</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.indices">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="shift_right"></a><span class="summary-sig-name">shift_right</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">size</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.shift_right">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="shift_left"></a><span class="summary-sig-name">shift_left</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">size</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.shift_left">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clear"></a><span class="summary-sig-name">clear</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.clear">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.index_operations.ParameterIndexOperations-class.html#properties_for" class="summary-sig-name">properties_for</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">index</span>)</span><br />
+      Returns a list of properties, such that each entry in the list 
+      corresponds to the element of the index given.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.properties_for">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.index_operations.ParameterIndexOperations-class.html#properties_dict_for" class="summary-sig-name">properties_dict_for</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">index</span>)</span><br />
+      Return a dictionary, containing properties as keys and indices as 
+      index Thus, the indices for each constraint, which is contained will 
+      be collected as one dictionary</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.properties_dict_for">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="add"></a><span class="summary-sig-name">add</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">prop</span>,
+        <span class="summary-sig-arg">indices</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.add">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="remove"></a><span class="summary-sig-name">remove</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">prop</span>,
+        <span class="summary-sig-arg">indices</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.remove">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="update"></a><span class="summary-sig-name">update</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parameter_index_view</span>,
+        <span class="summary-sig-arg">offset</span>=<span class="summary-sig-default">0</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.update">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="copy"></a><span class="summary-sig-name">copy</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.copy">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__deepcopy__"></a><span class="summary-sig-name">__deepcopy__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">memo</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.__deepcopy__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getitem__"></a><span class="summary-sig-name">__getitem__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">prop</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.__getitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__delitem__"></a><span class="summary-sig-name">__delitem__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">prop</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.__delitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.index_operations.ParameterIndexOperations-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_offset"></a><span class="summary-name">_offset</span> = <code title="0">0</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.core.index_operations.ParameterIndexOperations-class.html#size" class="summary-name">size</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">constraints</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="properties_for"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">properties_for</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">index</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.properties_for">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns a list of properties, such that each entry in the list 
+  corresponds to the element of the index given.</p>
+  <p>Example: let properties: 'one':[1,2,3,4], 'two':[3,5,6]</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>properties_for([2,3,5])
+<span class="py-output">[['one'], ['one', 'two'], ['two']]</span></pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="properties_dict_for"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">properties_dict_for</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">index</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.properties_dict_for">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return a dictionary, containing properties as keys and indices as 
+  index Thus, the indices for each constraint, which is contained will be 
+  collected as one dictionary</p>
+  <p>Example: let properties: 'one':[1,2,3,4], 'two':[3,5,6]</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>properties_dict_for([2,3,5])
+<span class="py-output">{'one':[2,3], 'two':[3,5]}</span></pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.index_operations-pysrc.html#ParameterIndexOperations.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Property Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-PropertyDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="size"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">size</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.size(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 11:59:32 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

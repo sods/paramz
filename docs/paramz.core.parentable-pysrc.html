@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.core.parentable</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.core-module.html">Package&nbsp;core</a> ::
+        Module&nbsp;parentable
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.core.parentable-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="paramz.core.parentable-module.html">Module paramz.core.parentable</a></h1>
+<pre class="py-src">
+<a name="Parentable"></a><div id="Parentable-def"><a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#===============================================================================</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2015, Max Zwiessele</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment"># All rights reserved.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-comment"># Redistribution and use in source and binary forms, with or without</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment"># modification, are permitted provided that the following conditions are met:</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment"># * Redistributions of source code must retain the above copyright notice, this</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment">#   list of conditions and the following disclaimer.</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-comment"># * Redistributions in binary form must reproduce the above copyright notice,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-comment">#   this list of conditions and the following disclaimer in the documentation</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-comment">#   and/or other materials provided with the distribution.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-comment"># * Neither the name of paramz.core.parentable nor the names of its</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-comment">#   contributors may be used to endorse or promote products derived from</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-comment">#   this software without specific prior written permission.</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-comment"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-comment"># AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-comment"># IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-comment"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"><tt class="py-comment"># FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"><tt class="py-comment"># DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"><tt class="py-comment"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"><tt class="py-comment"># CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-comment"># OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"><tt class="py-comment"># OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"><tt class="py-comment">#===============================================================================</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt> <a class="py-toggle" href="#" id="Parentable-toggle" onclick="return toggle('Parentable');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.core.parentable.Parentable-class.html">Parentable</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parentable-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="Parentable-expanded"><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"><tt class="py-docstring">    Enable an Object to have a parent.</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"><tt class="py-docstring">    Additionally this adds the parent_index, which is the index for the parent</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"><tt class="py-docstring">    to look for in its parameter list.</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">    <tt id="link-0" class="py-name" targets="Variable paramz.core.parentable.Parentable._parent_=paramz.core.parentable.Parentable-class.html#_parent_"><a title="paramz.core.parentable.Parentable._parent_" class="py-name" href="#" onclick="return doclink('link-0', '_parent_', 'link-0');">_parent_</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt id="link-1" class="py-name" targets="Variable paramz.core.parentable.Parentable._parent_index_=paramz.core.parentable.Parentable-class.html#_parent_index_"><a title="paramz.core.parentable.Parentable._parent_index_" class="py-name" href="#" onclick="return doclink('link-1', '_parent_index_', 'link-1');">_parent_index_</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="Parentable.__init__"></a><div id="Parentable.__init__-def"><a name="L40"></a><tt class="py-lineno">40</tt> <a class="py-toggle" href="#" id="Parentable.__init__-toggle" onclick="return toggle('Parentable.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.parentable.Parentable-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parentable.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Parentable.__init__-expanded"><a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-2" class="py-name" targets="Class paramz.core.parentable.Parentable=paramz.core.parentable.Parentable-class.html"><a title="paramz.core.parentable.Parentable" class="py-name" href="#" onclick="return doclink('link-2', 'Parentable', 'link-2');">Parentable</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Method paramz.caching.Cache_this.__init__()=paramz.caching.Cache_this-class.html#__init__,Method paramz.caching.Cacher.__init__()=paramz.caching.Cacher-class.html#__init__,Method paramz.caching.FunctionCache.__init__()=paramz.caching.FunctionCache-class.html#__init__,Method paramz.core.constrainable.Constrainable.__init__()=paramz.core.constrainable.Constrainable-class.html#__init__,Method paramz.core.gradcheckable.Gradcheckable.__init__()=paramz.core.gradcheckable.Gradcheckable-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperations.__init__()=paramz.core.index_operations.ParameterIndexOperations-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperationsView.__init__()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#__init__,Method paramz.core.indexable.Indexable.__init__()=paramz.core.indexable.Indexable-class.html#__init__,Method paramz.core.lists_and_dicts.IntArrayDict.__init__()=paramz.core.lists_and_dicts.IntArrayDict-class.html#__init__,Method paramz.core.lists_and_dicts.ObserverList.__init__()=paramz.core.lists_and_dicts.ObserverList-class.html#__init__,Method paramz.core.nameable.Nameable.__init__()=paramz.core.nameable.Nameable-class.html#__init__,Method paramz.core.observable.Observable.__init__()=paramz.core.observable.Observable-class.html#__init__,Method paramz.core.parameter_core.OptimizationHandlable.__init__()=paramz.core.parameter_core.OptimizationHandlable-class.html#__init__,Method paramz.core.parameter_core.Parameterizable.__init__()=paramz.core.parameter_core.Parameterizable-class.html#__init__,Method paramz.core.parentable.Parentable.__init__()=paramz.core.parentable.Parentable-class.html#__init__,Method paramz.core.pickleable.Pickleable.__init__()=paramz.core.pickleable.Pickleable-class.html#__init__,Method paramz.core.updateable.Updateable.__init__()=paramz.core.updateable.Updateable-class.html#__init__,Method paramz.examples.ridge_regression.Basis.__init__()=paramz.examples.ridge_regression.Basis-class.html#__init__,Method paramz.examples.ridge_regression.Lasso.__init__()=paramz.examples.ridge_regression.Lasso-class.html#__init__,Method paramz.examples.ridge_regression.Polynomial.__init__()=paramz.examples.ridge_regression.Polynomial-class.html#__init__,Method paramz.examples.ridge_regression.Regularizer.__init__()=paramz.examples.ridge_regression.Regularizer-class.html#__init__,Method paramz.examples.ridge_regression.Ridge.__init__()=paramz.examples.ridge_regression.Ridge-class.html#__init__,Method paramz.examples.ridge_regression.RidgeRegression.__init__()=paramz.examples.ridge_regression.RidgeRegression-class.html#__init__,Method paramz.model.Model.__init__()=paramz.model.Model-class.html#__init__,Method paramz.optimization.optimization.Adam.__init__()=paramz.optimization.optimization.Adam-class.html#__init__,Method paramz.optimization.optimization.Opt_Adadelta.__init__()=paramz.optimization.optimization.Opt_Adadelta-class.html#__init__,Method paramz.optimization.optimization.Optimizer.__init__()=paramz.optimization.optimization.Optimizer-class.html#__init__,Method paramz.optimization.optimization.RProp.__init__()=paramz.optimization.optimization.RProp-class.html#__init__,Method paramz.optimization.optimization.opt_SCG.__init__()=paramz.optimization.optimization.opt_SCG-class.html#__init__,Method paramz.optimization.optimization.opt_bfgs.__init__()=paramz.optimization.optimization.opt_bfgs-class.html#__init__,Method paramz.optimization.optimization.opt_lbfgsb.__init__()=paramz.optimization.optimization.opt_lbfgsb-class.html#__init__,Method paramz.optimization.optimization.opt_simplex.__init__()=paramz.optimization.optimization.opt_simplex-class.html#__init__,Method paramz.optimization.optimization.opt_tnc.__init__()=paramz.optimization.optimization.opt_tnc-class.html#__init__,Method paramz.optimization.verbose_optimization.VerboseOptimization.__init__()=paramz.optimization.verbose_optimization.VerboseOptimization-class.html#__init__,Method paramz.param.Param.__init__()=paramz.param.Param-class.html#__init__,Method paramz.param.ParamConcatenation.__init__()=paramz.param.ParamConcatenation-class.html#__init__,Method paramz.parameterized.Parameterized.__init__()=paramz.parameterized.Parameterized-class.html#__init__,Method paramz.tests.parameterized_tests.P.__init__()=paramz.tests.parameterized_tests.P-class.html#__init__,Method paramz.ties_and_remappings.Tie.__init__()=paramz.ties_and_remappings.Tie-class.html#__init__,Method paramz.transformations.LogexpClipped.__init__()=paramz.transformations.LogexpClipped-class.html#__init__,Method paramz.transformations.Logistic.__init__()=paramz.transformations.Logistic-class.html#__init__,Method paramz.transformations.NormalEta.__init__()=paramz.transformations.NormalEta-class.html#__init__,Method paramz.transformations.NormalNaturalAntti.__init__()=paramz.transformations.NormalNaturalAntti-class.html#__init__,Method paramz.transformations.NormalNaturalThroughEta.__init__()=paramz.transformations.NormalNaturalThroughEta-class.html#__init__,Method paramz.transformations.NormalNaturalThroughTheta.__init__()=paramz.transformations.NormalNaturalThroughTheta-class.html#__init__,Method paramz.transformations.NormalNaturalWhooot.__init__()=paramz.transformations.NormalNaturalWhooot-class.html#__init__,Method paramz.transformations.NormalTheta.__init__()=paramz.transformations.NormalTheta-class.html#__init__"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-3', '__init__', 'link-3');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt>
+<a name="Parentable.has_parent"></a><div id="Parentable.has_parent-def"><a name="L43"></a><tt class="py-lineno">43</tt> <a class="py-toggle" href="#" id="Parentable.has_parent-toggle" onclick="return toggle('Parentable.has_parent');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.parentable.Parentable-class.html#has_parent">has_parent</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parentable.has_parent-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Parentable.has_parent-expanded"><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"><tt class="py-docstring">        Return whether this parentable object currently has a parent.</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="paramz.core.parentable.Parentable._parent_" class="py-name" href="#" onclick="return doclink('link-4', '_parent_', 'link-0');">_parent_</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"> </tt>
+<a name="Parentable._parent_changed"></a><div id="Parentable._parent_changed-def"><a name="L49"></a><tt class="py-lineno">49</tt> <a class="py-toggle" href="#" id="Parentable._parent_changed-toggle" onclick="return toggle('Parentable._parent_changed');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.parentable.Parentable-class.html#_parent_changed">_parent_changed</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parentable._parent_changed-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Parentable._parent_changed-expanded"><a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"><tt class="py-docstring">        Gets called, when the parent changed, so we can adjust our</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"><tt class="py-docstring">        inner attributes according to the new parent.</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt><tt class="py-string">"shouldnt happen, Parentable objects need to be able to change their parent"</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"> </tt>
+<a name="Parentable._disconnect_parent"></a><div id="Parentable._disconnect_parent-def"><a name="L56"></a><tt class="py-lineno">56</tt> <a class="py-toggle" href="#" id="Parentable._disconnect_parent-toggle" onclick="return toggle('Parentable._disconnect_parent');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.parentable.Parentable-class.html#_disconnect_parent">_disconnect_parent</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parentable._disconnect_parent-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Parentable._disconnect_parent-expanded"><a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"><tt class="py-docstring">        Disconnect this object from its parent</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt><tt class="py-string">"Abstract superclass"</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line"> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="Parentable._highest_parent_"></a><div id="Parentable._highest_parent_-def"><a name="L63"></a><tt class="py-lineno">63</tt> <a class="py-toggle" href="#" id="Parentable._highest_parent_-toggle" onclick="return toggle('Parentable._highest_parent_');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.parentable.Parentable-class.html#_highest_parent_">_highest_parent_</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parentable._highest_parent_-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Parentable._highest_parent_-expanded"><a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line"><tt class="py-docstring">        Gets the highest parent by traversing up to the root node of the hierarchy.</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="paramz.core.parentable.Parentable._parent_" class="py-name" href="#" onclick="return doclink('link-5', '_parent_', 'link-0');">_parent_</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="paramz.core.parentable.Parentable._parent_" class="py-name" href="#" onclick="return doclink('link-6', '_parent_', 'link-0');">_parent_</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Variable paramz.core.parentable.Parentable._highest_parent_=paramz.core.parentable.Parentable-class.html#_highest_parent_"><a title="paramz.core.parentable.Parentable._highest_parent_" class="py-name" href="#" onclick="return doclink('link-7', '_highest_parent_', 'link-7');">_highest_parent_</a></tt> </tt>
+</div><a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line"> </tt>
+<a name="Parentable._notify_parent_change"></a><div id="Parentable._notify_parent_change-def"><a name="L71"></a><tt class="py-lineno">71</tt> <a class="py-toggle" href="#" id="Parentable._notify_parent_change-toggle" onclick="return toggle('Parentable._notify_parent_change');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.parentable.Parentable-class.html#_notify_parent_change">_notify_parent_change</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parentable._notify_parent_change-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Parentable._notify_parent_change-expanded"><a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line"><tt class="py-docstring">        Dont do anything if in leaf node</tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 12:00:19 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

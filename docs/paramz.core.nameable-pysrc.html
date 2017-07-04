@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.core.nameable</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.core-module.html">Package&nbsp;core</a> ::
+        Module&nbsp;nameable
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.core.nameable-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="paramz.core.nameable-module.html">Module paramz.core.nameable</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#===============================================================================</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2015, Max Zwiessele</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment"># All rights reserved.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-comment"># Redistribution and use in source and binary forms, with or without</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment"># modification, are permitted provided that the following conditions are met:</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment"># * Redistributions of source code must retain the above copyright notice, this</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment">#   list of conditions and the following disclaimer.</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-comment"># * Redistributions in binary form must reproduce the above copyright notice,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-comment">#   this list of conditions and the following disclaimer in the documentation</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-comment">#   and/or other materials provided with the distribution.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-comment"># * Neither the name of paramz.core.nameable nor the names of its</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-comment">#   contributors may be used to endorse or promote products derived from</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-comment">#   this software without specific prior written permission.</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-comment"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-comment"># AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-comment"># IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-comment"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"><tt class="py-comment"># FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"><tt class="py-comment"># DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"><tt class="py-comment"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"><tt class="py-comment"># CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-comment"># OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"><tt class="py-comment"># OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"><tt class="py-comment">#===============================================================================</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Module paramz.core.gradcheckable=paramz.core.gradcheckable-module.html"><a title="paramz.core.gradcheckable" class="py-name" href="#" onclick="return doclink('link-0', 'gradcheckable', 'link-0');">gradcheckable</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class paramz.core.gradcheckable.Gradcheckable=paramz.core.gradcheckable.Gradcheckable-class.html"><a title="paramz.core.gradcheckable.Gradcheckable" class="py-name" href="#" onclick="return doclink('link-1', 'Gradcheckable', 'link-1');">Gradcheckable</a></tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="adjust_name_for_printing"></a><div id="adjust_name_for_printing-def"><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt> <a class="py-toggle" href="#" id="adjust_name_for_printing-toggle" onclick="return toggle('adjust_name_for_printing');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.nameable-module.html#adjust_name_for_printing">adjust_name_for_printing</a><tt class="py-op">(</tt><tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="adjust_name_for_printing-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="adjust_name_for_printing-expanded"><a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"><tt class="py-docstring">    Make sure a name can be printed, alongside used as a variable name.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-2" class="py-name" targets="Variable paramz.core.nameable.Nameable.name=paramz.core.nameable.Nameable-class.html#name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-2', 'name', 'link-2');">name</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-name">name2</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-3', 'name', 'link-2');">name</a></tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">        <tt id="link-4" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-4', 'name', 'link-2');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-5', 'name', 'link-2');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">" "</tt><tt class="py-op">,</tt> <tt class="py-string">"_"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt> <tt class="py-string">"_"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"-"</tt><tt class="py-op">,</tt> <tt class="py-string">"_m_"</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt id="link-6" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-6', 'name', 'link-2');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-7', 'name', 'link-2');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"+"</tt><tt class="py-op">,</tt> <tt class="py-string">"_p_"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"!"</tt><tt class="py-op">,</tt> <tt class="py-string">"_I_"</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt id="link-8" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-8', 'name', 'link-2');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-9', 'name', 'link-2');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"**"</tt><tt class="py-op">,</tt> <tt class="py-string">"_xx_"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"*"</tt><tt class="py-op">,</tt> <tt class="py-string">"_x_"</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt id="link-10" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-10', 'name', 'link-2');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-11', 'name', 'link-2');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"/"</tt><tt class="py-op">,</tt> <tt class="py-string">"_l_"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"@"</tt><tt class="py-op">,</tt> <tt class="py-string">'_at_'</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt id="link-12" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-12', 'name', 'link-2');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-13', 'name', 'link-2');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">"("</tt><tt class="py-op">,</tt> <tt class="py-string">"_of_"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">")"</tt><tt class="py-op">,</tt> <tt class="py-string">""</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-string">r'^[a-zA-Z_][a-zA-Z0-9-_]*$'</tt><tt class="py-op">,</tt> <tt id="link-14" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-14', 'name', 'link-2');">name</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">NameError</tt><tt class="py-op">(</tt><tt class="py-string">"name {} converted to {} cannot be further converted to valid python variable name!"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">name2</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-15', 'name', 'link-2');">name</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-16" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-16', 'name', 'link-2');">name</a></tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">''</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"> </tt>
+<a name="Nameable"></a><div id="Nameable-def"><a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt> <a class="py-toggle" href="#" id="Nameable-toggle" onclick="return toggle('Nameable');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.core.nameable.Nameable-class.html">Nameable</a><tt class="py-op">(</tt><tt class="py-base-class">Gradcheckable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Nameable-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="Nameable-expanded"><a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"><tt class="py-docstring">    Make an object nameable inside the hierarchy.</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Nameable.__init__"></a><div id="Nameable.__init__-def"><a name="L54"></a><tt class="py-lineno">54</tt> <a class="py-toggle" href="#" id="Nameable.__init__-toggle" onclick="return toggle('Nameable.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.nameable.Nameable-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">a</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Nameable.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Nameable.__init__-expanded"><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_name</tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-17', 'name', 'link-2');">name</a></tt> <tt class="py-keyword">or</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Variable paramz.caching.Cacher.__name__=paramz.caching.Cacher-class.html#__name__"><a title="paramz.caching.Cacher.__name__" class="py-name" href="#" onclick="return doclink('link-18', '__name__', 'link-18');">__name__</a></tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-19" class="py-name" targets="Class paramz.core.nameable.Nameable=paramz.core.nameable.Nameable-class.html"><a title="paramz.core.nameable.Nameable" class="py-name" href="#" onclick="return doclink('link-19', 'Nameable', 'link-19');">Nameable</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method paramz.caching.Cache_this.__init__()=paramz.caching.Cache_this-class.html#__init__,Method paramz.caching.Cacher.__init__()=paramz.caching.Cacher-class.html#__init__,Method paramz.caching.FunctionCache.__init__()=paramz.caching.FunctionCache-class.html#__init__,Method paramz.core.constrainable.Constrainable.__init__()=paramz.core.constrainable.Constrainable-class.html#__init__,Method paramz.core.gradcheckable.Gradcheckable.__init__()=paramz.core.gradcheckable.Gradcheckable-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperations.__init__()=paramz.core.index_operations.ParameterIndexOperations-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperationsView.__init__()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#__init__,Method paramz.core.indexable.Indexable.__init__()=paramz.core.indexable.Indexable-class.html#__init__,Method paramz.core.lists_and_dicts.IntArrayDict.__init__()=paramz.core.lists_and_dicts.IntArrayDict-class.html#__init__,Method paramz.core.lists_and_dicts.ObserverList.__init__()=paramz.core.lists_and_dicts.ObserverList-class.html#__init__,Method paramz.core.nameable.Nameable.__init__()=paramz.core.nameable.Nameable-class.html#__init__,Method paramz.core.observable.Observable.__init__()=paramz.core.observable.Observable-class.html#__init__,Method paramz.core.parameter_core.OptimizationHandlable.__init__()=paramz.core.parameter_core.OptimizationHandlable-class.html#__init__,Method paramz.core.parameter_core.Parameterizable.__init__()=paramz.core.parameter_core.Parameterizable-class.html#__init__,Method paramz.core.parentable.Parentable.__init__()=paramz.core.parentable.Parentable-class.html#__init__,Method paramz.core.pickleable.Pickleable.__init__()=paramz.core.pickleable.Pickleable-class.html#__init__,Method paramz.core.updateable.Updateable.__init__()=paramz.core.updateable.Updateable-class.html#__init__,Method paramz.examples.ridge_regression.Basis.__init__()=paramz.examples.ridge_regression.Basis-class.html#__init__,Method paramz.examples.ridge_regression.Lasso.__init__()=paramz.examples.ridge_regression.Lasso-class.html#__init__,Method paramz.examples.ridge_regression.Polynomial.__init__()=paramz.examples.ridge_regression.Polynomial-class.html#__init__,Method paramz.examples.ridge_regression.Regularizer.__init__()=paramz.examples.ridge_regression.Regularizer-class.html#__init__,Method paramz.examples.ridge_regression.Ridge.__init__()=paramz.examples.ridge_regression.Ridge-class.html#__init__,Method paramz.examples.ridge_regression.RidgeRegression.__init__()=paramz.examples.ridge_regression.RidgeRegression-class.html#__init__,Method paramz.model.Model.__init__()=paramz.model.Model-class.html#__init__,Method paramz.optimization.optimization.Adam.__init__()=paramz.optimization.optimization.Adam-class.html#__init__,Method paramz.optimization.optimization.Opt_Adadelta.__init__()=paramz.optimization.optimization.Opt_Adadelta-class.html#__init__,Method paramz.optimization.optimization.Optimizer.__init__()=paramz.optimization.optimization.Optimizer-class.html#__init__,Method paramz.optimization.optimization.RProp.__init__()=paramz.optimization.optimization.RProp-class.html#__init__,Method paramz.optimization.optimization.opt_SCG.__init__()=paramz.optimization.optimization.opt_SCG-class.html#__init__,Method paramz.optimization.optimization.opt_bfgs.__init__()=paramz.optimization.optimization.opt_bfgs-class.html#__init__,Method paramz.optimization.optimization.opt_lbfgsb.__init__()=paramz.optimization.optimization.opt_lbfgsb-class.html#__init__,Method paramz.optimization.optimization.opt_simplex.__init__()=paramz.optimization.optimization.opt_simplex-class.html#__init__,Method paramz.optimization.optimization.opt_tnc.__init__()=paramz.optimization.optimization.opt_tnc-class.html#__init__,Method paramz.optimization.verbose_optimization.VerboseOptimization.__init__()=paramz.optimization.verbose_optimization.VerboseOptimization-class.html#__init__,Method paramz.param.Param.__init__()=paramz.param.Param-class.html#__init__,Method paramz.param.ParamConcatenation.__init__()=paramz.param.ParamConcatenation-class.html#__init__,Method paramz.parameterized.Parameterized.__init__()=paramz.parameterized.Parameterized-class.html#__init__,Method paramz.tests.parameterized_tests.P.__init__()=paramz.tests.parameterized_tests.P-class.html#__init__,Method paramz.ties_and_remappings.Tie.__init__()=paramz.ties_and_remappings.Tie-class.html#__init__,Method paramz.transformations.LogexpClipped.__init__()=paramz.transformations.LogexpClipped-class.html#__init__,Method paramz.transformations.Logistic.__init__()=paramz.transformations.Logistic-class.html#__init__,Method paramz.transformations.NormalEta.__init__()=paramz.transformations.NormalEta-class.html#__init__,Method paramz.transformations.NormalNaturalAntti.__init__()=paramz.transformations.NormalNaturalAntti-class.html#__init__,Method paramz.transformations.NormalNaturalThroughEta.__init__()=paramz.transformations.NormalNaturalThroughEta-class.html#__init__,Method paramz.transformations.NormalNaturalThroughTheta.__init__()=paramz.transformations.NormalNaturalThroughTheta-class.html#__init__,Method paramz.transformations.NormalNaturalWhooot.__init__()=paramz.transformations.NormalNaturalWhooot-class.html#__init__,Method paramz.transformations.NormalTheta.__init__()=paramz.transformations.NormalTheta-class.html#__init__"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-20', '__init__', 'link-20');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">a</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kw</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="Nameable.name"></a><div id="Nameable.name-def"><a name="L59"></a><tt class="py-lineno">59</tt> <a class="py-toggle" href="#" id="Nameable.name-toggle" onclick="return toggle('Nameable.name');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.nameable.Nameable-class.html#name">name</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Nameable.name-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Nameable.name-expanded"><a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line"><tt class="py-docstring">        The name of this object</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_name</tt> </tt>
+</div><a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">name</tt><tt class="py-op">.</tt><tt class="py-name">setter</tt> </tt>
+<a name="Nameable.name"></a><div id="Nameable.name-def"><a name="L65"></a><tt class="py-lineno">65</tt> <a class="py-toggle" href="#" id="Nameable.name-toggle" onclick="return toggle('Nameable.name');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.nameable.Nameable-class.html#name">name</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Nameable.name-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Nameable.name-expanded"><a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line"><tt class="py-docstring">        Set the name of this object.</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line"><tt class="py-docstring">        Tell the parent if the name has changed.</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">        <tt class="py-name">from_name</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-21', 'name', 'link-2');">name</a></tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-22', 'name', 'link-2');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_name</tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-23', 'name', 'link-2');">name</a></tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Method paramz.core.parentable.Parentable.has_parent()=paramz.core.parentable.Parentable-class.html#has_parent"><a title="paramz.core.parentable.Parentable.has_parent" class="py-name" href="#" onclick="return doclink('link-24', 'has_parent', 'link-24');">has_parent</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Variable paramz.core.parentable.Parentable._parent_=paramz.core.parentable.Parentable-class.html#_parent_"><a title="paramz.core.parentable.Parentable._parent_" class="py-name" href="#" onclick="return doclink('link-25', '_parent_', 'link-25');">_parent_</a></tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Method paramz.core.parameter_core.Parameterizable._name_changed()=paramz.core.parameter_core.Parameterizable-class.html#_name_changed"><a title="paramz.core.parameter_core.Parameterizable._name_changed" class="py-name" href="#" onclick="return doclink('link-26', '_name_changed', 'link-26');">_name_changed</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">from_name</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">             </tt>
+<a name="Nameable.hierarchy_name"></a><div id="Nameable.hierarchy_name-def"><a name="L76"></a><tt class="py-lineno">76</tt> <a class="py-toggle" href="#" id="Nameable.hierarchy_name-toggle" onclick="return toggle('Nameable.hierarchy_name');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.nameable.Nameable-class.html#hierarchy_name">hierarchy_name</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">adjust_for_printing</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Nameable.hierarchy_name-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="Nameable.hierarchy_name-expanded"><a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line"><tt class="py-docstring">        return the name for this object with the parents names attached by dots.</tt> </tt>
+<a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L80"></a><tt class="py-lineno">80</tt>  <tt class="py-line"><tt class="py-docstring">        :param bool adjust_for_printing: whether to call :func:`~adjust_for_printing()`</tt> </tt>
+<a name="L81"></a><tt class="py-lineno">81</tt>  <tt class="py-line"><tt class="py-docstring">                                         on the names, recursively</tt> </tt>
+<a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line"><tt class="py-docstring">                                         </tt> </tt>
+<a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L84"></a><tt class="py-lineno">84</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">adjust_for_printing</tt><tt class="py-op">:</tt> <tt class="py-name">adjust</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt id="link-27" class="py-name" targets="Function paramz.core.nameable.adjust_name_for_printing()=paramz.core.nameable-module.html#adjust_name_for_printing"><a title="paramz.core.nameable.adjust_name_for_printing" class="py-name" href="#" onclick="return doclink('link-27', 'adjust_name_for_printing', 'link-27');">adjust_name_for_printing</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno">85</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-name">adjust</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">x</tt> </tt>
+<a name="L86"></a><tt class="py-lineno">86</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="paramz.core.parentable.Parentable.has_parent" class="py-name" href="#" onclick="return doclink('link-28', 'has_parent', 'link-24');">has_parent</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno">87</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="paramz.core.parentable.Parentable._parent_" class="py-name" href="#" onclick="return doclink('link-29', '_parent_', 'link-25');">_parent_</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name" targets="Method paramz.core.nameable.Nameable.hierarchy_name()=paramz.core.nameable.Nameable-class.html#hierarchy_name"><a title="paramz.core.nameable.Nameable.hierarchy_name" class="py-name" href="#" onclick="return doclink('link-30', 'hierarchy_name', 'link-30');">hierarchy_name</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">"."</tt> <tt class="py-op">+</tt> <tt class="py-name">adjust</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-31', 'name', 'link-2');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno">88</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">adjust</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="paramz.core.nameable.Nameable.name" class="py-name" href="#" onclick="return doclink('link-32', 'name', 'link-2');">name</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L89"></a><tt class="py-lineno">89</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 12:00:19 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

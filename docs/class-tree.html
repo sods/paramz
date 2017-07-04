@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class Hierarchy</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Trees&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">&nbsp;</td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="class-tree.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<center><b>
+ [ <a href="module-tree.html">Module Hierarchy</a>
+ | <a href="class-tree.html">Class Hierarchy</a> ]
+</b></center><br />
+<h1 class="epydoc">Class Hierarchy</h1>
+<ul class="nomargin-top">
+    <li> <strong class="uidlink">object</strong>:
+      <em class="summary">The most base type</em>
+    <ul>
+    <li> <strong class="uidlink">exceptions.BaseException</strong>:
+      <em class="summary">Common base class for all exceptions</em>
+    <ul>
+    <li> <strong class="uidlink">exceptions.Exception</strong>:
+      <em class="summary">Common base class for all non-exit exceptions.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.HierarchyError-class.html">paramz.core.HierarchyError</a></strong>:
+      <em class="summary">Gets thrown when something is wrong with the parameter hierarchy.</em>
+    </li>
+    <li> <strong class="uidlink">exceptions.StandardError</strong>:
+      <em class="summary">Base class for all standard Python exceptions that do not represent
+        interpreter exiting.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="exceptions.AssertionError-class.html">exceptions.AssertionError</a></strong>:
+      <em class="summary">Assertion failed.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.caching.Cache_this-class.html">paramz.caching.Cache_this</a></strong>:
+      <em class="summary">A decorator which can be applied to bound methods in order to cache
+        them</em>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.caching.Cacher-class.html">paramz.caching.Cacher</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.core.observable.Observable-class.html">paramz.core.observable.Observable</a></strong>:
+      <em class="summary">Observable pattern for parameterization.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.observable_array.ObsAr-class.html">paramz.core.observable_array.ObsAr</a></strong>:
+      <em class="summary">An ndarray which reports changes to its observers.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.param.Param-class.html">paramz.param.Param</a></strong>:
+      <em class="summary">Parameter object for GPy models.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.core.updateable.Updateable-class.html">paramz.core.updateable.Updateable</a></strong>:
+      <em class="summary">A model can be updated or not.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.indexable.Indexable-class.html">paramz.core.indexable.Indexable</a></strong>:
+      <em class="summary">Make an object constrainable with Priors and Transformations.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.constrainable.Constrainable-class.html">paramz.core.constrainable.Constrainable</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">paramz.core.parameter_core.OptimizationHandlable</a></strong>:
+      <em class="summary">This enables optimization handles on an Object as done in GPy 0.4.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.parameter_core.Parameterizable-class.html">paramz.core.parameter_core.Parameterizable</a></strong>:
+      <em class="summary">A parameterisable class.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.param.Param-class.html">paramz.param.Param</a></strong>:
+      <em class="summary">Parameter object for GPy models.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.parameterized.Parameterized-class.html">paramz.parameterized.Parameterized</a></strong>:
+      <em class="summary">Say m is a handle to a parameterized class.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Basis-class.html">paramz.examples.ridge_regression.Basis</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Polynomial-class.html">paramz.examples.ridge_regression.Polynomial</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.model.Model-class.html">paramz.model.Model</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.RidgeRegression-class.html">paramz.examples.ridge_regression.RidgeRegression</a></strong>:
+      <em class="summary">Ridge regression with regularization.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.parameterized_tests.P-class.html">paramz.tests.parameterized_tests.P</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.observable_tests.ParamTestParent-class.html">paramz.tests.observable_tests.ParamTestParent</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.observable_tests.ParameterizedTest-class.html">paramz.tests.observable_tests.ParameterizedTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Regularizer-class.html">paramz.examples.ridge_regression.Regularizer</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Lasso-class.html">paramz.examples.ridge_regression.Lasso</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Ridge-class.html">paramz.examples.ridge_regression.Ridge</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Remapping-class.html">paramz.ties_and_remappings.Remapping</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Fix-class.html">paramz.ties_and_remappings.Fix</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Tie-class.html">paramz.ties_and_remappings.Tie</a></strong>:
+      <em class="summary">The new parameter tie framework.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.core.lists_and_dicts.ObserverList-class.html">paramz.core.lists_and_dicts.ObserverList</a></strong>:
+      <em class="summary">A list which containts the observables.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.Optimizer-class.html">paramz.optimization.optimization.Optimizer</a></strong>:
+      <em class="summary">Superclass for all the optimizers.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.Adam-class.html">paramz.optimization.optimization.Adam</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.Opt_Adadelta-class.html">paramz.optimization.optimization.Opt_Adadelta</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.RProp-class.html">paramz.optimization.optimization.RProp</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.opt_SCG-class.html">paramz.optimization.optimization.opt_SCG</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.opt_bfgs-class.html">paramz.optimization.optimization.opt_bfgs</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.opt_lbfgsb-class.html">paramz.optimization.optimization.opt_lbfgsb</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.opt_simplex-class.html">paramz.optimization.optimization.opt_simplex</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.optimization.opt_tnc-class.html">paramz.optimization.optimization.opt_tnc</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.param.ParamConcatenation-class.html">paramz.param.ParamConcatenation</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.core.index_operations.ParameterIndexOperations-class.html">paramz.core.index_operations.ParameterIndexOperations</a></strong>:
+      <em class="summary">This object wraps a dictionary, whos keys are _operations_ that 
+        we'd like to apply to a parameter array, and whose values are np 
+        integer arrays which index the parameter array appropriately.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.core.index_operations.ParameterIndexOperationsView-class.html">paramz.core.index_operations.ParameterIndexOperationsView</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.core.parentable.Parentable-class.html">paramz.core.parentable.Parentable</a></strong>:
+      <em class="summary">Enable an Object to have a parent.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.gradcheckable.Gradcheckable-class.html">paramz.core.gradcheckable.Gradcheckable</a></strong>:
+      <em class="summary">Adds the functionality for an object to be gradcheckable.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.nameable.Nameable-class.html">paramz.core.nameable.Nameable</a></strong>:
+      <em class="summary">Make an object nameable inside the hierarchy.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.indexable.Indexable-class.html">paramz.core.indexable.Indexable</a></strong>:
+      <em class="summary">Make an object constrainable with Priors and Transformations.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.constrainable.Constrainable-class.html">paramz.core.constrainable.Constrainable</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">paramz.core.parameter_core.OptimizationHandlable</a></strong>:
+      <em class="summary">This enables optimization handles on an Object as done in GPy 0.4.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.parameter_core.Parameterizable-class.html">paramz.core.parameter_core.Parameterizable</a></strong>:
+      <em class="summary">A parameterisable class.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.param.Param-class.html">paramz.param.Param</a></strong>:
+      <em class="summary">Parameter object for GPy models.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.parameterized.Parameterized-class.html">paramz.parameterized.Parameterized</a></strong>:
+      <em class="summary">Say m is a handle to a parameterized class.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Basis-class.html">paramz.examples.ridge_regression.Basis</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Polynomial-class.html">paramz.examples.ridge_regression.Polynomial</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.model.Model-class.html">paramz.model.Model</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.RidgeRegression-class.html">paramz.examples.ridge_regression.RidgeRegression</a></strong>:
+      <em class="summary">Ridge regression with regularization.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.parameterized_tests.P-class.html">paramz.tests.parameterized_tests.P</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.observable_tests.ParamTestParent-class.html">paramz.tests.observable_tests.ParamTestParent</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.observable_tests.ParameterizedTest-class.html">paramz.tests.observable_tests.ParameterizedTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Regularizer-class.html">paramz.examples.ridge_regression.Regularizer</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Lasso-class.html">paramz.examples.ridge_regression.Lasso</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Ridge-class.html">paramz.examples.ridge_regression.Ridge</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Remapping-class.html">paramz.ties_and_remappings.Remapping</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Fix-class.html">paramz.ties_and_remappings.Fix</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Tie-class.html">paramz.ties_and_remappings.Tie</a></strong>:
+      <em class="summary">The new parameter tie framework.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.core.pickleable.Pickleable-class.html">paramz.core.pickleable.Pickleable</a></strong>:
+      <em class="summary">Make an object pickleable (See python doc 'pickling').</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.gradcheckable.Gradcheckable-class.html">paramz.core.gradcheckable.Gradcheckable</a></strong>:
+      <em class="summary">Adds the functionality for an object to be gradcheckable.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.nameable.Nameable-class.html">paramz.core.nameable.Nameable</a></strong>:
+      <em class="summary">Make an object nameable inside the hierarchy.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.indexable.Indexable-class.html">paramz.core.indexable.Indexable</a></strong>:
+      <em class="summary">Make an object constrainable with Priors and Transformations.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.constrainable.Constrainable-class.html">paramz.core.constrainable.Constrainable</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">paramz.core.parameter_core.OptimizationHandlable</a></strong>:
+      <em class="summary">This enables optimization handles on an Object as done in GPy 0.4.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.parameter_core.Parameterizable-class.html">paramz.core.parameter_core.Parameterizable</a></strong>:
+      <em class="summary">A parameterisable class.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.param.Param-class.html">paramz.param.Param</a></strong>:
+      <em class="summary">Parameter object for GPy models.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.parameterized.Parameterized-class.html">paramz.parameterized.Parameterized</a></strong>:
+      <em class="summary">Say m is a handle to a parameterized class.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Basis-class.html">paramz.examples.ridge_regression.Basis</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Polynomial-class.html">paramz.examples.ridge_regression.Polynomial</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.model.Model-class.html">paramz.model.Model</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.RidgeRegression-class.html">paramz.examples.ridge_regression.RidgeRegression</a></strong>:
+      <em class="summary">Ridge regression with regularization.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.parameterized_tests.P-class.html">paramz.tests.parameterized_tests.P</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.observable_tests.ParamTestParent-class.html">paramz.tests.observable_tests.ParamTestParent</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.observable_tests.ParameterizedTest-class.html">paramz.tests.observable_tests.ParameterizedTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Regularizer-class.html">paramz.examples.ridge_regression.Regularizer</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Lasso-class.html">paramz.examples.ridge_regression.Lasso</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.examples.ridge_regression.Ridge-class.html">paramz.examples.ridge_regression.Ridge</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Remapping-class.html">paramz.ties_and_remappings.Remapping</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Fix-class.html">paramz.ties_and_remappings.Fix</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.ties_and_remappings.Tie-class.html">paramz.ties_and_remappings.Tie</a></strong>:
+      <em class="summary">The new parameter tie framework.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.core.observable_array.ObsAr-class.html">paramz.core.observable_array.ObsAr</a></strong>:
+      <em class="summary">An ndarray which reports changes to its observers.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.param.Param-class.html">paramz.param.Param</a></strong>:
+      <em class="summary">Parameter object for GPy models.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink">unittest.case.TestCase</strong>:
+      <em class="summary">A class whose instances are single test cases.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.tests.parameterized_tests.ArrayCoreTest-class.html">paramz.tests.parameterized_tests.ArrayCoreTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.parameterized_tests.InitTests-class.html">paramz.tests.parameterized_tests.InitTests</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.pickle_tests.ListDictTestCase-class.html">paramz.tests.pickle_tests.ListDictTestCase</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.tests.pickle_tests.Test-class.html">paramz.tests.pickle_tests.Test</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.parameterized_tests.ModelTest-class.html">paramz.tests.parameterized_tests.ModelTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.parameterized_tests.ParameterizedTest-class.html">paramz.tests.parameterized_tests.ParameterizedTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.index_operations_tests.Test-class.html">paramz.tests.index_operations_tests.Test</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.lists_and_dicts_tests.Test-class.html">paramz.tests.lists_and_dicts_tests.Test</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.verbose_optimize_tests.Test-class.html">paramz.tests.verbose_optimize_tests.Test</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.cacher_tests.Test-class.html">paramz.tests.cacher_tests.Test</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.observable_tests.Test-class.html">paramz.tests.observable_tests.Test</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.examples_tests.Test2D-class.html">paramz.tests.examples_tests.Test2D</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.cacher_tests.TestDecorator-class.html">paramz.tests.cacher_tests.TestDecorator</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.tests.observable_tests.TestMisc-class.html">paramz.tests.observable_tests.TestMisc</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.Transformation-class.html">paramz.transformations.Transformation</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.transformations.Exponent-class.html">paramz.transformations.Exponent</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.transformations.NegativeExponent-class.html">paramz.transformations.NegativeExponent</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.Logexp-class.html">paramz.transformations.Logexp</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.transformations.LogexpClipped-class.html">paramz.transformations.LogexpClipped</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.LogexpNeg-class.html">paramz.transformations.LogexpNeg</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.Logistic-class.html">paramz.transformations.Logistic</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.NegativeLogexp-class.html">paramz.transformations.NegativeLogexp</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.NormalEta-class.html">paramz.transformations.NormalEta</a></strong>:
+      <em class="summary">Do not use, not officially supported!</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.transformations.NormalNaturalThroughEta-class.html">paramz.transformations.NormalNaturalThroughEta</a></strong>:
+      <em class="summary">Do not use, not officially supported!</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.NormalTheta-class.html">paramz.transformations.NormalTheta</a></strong>:
+      <em class="summary">Do not use, not officially supported!</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.transformations.NormalNaturalAntti-class.html">paramz.transformations.NormalNaturalAntti</a></strong>:
+      <em class="summary">Do not use, not officially supported!</em>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.NormalNaturalThroughTheta-class.html">paramz.transformations.NormalNaturalThroughTheta</a></strong>:
+      <em class="summary">Do not use, not officially supported!</em>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.NormalNaturalWhooot-class.html">paramz.transformations.NormalNaturalWhooot</a></strong>:
+      <em class="summary">Do not use, not officially supported!</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.transformations.Square-class.html">paramz.transformations.Square</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="paramz.optimization.verbose_optimization.VerboseOptimization-class.html">paramz.optimization.verbose_optimization.VerboseOptimization</a></strong>
+    </li>
+    <li> <strong class="uidlink">dict</strong>:
+      <em class="summary">dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+    (key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+    d = {}
+    for k, v in iterable:
+        d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+    in the keyword argument list.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.caching.FunctionCache-class.html">paramz.caching.FunctionCache</a></strong>
+    </li>
+    <li> <strong class="uidlink">collections.defaultdict</strong>:
+      <em class="summary">defaultdict(default_factory[, ...]) --&gt; dict with default 
+        factory</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.lists_and_dicts.IntArrayDict-class.html">paramz.core.lists_and_dicts.IntArrayDict</a></strong>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink">list</strong>:
+      <em class="summary">list() -&gt; new empty list list(iterable) -&gt; new list 
+        initialized from iterable's items</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.lists_and_dicts.ArrayList-class.html">paramz.core.lists_and_dicts.ArrayList</a></strong>:
+      <em class="summary">List to store ndarray-likes in.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink">numpy.ndarray</strong>:
+      <em class="summary">ndarray(shape, dtype=float, buffer=None, offset=0,
+        strides=None, order=None)</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.core.observable_array.ObsAr-class.html">paramz.core.observable_array.ObsAr</a></strong>:
+      <em class="summary">An ndarray which reports changes to its observers.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.param.Param-class.html">paramz.param.Param</a></strong>:
+      <em class="summary">Parameter object for GPy models.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink">type</strong>:
+      <em class="summary">type(object) -&gt; the object's type type(name, bases, dict) -&gt; 
+        a new type</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="paramz.parameterized.ParametersChangedMeta-class.html">paramz.parameterized.ParametersChangedMeta</a></strong>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+</ul>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Trees&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 11:59:27 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

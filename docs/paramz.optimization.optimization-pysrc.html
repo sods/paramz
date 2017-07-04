@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.optimization.optimization</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.optimization-module.html">Package&nbsp;optimization</a> ::
+        Module&nbsp;optimization
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.optimization.optimization-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="paramz.optimization.optimization-module.html">Module paramz.optimization.optimization</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2012-2014, GPy authors (see AUTHORS.txt).</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># Licensed under the BSD 3-clause license (see LICENSE.txt)</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">datetime</tt> <tt class="py-keyword">as</tt> <tt class="py-name">dt</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">scipy</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Method paramz.model.Model.optimize()=paramz.model.Model-class.html#optimize"><a title="paramz.model.Model.optimize" class="py-name" href="#" onclick="return doclink('link-0', 'optimize', 'link-0');">optimize</a></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">warnings</tt> <tt class="py-keyword">import</tt> <tt class="py-name">warn</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#try:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#    import rasmussens_minimize as rasm</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#    rasm_available = True</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#except ImportError:</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#    rasm_available = False</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module paramz.optimization.scg=paramz.optimization.scg-module.html"><a title="paramz.optimization.scg" class="py-name" href="#" onclick="return doclink('link-1', 'scg', 'link-1');">scg</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Function paramz.optimization.scg.SCG()=paramz.optimization.scg-module.html#SCG"><a title="paramz.optimization.scg.SCG" class="py-name" href="#" onclick="return doclink('link-2', 'SCG', 'link-2');">SCG</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="Optimizer"></a><div id="Optimizer-def"><a name="L15"></a><tt class="py-lineno"> 15</tt> <a class="py-toggle" href="#" id="Optimizer-toggle" onclick="return toggle('Optimizer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.Optimizer-class.html">Optimizer</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Optimizer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Optimizer-expanded"><a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">    Superclass for all the optimizers.</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">    :param x_init: initial set of parameters</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">    :param f_fp: function that returns the function AND the gradients at the same time</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">    :param f: function to optimize</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">    :param fp: gradients</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">    :param messages: print messages from the optimizer?</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">    :type messages: (True | False)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">    :param max_f_eval: maximum number of function evaluations</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">    :rtype: optimizer object.</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Optimizer.__init__"></a><div id="Optimizer.__init__-def"><a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="Optimizer.__init__-toggle" onclick="return toggle('Optimizer.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Optimizer-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">messages</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-param">max_f_eval</tt><tt class="py-op">=</tt><tt class="py-number">1e4</tt><tt class="py-op">,</tt> <tt class="py-param">max_iters</tt><tt class="py-op">=</tt><tt class="py-number">1e3</tt><tt class="py-op">,</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">                 <tt class="py-param">ftol</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">gtol</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">xtol</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">bfgs_factor</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Optimizer.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Optimizer.__init__-expanded"><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-comment">#x_init = x_init</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-comment"># Turning messages off and using internal structure for print outs:</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">messages</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> <tt class="py-comment">#messages</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">f_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">funct_eval</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_f_eval</tt> <tt class="py-op">=</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">max_iters</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_iters</tt> <tt class="py-op">=</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">max_iters</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bfgs_factor</tt> <tt class="py-op">=</tt> <tt class="py-name">bfgs_factor</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">trace</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">time</tt> <tt class="py-op">=</tt> <tt class="py-string">"Not available"</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xtol</tt> <tt class="py-op">=</tt> <tt class="py-name">xtol</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt> <tt class="py-op">=</tt> <tt class="py-name">gtol</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ftol</tt> <tt class="py-op">=</tt> <tt class="py-name">ftol</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"> </tt>
+<a name="Optimizer.run"></a><div id="Optimizer.run-def"><a name="L49"></a><tt class="py-lineno"> 49</tt> <a class="py-toggle" href="#" id="Optimizer.run-toggle" onclick="return toggle('Optimizer.run');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Optimizer-class.html#run">run</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Optimizer.run-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Optimizer.run-expanded"><a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-name">start</tt> <tt class="py-op">=</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">datetime</tt><tt class="py-op">.</tt><tt class="py-name">now</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Method paramz.optimization.optimization.Adam.opt()=paramz.optimization.optimization.Adam-class.html#opt,Method paramz.optimization.optimization.Opt_Adadelta.opt()=paramz.optimization.optimization.Opt_Adadelta-class.html#opt,Method paramz.optimization.optimization.Optimizer.opt()=paramz.optimization.optimization.Optimizer-class.html#opt,Method paramz.optimization.optimization.RProp.opt()=paramz.optimization.optimization.RProp-class.html#opt,Method paramz.optimization.optimization.opt_SCG.opt()=paramz.optimization.optimization.opt_SCG-class.html#opt,Method paramz.optimization.optimization.opt_bfgs.opt()=paramz.optimization.optimization.opt_bfgs-class.html#opt,Method paramz.optimization.optimization.opt_lbfgsb.opt()=paramz.optimization.optimization.opt_lbfgsb-class.html#opt,Method paramz.optimization.optimization.opt_simplex.opt()=paramz.optimization.optimization.opt_simplex-class.html#opt,Method paramz.optimization.optimization.opt_tnc.opt()=paramz.optimization.optimization.opt_tnc-class.html#opt"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-3', 'opt', 'link-3');">opt</a></tt><tt class="py-op">(</tt><tt class="py-name">x_init</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">datetime</tt><tt class="py-op">.</tt><tt class="py-name">now</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">time</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">end</tt> <tt class="py-op">-</tt> <tt class="py-name">start</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="Optimizer.opt"></a><div id="Optimizer.opt-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="Optimizer.opt-toggle" onclick="return toggle('Optimizer.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Optimizer-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Optimizer.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Optimizer.opt-expanded"><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt><tt class="py-string">"this needs to be implemented to use the optimizer class"</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="Optimizer.__str__"></a><div id="Optimizer.__str__-def"><a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="Optimizer.__str__-toggle" onclick="return toggle('Optimizer.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Optimizer-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Optimizer.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Optimizer.__str__-expanded"><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-name">diagnostics</tt> <tt class="py-op">=</tt> <tt class="py-string">"Optimizer: \t\t\t\t %s\n"</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-name">diagnostics</tt> <tt class="py-op">+=</tt> <tt class="py-string">"f(x_opt): \t\t\t\t %.3f\n"</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">f_opt</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">diagnostics</tt> <tt class="py-op">+=</tt> <tt class="py-string">"Number of function evaluations: \t %d\n"</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">funct_eval</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-name">diagnostics</tt> <tt class="py-op">+=</tt> <tt class="py-string">"Optimization status: \t\t\t %s\n"</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-name">diagnostics</tt> <tt class="py-op">+=</tt> <tt class="py-string">"Time elapsed: \t\t\t\t %s\n"</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">time</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">diagnostics</tt> </tt>
+</div><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="Optimizer.__getstate__"></a><div id="Optimizer.__getstate__-def"><a name="L66"></a><tt class="py-lineno"> 66</tt> <a class="py-toggle" href="#" id="Optimizer.__getstate__-toggle" onclick="return toggle('Optimizer.__getstate__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Optimizer-class.html#__getstate__">__getstate__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Optimizer.__getstate__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Optimizer.__getstate__-expanded"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+</div></div><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="opt_tnc"></a><div id="opt_tnc-def"><a name="L70"></a><tt class="py-lineno"> 70</tt> <a class="py-toggle" href="#" id="opt_tnc-toggle" onclick="return toggle('opt_tnc');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_tnc-class.html">opt_tnc</a><tt class="py-op">(</tt><tt class="py-base-class">Optimizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_tnc-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="opt_tnc-expanded"><a name="opt_tnc.__init__"></a><div id="opt_tnc.__init__-def"><a name="L71"></a><tt class="py-lineno"> 71</tt> <a class="py-toggle" href="#" id="opt_tnc.__init__-toggle" onclick="return toggle('opt_tnc.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_tnc-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_tnc.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_tnc.__init__-expanded"><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt id="link-4" class="py-name" targets="Class paramz.optimization.optimization.Optimizer=paramz.optimization.optimization.Optimizer-class.html"><a title="paramz.optimization.optimization.Optimizer" class="py-name" href="#" onclick="return doclink('link-4', 'Optimizer', 'link-4');">Optimizer</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method paramz.caching.Cache_this.__init__()=paramz.caching.Cache_this-class.html#__init__,Method paramz.caching.Cacher.__init__()=paramz.caching.Cacher-class.html#__init__,Method paramz.caching.FunctionCache.__init__()=paramz.caching.FunctionCache-class.html#__init__,Method paramz.core.constrainable.Constrainable.__init__()=paramz.core.constrainable.Constrainable-class.html#__init__,Method paramz.core.gradcheckable.Gradcheckable.__init__()=paramz.core.gradcheckable.Gradcheckable-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperations.__init__()=paramz.core.index_operations.ParameterIndexOperations-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperationsView.__init__()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#__init__,Method paramz.core.indexable.Indexable.__init__()=paramz.core.indexable.Indexable-class.html#__init__,Method paramz.core.lists_and_dicts.IntArrayDict.__init__()=paramz.core.lists_and_dicts.IntArrayDict-class.html#__init__,Method paramz.core.lists_and_dicts.ObserverList.__init__()=paramz.core.lists_and_dicts.ObserverList-class.html#__init__,Method paramz.core.nameable.Nameable.__init__()=paramz.core.nameable.Nameable-class.html#__init__,Method paramz.core.observable.Observable.__init__()=paramz.core.observable.Observable-class.html#__init__,Method paramz.core.parameter_core.OptimizationHandlable.__init__()=paramz.core.parameter_core.OptimizationHandlable-class.html#__init__,Method paramz.core.parameter_core.Parameterizable.__init__()=paramz.core.parameter_core.Parameterizable-class.html#__init__,Method paramz.core.parentable.Parentable.__init__()=paramz.core.parentable.Parentable-class.html#__init__,Method paramz.core.pickleable.Pickleable.__init__()=paramz.core.pickleable.Pickleable-class.html#__init__,Method paramz.core.updateable.Updateable.__init__()=paramz.core.updateable.Updateable-class.html#__init__,Method paramz.examples.ridge_regression.Basis.__init__()=paramz.examples.ridge_regression.Basis-class.html#__init__,Method paramz.examples.ridge_regression.Lasso.__init__()=paramz.examples.ridge_regression.Lasso-class.html#__init__,Method paramz.examples.ridge_regression.Polynomial.__init__()=paramz.examples.ridge_regression.Polynomial-class.html#__init__,Method paramz.examples.ridge_regression.Regularizer.__init__()=paramz.examples.ridge_regression.Regularizer-class.html#__init__,Method paramz.examples.ridge_regression.Ridge.__init__()=paramz.examples.ridge_regression.Ridge-class.html#__init__,Method paramz.examples.ridge_regression.RidgeRegression.__init__()=paramz.examples.ridge_regression.RidgeRegression-class.html#__init__,Method paramz.model.Model.__init__()=paramz.model.Model-class.html#__init__,Method paramz.optimization.optimization.Adam.__init__()=paramz.optimization.optimization.Adam-class.html#__init__,Method paramz.optimization.optimization.Opt_Adadelta.__init__()=paramz.optimization.optimization.Opt_Adadelta-class.html#__init__,Method paramz.optimization.optimization.Optimizer.__init__()=paramz.optimization.optimization.Optimizer-class.html#__init__,Method paramz.optimization.optimization.RProp.__init__()=paramz.optimization.optimization.RProp-class.html#__init__,Method paramz.optimization.optimization.opt_SCG.__init__()=paramz.optimization.optimization.opt_SCG-class.html#__init__,Method paramz.optimization.optimization.opt_bfgs.__init__()=paramz.optimization.optimization.opt_bfgs-class.html#__init__,Method paramz.optimization.optimization.opt_lbfgsb.__init__()=paramz.optimization.optimization.opt_lbfgsb-class.html#__init__,Method paramz.optimization.optimization.opt_simplex.__init__()=paramz.optimization.optimization.opt_simplex-class.html#__init__,Method paramz.optimization.optimization.opt_tnc.__init__()=paramz.optimization.optimization.opt_tnc-class.html#__init__,Method paramz.optimization.verbose_optimization.VerboseOptimization.__init__()=paramz.optimization.verbose_optimization.VerboseOptimization-class.html#__init__,Method paramz.param.Param.__init__()=paramz.param.Param-class.html#__init__,Method paramz.param.ParamConcatenation.__init__()=paramz.param.ParamConcatenation-class.html#__init__,Method paramz.parameterized.Parameterized.__init__()=paramz.parameterized.Parameterized-class.html#__init__,Method paramz.tests.parameterized_tests.P.__init__()=paramz.tests.parameterized_tests.P-class.html#__init__,Method paramz.ties_and_remappings.Tie.__init__()=paramz.ties_and_remappings.Tie-class.html#__init__,Method paramz.transformations.LogexpClipped.__init__()=paramz.transformations.LogexpClipped-class.html#__init__,Method paramz.transformations.Logistic.__init__()=paramz.transformations.Logistic-class.html#__init__,Method paramz.transformations.NormalEta.__init__()=paramz.transformations.NormalEta-class.html#__init__,Method paramz.transformations.NormalNaturalAntti.__init__()=paramz.transformations.NormalNaturalAntti-class.html#__init__,Method paramz.transformations.NormalNaturalThroughEta.__init__()=paramz.transformations.NormalNaturalThroughEta-class.html#__init__,Method paramz.transformations.NormalNaturalThroughTheta.__init__()=paramz.transformations.NormalNaturalThroughTheta-class.html#__init__,Method paramz.transformations.NormalNaturalWhooot.__init__()=paramz.transformations.NormalNaturalWhooot-class.html#__init__,Method paramz.transformations.NormalTheta.__init__()=paramz.transformations.NormalTheta-class.html#__init__"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-5', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"TNC (Scipy implementation)"</tt> </tt>
+</div><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"> </tt>
+<a name="opt_tnc.opt"></a><div id="opt_tnc.opt-def"><a name="L75"></a><tt class="py-lineno"> 75</tt> <a class="py-toggle" href="#" id="opt_tnc.opt-toggle" onclick="return toggle('opt_tnc.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_tnc-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_tnc.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_tnc.opt-expanded"><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">        Run the TNC optimizer</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">tnc_rcstrings</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'Local minimum'</tt><tt class="py-op">,</tt> <tt class="py-string">'Converged'</tt><tt class="py-op">,</tt> <tt class="py-string">'XConverged'</tt><tt class="py-op">,</tt> <tt class="py-string">'Maximum number of f evaluations reached'</tt><tt class="py-op">,</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">             <tt class="py-string">'Line search failed'</tt><tt class="py-op">,</tt> <tt class="py-string">'Function is constant'</tt><tt class="py-op">]</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-name">f_fp</tt> <tt class="py-op">!=</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-string">"TNC requires f_fp"</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-name">opt_dict</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xtol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">            <tt class="py-name">opt_dict</tt><tt class="py-op">[</tt><tt class="py-string">'xtol'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xtol</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ftol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">            <tt class="py-name">opt_dict</tt><tt class="py-op">[</tt><tt class="py-string">'ftol'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ftol</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">            <tt class="py-name">opt_dict</tt><tt class="py-op">[</tt><tt class="py-string">'pgtol'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-name">opt_result</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name"><a title="paramz.model.Model.optimize" class="py-name" href="#" onclick="return doclink('link-6', 'optimize', 'link-0');">optimize</a></tt><tt class="py-op">.</tt><tt class="py-name">fmin_tnc</tt><tt class="py-op">(</tt><tt class="py-name">f_fp</tt><tt class="py-op">,</tt> <tt class="py-name">x_init</tt><tt class="py-op">,</tt> <tt class="py-name">messages</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">messages</tt><tt class="py-op">,</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                       <tt class="py-name">maxfun</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_f_eval</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">opt_dict</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">f_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">f_fp</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">funct_eval</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-name">tnc_rcstrings</tt><tt class="py-op">[</tt><tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> </tt>
+</div></div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="opt_lbfgsb"></a><div id="opt_lbfgsb-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="opt_lbfgsb-toggle" onclick="return toggle('opt_lbfgsb');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_lbfgsb-class.html">opt_lbfgsb</a><tt class="py-op">(</tt><tt class="py-base-class">Optimizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_lbfgsb-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="opt_lbfgsb-expanded"><a name="opt_lbfgsb.__init__"></a><div id="opt_lbfgsb.__init__-def"><a name="L101"></a><tt class="py-lineno">101</tt> <a class="py-toggle" href="#" id="opt_lbfgsb.__init__-toggle" onclick="return toggle('opt_lbfgsb.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_lbfgsb-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_lbfgsb.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_lbfgsb.__init__-expanded"><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt id="link-7" class="py-name"><a title="paramz.optimization.optimization.Optimizer" class="py-name" href="#" onclick="return doclink('link-7', 'Optimizer', 'link-4');">Optimizer</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-8', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"L-BFGS-B (Scipy implementation)"</tt> </tt>
+</div><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"> </tt>
+<a name="opt_lbfgsb.opt"></a><div id="opt_lbfgsb.opt-def"><a name="L105"></a><tt class="py-lineno">105</tt> <a class="py-toggle" href="#" id="opt_lbfgsb.opt-toggle" onclick="return toggle('opt_lbfgsb.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_lbfgsb-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_lbfgsb.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_lbfgsb.opt-expanded"><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">        Run the optimizer</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-name">rcstrings</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'Converged'</tt><tt class="py-op">,</tt> <tt class="py-string">'Maximum number of f evaluations reached'</tt><tt class="py-op">,</tt> <tt class="py-string">'Error'</tt><tt class="py-op">]</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-name">f_fp</tt> <tt class="py-op">!=</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-string">"BFGS requires f_fp"</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-name">opt_dict</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xtol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"WARNING: l-bfgs-b doesn't have an xtol arg, so I'm going to ignore it"</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ftol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"WARNING: l-bfgs-b doesn't have an ftol arg, so I'm going to ignore it"</tt><tt class="py-op">)</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">            <tt class="py-name">opt_dict</tt><tt class="py-op">[</tt><tt class="py-string">'pgtol'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bfgs_factor</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">            <tt class="py-name">opt_dict</tt><tt class="py-op">[</tt><tt class="py-string">'factr'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bfgs_factor</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-name">opt_result</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="paramz.model.Model.optimize" class="py-name" href="#" onclick="return doclink('link-9', 'optimize', 'link-0');">optimize</a></tt><tt class="py-op">.</tt><tt class="py-name">fmin_l_bfgs_b</tt><tt class="py-op">(</tt><tt class="py-name">f_fp</tt><tt class="py-op">,</tt> <tt class="py-name">x_init</tt><tt class="py-op">,</tt> <tt class="py-name">maxfun</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_iters</tt><tt class="py-op">,</tt> <tt class="py-name">maxiter</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_iters</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">opt_dict</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">f_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">f_fp</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">funct_eval</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'funcalls'</tt><tt class="py-op">]</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-name">rcstrings</tt><tt class="py-op">[</tt><tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'warnflag'</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt class="py-comment">#a more helpful error message is available in opt_result in the Error case</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'warnflag'</tt><tt class="py-op">]</tt><tt class="py-op">==</tt><tt class="py-number">2</tt><tt class="py-op">:</tt> <tt class="py-comment"># pragma: no coverage, this is not needed to be covered</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-string">'Error'</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'task'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"> </tt>
+<a name="opt_bfgs"></a><div id="opt_bfgs-def"><a name="L134"></a><tt class="py-lineno">134</tt> <a class="py-toggle" href="#" id="opt_bfgs-toggle" onclick="return toggle('opt_bfgs');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_bfgs-class.html">opt_bfgs</a><tt class="py-op">(</tt><tt class="py-base-class">Optimizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_bfgs-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="opt_bfgs-expanded"><a name="opt_bfgs.__init__"></a><div id="opt_bfgs.__init__-def"><a name="L135"></a><tt class="py-lineno">135</tt> <a class="py-toggle" href="#" id="opt_bfgs.__init__-toggle" onclick="return toggle('opt_bfgs.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_bfgs-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_bfgs.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_bfgs.__init__-expanded"><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt id="link-10" class="py-name"><a title="paramz.optimization.optimization.Optimizer" class="py-name" href="#" onclick="return doclink('link-10', 'Optimizer', 'link-4');">Optimizer</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-11', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"BFGS (Scipy implementation)"</tt> </tt>
+</div><a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="opt_bfgs.opt"></a><div id="opt_bfgs.opt-def"><a name="L139"></a><tt class="py-lineno">139</tt> <a class="py-toggle" href="#" id="opt_bfgs.opt-toggle" onclick="return toggle('opt_bfgs.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_bfgs-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_bfgs.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_bfgs.opt-expanded"><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring">        Run the optimizer</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-name">rcstrings</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">''</tt><tt class="py-op">,</tt><tt class="py-string">'Maximum number of iterations exceeded'</tt><tt class="py-op">,</tt> <tt class="py-string">'Gradient and/or function calls not changing'</tt><tt class="py-op">]</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-name">opt_dict</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xtol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"WARNING: bfgs doesn't have an xtol arg, so I'm going to ignore it"</tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ftol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"WARNING: bfgs doesn't have an ftol arg, so I'm going to ignore it"</tt><tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">            <tt class="py-name">opt_dict</tt><tt class="py-op">[</tt><tt class="py-string">'gtol'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">        <tt class="py-name">opt_result</tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name"><a title="paramz.model.Model.optimize" class="py-name" href="#" onclick="return doclink('link-12', 'optimize', 'link-0');">optimize</a></tt><tt class="py-op">.</tt><tt class="py-name">fmin_bfgs</tt><tt class="py-op">(</tt><tt id="link-13" class="py-name" targets="Method paramz.transformations.Exponent.f()=paramz.transformations.Exponent-class.html#f,Method paramz.transformations.Logexp.f()=paramz.transformations.Logexp-class.html#f,Method paramz.transformations.LogexpClipped.f()=paramz.transformations.LogexpClipped-class.html#f,Method paramz.transformations.LogexpNeg.f()=paramz.transformations.LogexpNeg-class.html#f,Method paramz.transformations.Logistic.f()=paramz.transformations.Logistic-class.html#f,Method paramz.transformations.NegativeExponent.f()=paramz.transformations.NegativeExponent-class.html#f,Method paramz.transformations.NegativeLogexp.f()=paramz.transformations.NegativeLogexp-class.html#f,Method paramz.transformations.NormalEta.f()=paramz.transformations.NormalEta-class.html#f,Method paramz.transformations.NormalTheta.f()=paramz.transformations.NormalTheta-class.html#f,Method paramz.transformations.Square.f()=paramz.transformations.Square-class.html#f,Method paramz.transformations.Transformation.f()=paramz.transformations.Transformation-class.html#f"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-13', 'f', 'link-13');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">x_init</tt><tt class="py-op">,</tt> <tt class="py-name">fp</tt><tt class="py-op">,</tt> <tt class="py-name">disp</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">messages</tt><tt class="py-op">,</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                                            <tt class="py-name">maxiter</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_iters</tt><tt class="py-op">,</tt> <tt class="py-name">full_output</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">opt_dict</tt><tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">f_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">f_fp</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">funct_eval</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">]</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-name">rcstrings</tt><tt class="py-op">[</tt><tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">6</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> </tt>
+</div></div><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"> </tt>
+<a name="opt_simplex"></a><div id="opt_simplex-def"><a name="L161"></a><tt class="py-lineno">161</tt> <a class="py-toggle" href="#" id="opt_simplex-toggle" onclick="return toggle('opt_simplex');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_simplex-class.html">opt_simplex</a><tt class="py-op">(</tt><tt class="py-base-class">Optimizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_simplex-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="opt_simplex-expanded"><a name="opt_simplex.__init__"></a><div id="opt_simplex.__init__-def"><a name="L162"></a><tt class="py-lineno">162</tt> <a class="py-toggle" href="#" id="opt_simplex.__init__-toggle" onclick="return toggle('opt_simplex.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_simplex-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_simplex.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_simplex.__init__-expanded"><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt id="link-14" class="py-name"><a title="paramz.optimization.optimization.Optimizer" class="py-name" href="#" onclick="return doclink('link-14', 'Optimizer', 'link-4');">Optimizer</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-15', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"Nelder-Mead simplex routine (via Scipy)"</tt> </tt>
+</div><a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"> </tt>
+<a name="opt_simplex.opt"></a><div id="opt_simplex.opt-def"><a name="L166"></a><tt class="py-lineno">166</tt> <a class="py-toggle" href="#" id="opt_simplex.opt-toggle" onclick="return toggle('opt_simplex.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_simplex-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_simplex.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_simplex.opt-expanded"><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">        The simplex optimizer does not require gradients.</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt class="py-name">statuses</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'Converged'</tt><tt class="py-op">,</tt> <tt class="py-string">'Maximum number of function evaluations made'</tt><tt class="py-op">,</tt> <tt class="py-string">'Maximum number of iterations reached'</tt><tt class="py-op">]</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-name">opt_dict</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xtol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">            <tt class="py-name">opt_dict</tt><tt class="py-op">[</tt><tt class="py-string">'xtol'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xtol</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ftol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">            <tt class="py-name">opt_dict</tt><tt class="py-op">[</tt><tt class="py-string">'ftol'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ftol</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"WARNING: simplex doesn't have an gtol arg, so I'm going to ignore it"</tt><tt class="py-op">)</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">        <tt class="py-name">opt_result</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="paramz.model.Model.optimize" class="py-name" href="#" onclick="return doclink('link-16', 'optimize', 'link-0');">optimize</a></tt><tt class="py-op">.</tt><tt class="py-name">fmin</tt><tt class="py-op">(</tt><tt id="link-17" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-17', 'f', 'link-13');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">x_init</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">disp</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">messages</tt><tt class="py-op">,</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">                   <tt class="py-name">maxfun</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_f_eval</tt><tt class="py-op">,</tt> <tt class="py-name">full_output</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">opt_dict</tt><tt class="py-op">)</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">f_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">funct_eval</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">]</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-name">statuses</tt><tt class="py-op">[</tt><tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">trace</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+</div></div><a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-comment"># class opt_rasm(Optimizer):</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-comment">#     def __init__(self, *args, **kwargs):</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-comment">#         Optimizer.__init__(self, *args, **kwargs)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-comment">#         self.opt_name = "Rasmussen's Conjugate Gradient"</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-comment">#     def opt(self, x_init, f_fp=None, f=None, fp=None):</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-comment">#         """</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-comment">#         Run Rasmussen's Conjugate Gradient optimizer</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-comment">#         """</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-comment">#         assert f_fp != None, "Rasmussen's minimizer requires f_fp"</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-comment">#         statuses = ['Converged', 'Line search failed', 'Maximum number of f evaluations reached',</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-comment">#                 'NaNs in optimization']</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-comment">#         opt_dict = {}</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"><tt class="py-comment">#         if self.xtol is not None:</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"><tt class="py-comment">#             print("WARNING: minimize doesn't have an xtol arg, so I'm going to ignore it")</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-comment">#         if self.ftol is not None:</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-comment">#             print("WARNING: minimize doesn't have an ftol arg, so I'm going to ignore it")</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-comment">#         if self.gtol is not None:</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-comment">#             print("WARNING: minimize doesn't have an gtol arg, so I'm going to ignore it")</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"><tt class="py-comment">#         opt_result = rasm.minimize(x_init, f_fp, (), messages=self.messages,</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"><tt class="py-comment">#                                    maxnumfuneval=self.max_f_eval)</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"><tt class="py-comment">#         self.x_opt = opt_result[0]</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"><tt class="py-comment">#         self.f_opt = opt_result[1][-1]</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"><tt class="py-comment">#         self.funct_eval = opt_result[2]</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line"><tt class="py-comment">#         self.status = statuses[opt_result[3]]</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"><tt class="py-comment">#         self.trace = opt_result[1]</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"> </tt>
+<a name="opt_SCG"></a><div id="opt_SCG-def"><a name="L222"></a><tt class="py-lineno">222</tt> <a class="py-toggle" href="#" id="opt_SCG-toggle" onclick="return toggle('opt_SCG');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_SCG-class.html">opt_SCG</a><tt class="py-op">(</tt><tt class="py-base-class">Optimizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_SCG-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="opt_SCG-expanded"><a name="opt_SCG.__init__"></a><div id="opt_SCG.__init__-def"><a name="L223"></a><tt class="py-lineno">223</tt> <a class="py-toggle" href="#" id="opt_SCG.__init__-toggle" onclick="return toggle('opt_SCG.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_SCG-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_SCG.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_SCG.__init__-expanded"><a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-string">'max_f_eval'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">kwargs</tt><tt class="py-op">:</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">            <tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">"max_f_eval deprecated for SCG optimizer: use max_iters instead!\nIgnoring max_f_eval!"</tt><tt class="py-op">,</tt> <tt class="py-name">FutureWarning</tt><tt class="py-op">)</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt id="link-18" class="py-name"><a title="paramz.optimization.optimization.Optimizer" class="py-name" href="#" onclick="return doclink('link-18', 'Optimizer', 'link-4');">Optimizer</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-19', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"Scaled Conjugate Gradients"</tt> </tt>
+</div><a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"> </tt>
+<a name="opt_SCG.opt"></a><div id="opt_SCG.opt-def"><a name="L230"></a><tt class="py-lineno">230</tt> <a class="py-toggle" href="#" id="opt_SCG.opt-toggle" onclick="return toggle('opt_SCG.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.opt_SCG-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="opt_SCG.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="opt_SCG.opt-expanded"><a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-keyword">not</tt> <tt id="link-20" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-20', 'f', 'link-13');">f</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-keyword">not</tt> <tt class="py-name">fp</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">        <tt class="py-name">opt_result</tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name"><a title="paramz.optimization.scg.SCG" class="py-name" href="#" onclick="return doclink('link-21', 'SCG', 'link-2');">SCG</a></tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-22', 'f', 'link-13');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">fp</tt><tt class="py-op">,</tt> <tt class="py-name">x_init</tt><tt class="py-op">,</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">                         <tt class="py-name">maxiters</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_iters</tt><tt class="py-op">,</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">                         <tt class="py-name">max_f_eval</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_f_eval</tt><tt class="py-op">,</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">                         <tt class="py-name">xtol</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xtol</tt><tt class="py-op">,</tt> <tt class="py-name">ftol</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ftol</tt><tt class="py-op">,</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">                         <tt class="py-name">gtol</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gtol</tt><tt class="py-op">)</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line"> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">trace</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">f_opt</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">trace</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">funct_eval</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-name">opt_result</tt><tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">]</tt> </tt>
+</div></div><a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"> </tt>
+<a name="_check_for_climin"></a><div id="_check_for_climin-def"><a name="L246"></a><tt class="py-lineno">246</tt> <a class="py-toggle" href="#" id="_check_for_climin-toggle" onclick="return toggle('_check_for_climin');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization-module.html#_check_for_climin">_check_for_climin</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_check_for_climin-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_check_for_climin-expanded"><a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">climin</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt>  </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">ImportError</tt><tt class="py-op">(</tt><tt class="py-string">"Need climin to run this optimizer. See https://github.com/BRML/climin."</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"> </tt>
+<a name="Opt_Adadelta"></a><div id="Opt_Adadelta-def"><a name="L252"></a><tt class="py-lineno">252</tt> <a class="py-toggle" href="#" id="Opt_Adadelta-toggle" onclick="return toggle('Opt_Adadelta');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.Opt_Adadelta-class.html">Opt_Adadelta</a><tt class="py-op">(</tt><tt class="py-base-class">Optimizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Opt_Adadelta-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Opt_Adadelta-expanded"><a name="Opt_Adadelta.__init__"></a><div id="Opt_Adadelta.__init__-def"><a name="L253"></a><tt class="py-lineno">253</tt> <a class="py-toggle" href="#" id="Opt_Adadelta.__init__-toggle" onclick="return toggle('Opt_Adadelta.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Opt_Adadelta-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">step_rate</tt><tt class="py-op">=</tt><tt class="py-number">0.1</tt><tt class="py-op">,</tt> <tt class="py-param">decay</tt><tt class="py-op">=</tt><tt class="py-number">0.9</tt><tt class="py-op">,</tt> <tt class="py-param">momentum</tt><tt class="py-op">=</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Opt_Adadelta.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Opt_Adadelta.__init__-expanded"><a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">        <tt id="link-23" class="py-name"><a title="paramz.optimization.optimization.Optimizer" class="py-name" href="#" onclick="return doclink('link-23', 'Optimizer', 'link-4');">Optimizer</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-24', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"Adadelta (climin)"</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">step_rate</tt><tt class="py-op">=</tt><tt class="py-name">step_rate</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decay</tt> <tt class="py-op">=</tt> <tt class="py-name">decay</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">momentum</tt> <tt class="py-op">=</tt> <tt class="py-name">momentum</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line"> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">        <tt id="link-25" class="py-name" targets="Function paramz.optimization.optimization._check_for_climin()=paramz.optimization.optimization-module.html#_check_for_climin"><a title="paramz.optimization.optimization._check_for_climin" class="py-name" href="#" onclick="return doclink('link-25', '_check_for_climin', 'link-25');">_check_for_climin</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line"> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line"> </tt>
+<a name="Opt_Adadelta.opt"></a><div id="Opt_Adadelta.opt-def"><a name="L263"></a><tt class="py-lineno">263</tt> <a class="py-toggle" href="#" id="Opt_Adadelta.opt-toggle" onclick="return toggle('Opt_Adadelta.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Opt_Adadelta-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Opt_Adadelta.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Opt_Adadelta.opt-expanded"><a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-keyword">not</tt> <tt class="py-name">fp</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">climin</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">        <tt id="link-26" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-26', 'opt', 'link-3');">opt</a></tt> <tt class="py-op">=</tt> <tt class="py-name">climin</tt><tt class="py-op">.</tt><tt class="py-name">adadelta</tt><tt class="py-op">.</tt><tt class="py-name">Adadelta</tt><tt class="py-op">(</tt><tt class="py-name">x_init</tt><tt class="py-op">,</tt> <tt class="py-name">fp</tt><tt class="py-op">,</tt> <tt class="py-name">step_rate</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">step_rate</tt><tt class="py-op">,</tt> <tt class="py-name">decay</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decay</tt><tt class="py-op">,</tt> <tt class="py-name">momentum</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">momentum</tt><tt class="py-op">)</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line"> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">info</tt> <tt class="py-keyword">in</tt> <tt id="link-27" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-27', 'opt', 'link-3');">opt</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">info</tt><tt class="py-op">[</tt><tt class="py-string">'n_iter'</tt><tt class="py-op">]</tt><tt class="py-op">&gt;=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_iters</tt><tt class="py-op">:</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt>  <tt id="link-28" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-28', 'opt', 'link-3');">opt</a></tt><tt class="py-op">.</tt><tt class="py-name">wrt</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-string">'maximum number of function evaluations exceeded '</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">                <tt class="py-keyword">break</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># pragma: no cover</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"> </tt>
+<a name="RProp"></a><div id="RProp-def"><a name="L278"></a><tt class="py-lineno">278</tt> <a class="py-toggle" href="#" id="RProp-toggle" onclick="return toggle('RProp');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.RProp-class.html">RProp</a><tt class="py-op">(</tt><tt class="py-base-class">Optimizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RProp-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="RProp-expanded"><a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">    <tt class="py-comment"># We want the optimizer to know some things in the Optimizer implementation:</tt> </tt>
+<a name="RProp.__init__"></a><div id="RProp.__init__-def"><a name="L280"></a><tt class="py-lineno">280</tt> <a class="py-toggle" href="#" id="RProp.__init__-toggle" onclick="return toggle('RProp.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.RProp-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">step_shrink</tt><tt class="py-op">=</tt><tt class="py-number">0.5</tt><tt class="py-op">,</tt> <tt class="py-param">step_grow</tt><tt class="py-op">=</tt><tt class="py-number">1.2</tt><tt class="py-op">,</tt> <tt class="py-param">min_step</tt><tt class="py-op">=</tt><tt class="py-number">1e-06</tt><tt class="py-op">,</tt> <tt class="py-param">max_step</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-param">changes_max</tt><tt class="py-op">=</tt><tt class="py-number">0.1</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RProp.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RProp.__init__-expanded"><a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-29" class="py-name" targets="Class paramz.optimization.optimization.RProp=paramz.optimization.optimization.RProp-class.html"><a title="paramz.optimization.optimization.RProp" class="py-name" href="#" onclick="return doclink('link-29', 'RProp', 'link-29');">RProp</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-30', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-string">'RProp (climin)'</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">step_shrink</tt> <tt class="py-op">=</tt> <tt class="py-name">step_shrink</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">step_grow</tt> <tt class="py-op">=</tt> <tt class="py-name">step_grow</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">min_step</tt> <tt class="py-op">=</tt> <tt class="py-name">min_step</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_step</tt> <tt class="py-op">=</tt> <tt class="py-name">max_step</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">changes_max</tt> <tt class="py-op">=</tt> <tt class="py-name">changes_max</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">        <tt id="link-31" class="py-name"><a title="paramz.optimization.optimization._check_for_climin" class="py-name" href="#" onclick="return doclink('link-31', '_check_for_climin', 'link-25');">_check_for_climin</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">         </tt>
+<a name="RProp.opt"></a><div id="RProp.opt-def"><a name="L291"></a><tt class="py-lineno">291</tt> <a class="py-toggle" href="#" id="RProp.opt-toggle" onclick="return toggle('RProp.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.RProp-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RProp.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RProp.opt-expanded"><a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">        <tt class="py-comment"># We only need the gradient of the </tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-keyword">not</tt> <tt class="py-name">fp</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line"> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">climin</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">        <tt class="py-comment"># Do the optimization, giving previously stored parameters</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">        <tt id="link-32" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-32', 'opt', 'link-3');">opt</a></tt> <tt class="py-op">=</tt> <tt class="py-name">climin</tt><tt class="py-op">.</tt><tt class="py-name">rprop</tt><tt class="py-op">.</tt><tt class="py-name">Rprop</tt><tt class="py-op">(</tt><tt class="py-name">x_init</tt><tt class="py-op">,</tt> <tt class="py-name">fp</tt><tt class="py-op">,</tt>  </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">                                 <tt class="py-name">step_shrink</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">step_shrink</tt><tt class="py-op">,</tt> <tt class="py-name">step_grow</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">step_grow</tt><tt class="py-op">,</tt>  </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">                                 <tt class="py-name">min_step</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">min_step</tt><tt class="py-op">,</tt> <tt class="py-name">max_step</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_step</tt><tt class="py-op">,</tt>  </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">                                 <tt class="py-name">changes_max</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">changes_max</tt><tt class="py-op">)</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line"> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">        <tt class="py-comment"># Get the optimized state and transform it into Paramz readable format by setting</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">        <tt class="py-comment"># values on this object:</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">        <tt class="py-comment"># Important ones are x_opt and status:</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">info</tt> <tt class="py-keyword">in</tt> <tt id="link-33" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-33', 'opt', 'link-3');">opt</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">info</tt><tt class="py-op">[</tt><tt class="py-string">'n_iter'</tt><tt class="py-op">]</tt><tt class="py-op">&gt;=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_iters</tt><tt class="py-op">:</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt>  <tt id="link-34" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-34', 'opt', 'link-3');">opt</a></tt><tt class="py-op">.</tt><tt class="py-name">wrt</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-string">'maximum number of function evaluations exceeded'</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">                <tt class="py-keyword">break</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># pragma: no cover</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line"> </tt>
+<a name="Adam"></a><div id="Adam-def"><a name="L314"></a><tt class="py-lineno">314</tt> <a class="py-toggle" href="#" id="Adam-toggle" onclick="return toggle('Adam');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.optimization.optimization.Adam-class.html">Adam</a><tt class="py-op">(</tt><tt class="py-base-class">Optimizer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Adam-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Adam-expanded"><a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">    <tt class="py-comment"># We want the optimizer to know some things in the Optimizer implementation:</tt> </tt>
+<a name="Adam.__init__"></a><div id="Adam.__init__-def"><a name="L316"></a><tt class="py-lineno">316</tt> <a class="py-toggle" href="#" id="Adam.__init__-toggle" onclick="return toggle('Adam.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Adam-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">step_rate</tt><tt class="py-op">=</tt><tt class="py-number">.0002</tt><tt class="py-op">,</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">                                  <tt class="py-param">decay</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">                                  <tt class="py-param">decay_mom1</tt><tt class="py-op">=</tt><tt class="py-number">0.1</tt><tt class="py-op">,</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">                                  <tt class="py-param">decay_mom2</tt><tt class="py-op">=</tt><tt class="py-number">0.001</tt><tt class="py-op">,</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">                                  <tt class="py-param">momentum</tt><tt class="py-op">=</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">                 <tt class="py-param">offset</tt><tt class="py-op">=</tt><tt class="py-number">1e-8</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Adam.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Adam.__init__-expanded"><a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-35" class="py-name" targets="Class paramz.optimization.optimization.Adam=paramz.optimization.optimization.Adam-class.html"><a title="paramz.optimization.optimization.Adam" class="py-name" href="#" onclick="return doclink('link-35', 'Adam', 'link-35');">Adam</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-36', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">opt_name</tt> <tt class="py-op">=</tt> <tt class="py-string">'Adam (climin)'</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">step_rate</tt> <tt class="py-op">=</tt> <tt class="py-name">step_rate</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decay</tt> <tt class="py-op">=</tt> <tt class="py-name">decay</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decay_mom1</tt> <tt class="py-op">=</tt> <tt class="py-name">decay_mom1</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decay_mom2</tt> <tt class="py-op">=</tt> <tt class="py-name">decay_mom2</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">momentum</tt> <tt class="py-op">=</tt> <tt class="py-name">momentum</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">offset</tt> <tt class="py-op">=</tt> <tt class="py-name">offset</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line"> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">        <tt id="link-37" class="py-name"><a title="paramz.optimization.optimization._check_for_climin" class="py-name" href="#" onclick="return doclink('link-37', '_check_for_climin', 'link-25');">_check_for_climin</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">         </tt>
+<a name="Adam.opt"></a><div id="Adam.opt-def"><a name="L333"></a><tt class="py-lineno">333</tt> <a class="py-toggle" href="#" id="Adam.opt-toggle" onclick="return toggle('Adam.opt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization.Adam-class.html#opt">opt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_init</tt><tt class="py-op">,</tt> <tt class="py-param">f_fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">fp</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Adam.opt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Adam.opt-expanded"><a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">        <tt class="py-comment"># We only need the gradient of the </tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">        <tt class="py-keyword">assert</tt> <tt class="py-keyword">not</tt> <tt class="py-name">fp</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line"> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">climin</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line"> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">        <tt class="py-comment"># Do the optimization, giving previously stored parameters</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">        <tt id="link-38" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-38', 'opt', 'link-3');">opt</a></tt> <tt class="py-op">=</tt> <tt class="py-name">climin</tt><tt class="py-op">.</tt><tt class="py-name">adam</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="paramz.optimization.optimization.Adam" class="py-name" href="#" onclick="return doclink('link-39', 'Adam', 'link-35');">Adam</a></tt><tt class="py-op">(</tt><tt class="py-name">x_init</tt><tt class="py-op">,</tt> <tt class="py-name">fp</tt><tt class="py-op">,</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">                               <tt class="py-name">step_rate</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">step_rate</tt><tt class="py-op">,</tt> <tt class="py-name">decay</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decay</tt><tt class="py-op">,</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">                               <tt class="py-name">decay_mom1</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decay_mom1</tt><tt class="py-op">,</tt> <tt class="py-name">decay_mom2</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decay_mom2</tt><tt class="py-op">,</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line">                               <tt class="py-name">momentum</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">momentum</tt><tt class="py-op">,</tt><tt class="py-name">offset</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">offset</tt><tt class="py-op">)</tt> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line"> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line">        <tt class="py-comment"># Get the optimized state and transform it into Paramz readable format by setting</tt> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line">        <tt class="py-comment"># values on this object:</tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line">        <tt class="py-comment"># Important ones are x_opt and status:</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">info</tt> <tt class="py-keyword">in</tt> <tt id="link-40" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-40', 'opt', 'link-3');">opt</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">info</tt><tt class="py-op">[</tt><tt class="py-string">'n_iter'</tt><tt class="py-op">]</tt><tt class="py-op">&gt;=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">max_iters</tt><tt class="py-op">:</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">x_opt</tt> <tt class="py-op">=</tt>  <tt id="link-41" class="py-name"><a title="paramz.optimization.optimization.Adam.opt
+paramz.optimization.optimization.Opt_Adadelta.opt
+paramz.optimization.optimization.Optimizer.opt
+paramz.optimization.optimization.RProp.opt
+paramz.optimization.optimization.opt_SCG.opt
+paramz.optimization.optimization.opt_bfgs.opt
+paramz.optimization.optimization.opt_lbfgsb.opt
+paramz.optimization.optimization.opt_simplex.opt
+paramz.optimization.optimization.opt_tnc.opt" class="py-name" href="#" onclick="return doclink('link-41', 'opt', 'link-3');">opt</a></tt><tt class="py-op">.</tt><tt class="py-name">wrt</tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">status</tt> <tt class="py-op">=</tt> <tt class="py-string">'maximum number of function evaluations exceeded'</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line">                <tt class="py-keyword">break</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># pragma: no cover</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line"> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"> </tt>
+<a name="get_optimizer"></a><div id="get_optimizer-def"><a name="L357"></a><tt class="py-lineno">357</tt> <a class="py-toggle" href="#" id="get_optimizer-toggle" onclick="return toggle('get_optimizer');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.optimization.optimization-module.html#get_optimizer">get_optimizer</a><tt class="py-op">(</tt><tt class="py-param">f_min</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_optimizer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_optimizer-expanded"><a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line"> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line">    <tt class="py-name">optimizers</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'fmin_tnc'</tt><tt class="py-op">:</tt> <tt id="link-42" class="py-name" targets="Class paramz.optimization.optimization.opt_tnc=paramz.optimization.optimization.opt_tnc-class.html"><a title="paramz.optimization.optimization.opt_tnc" class="py-name" href="#" onclick="return doclink('link-42', 'opt_tnc', 'link-42');">opt_tnc</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line">          <tt class="py-string">'simplex'</tt><tt class="py-op">:</tt> <tt id="link-43" class="py-name" targets="Class paramz.optimization.optimization.opt_simplex=paramz.optimization.optimization.opt_simplex-class.html"><a title="paramz.optimization.optimization.opt_simplex" class="py-name" href="#" onclick="return doclink('link-43', 'opt_simplex', 'link-43');">opt_simplex</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line">          <tt class="py-string">'lbfgsb'</tt><tt class="py-op">:</tt> <tt id="link-44" class="py-name" targets="Class paramz.optimization.optimization.opt_lbfgsb=paramz.optimization.optimization.opt_lbfgsb-class.html"><a title="paramz.optimization.optimization.opt_lbfgsb" class="py-name" href="#" onclick="return doclink('link-44', 'opt_lbfgsb', 'link-44');">opt_lbfgsb</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line">          <tt class="py-string">'org-bfgs'</tt><tt class="py-op">:</tt> <tt id="link-45" class="py-name" targets="Class paramz.optimization.optimization.opt_bfgs=paramz.optimization.optimization.opt_bfgs-class.html"><a title="paramz.optimization.optimization.opt_bfgs" class="py-name" href="#" onclick="return doclink('link-45', 'opt_bfgs', 'link-45');">opt_bfgs</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line">          <tt class="py-string">'scg'</tt><tt class="py-op">:</tt> <tt id="link-46" class="py-name" targets="Class paramz.optimization.optimization.opt_SCG=paramz.optimization.optimization.opt_SCG-class.html"><a title="paramz.optimization.optimization.opt_SCG" class="py-name" href="#" onclick="return doclink('link-46', 'opt_SCG', 'link-46');">opt_SCG</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">          <tt class="py-string">'adadelta'</tt><tt class="py-op">:</tt><tt id="link-47" class="py-name" targets="Class paramz.optimization.optimization.Opt_Adadelta=paramz.optimization.optimization.Opt_Adadelta-class.html"><a title="paramz.optimization.optimization.Opt_Adadelta" class="py-name" href="#" onclick="return doclink('link-47', 'Opt_Adadelta', 'link-47');">Opt_Adadelta</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line">                  <tt class="py-string">'rprop'</tt><tt class="py-op">:</tt><tt id="link-48" class="py-name"><a title="paramz.optimization.optimization.RProp" class="py-name" href="#" onclick="return doclink('link-48', 'RProp', 'link-29');">RProp</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line">                  <tt class="py-string">'adam'</tt><tt class="py-op">:</tt><tt id="link-49" class="py-name"><a title="paramz.optimization.optimization.Adam" class="py-name" href="#" onclick="return doclink('link-49', 'Adam', 'link-35');">Adam</a></tt><tt class="py-op">}</tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line"> </tt>
+<a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line">    <tt class="py-comment">#if rasm_available:</tt> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line">    <tt class="py-comment">#    optimizers['rasmussen'] = opt_rasm</tt> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line"> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">opt_name</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sorted</tt><tt class="py-op">(</tt><tt class="py-name">optimizers</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">opt_name</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-name">f_min</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">optimizers</tt><tt class="py-op">[</tt><tt class="py-name">opt_name</tt><tt class="py-op">]</tt> </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line"> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line">    <tt class="py-keyword">raise</tt> <tt class="py-name">KeyError</tt><tt class="py-op">(</tt><tt class="py-string">'No optimizer was found matching the name: %s'</tt> <tt class="py-op">%</tt> <tt class="py-name">f_min</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 12:00:19 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

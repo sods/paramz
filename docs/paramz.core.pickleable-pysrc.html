@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.core.pickleable</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.core-module.html">Package&nbsp;core</a> ::
+        Module&nbsp;pickleable
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.core.pickleable-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="paramz.core.pickleable-module.html">Module paramz.core.pickleable</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#===============================================================================</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2015, Max Zwiessele</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># All rights reserved.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># Redistribution and use in source and binary forms, with or without</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># modification, are permitted provided that the following conditions are met:</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"># * Redistributions of source code must retain the above copyright notice, this</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#   list of conditions and the following disclaimer.</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># * Redistributions in binary form must reproduce the above copyright notice,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#   this list of conditions and the following disclaimer in the documentation</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment">#   and/or other materials provided with the distribution.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># * Neither the name of paramz.core.pickleable nor the names of its</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#   contributors may be used to endorse or promote products derived from</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment">#   this software without specific prior written permission.</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"># AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"># IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment"># FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment"># DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment"># OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-comment"># OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-comment">#===============================================================================</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="Pickleable"></a><div id="Pickleable-def"><a name="L31"></a><tt class="py-lineno"> 31</tt> <a class="py-toggle" href="#" id="Pickleable-toggle" onclick="return toggle('Pickleable');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="paramz.core.pickleable.Pickleable-class.html">Pickleable</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Pickleable-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Pickleable-expanded"><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">    Make an object pickleable (See python doc 'pickling').</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">    This class allows for pickling support by Memento pattern.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">    _getstate returns a memento of the class, which gets pickled.</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">    _setstate(&lt;memento&gt;) (re-)sets the state of the class to the memento</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Pickleable.__init__"></a><div id="Pickleable.__init__-def"><a name="L39"></a><tt class="py-lineno"> 39</tt> <a class="py-toggle" href="#" id="Pickleable.__init__-toggle" onclick="return toggle('Pickleable.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.pickleable.Pickleable-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">a</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Pickleable.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Pickleable.__init__-expanded"><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-0" class="py-name" targets="Class paramz.core.pickleable.Pickleable=paramz.core.pickleable.Pickleable-class.html"><a title="paramz.core.pickleable.Pickleable" class="py-name" href="#" onclick="return doclink('link-0', 'Pickleable', 'link-0');">Pickleable</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Method paramz.caching.Cache_this.__init__()=paramz.caching.Cache_this-class.html#__init__,Method paramz.caching.Cacher.__init__()=paramz.caching.Cacher-class.html#__init__,Method paramz.caching.FunctionCache.__init__()=paramz.caching.FunctionCache-class.html#__init__,Method paramz.core.constrainable.Constrainable.__init__()=paramz.core.constrainable.Constrainable-class.html#__init__,Method paramz.core.gradcheckable.Gradcheckable.__init__()=paramz.core.gradcheckable.Gradcheckable-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperations.__init__()=paramz.core.index_operations.ParameterIndexOperations-class.html#__init__,Method paramz.core.index_operations.ParameterIndexOperationsView.__init__()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#__init__,Method paramz.core.indexable.Indexable.__init__()=paramz.core.indexable.Indexable-class.html#__init__,Method paramz.core.lists_and_dicts.IntArrayDict.__init__()=paramz.core.lists_and_dicts.IntArrayDict-class.html#__init__,Method paramz.core.lists_and_dicts.ObserverList.__init__()=paramz.core.lists_and_dicts.ObserverList-class.html#__init__,Method paramz.core.nameable.Nameable.__init__()=paramz.core.nameable.Nameable-class.html#__init__,Method paramz.core.observable.Observable.__init__()=paramz.core.observable.Observable-class.html#__init__,Method paramz.core.parameter_core.OptimizationHandlable.__init__()=paramz.core.parameter_core.OptimizationHandlable-class.html#__init__,Method paramz.core.parameter_core.Parameterizable.__init__()=paramz.core.parameter_core.Parameterizable-class.html#__init__,Method paramz.core.parentable.Parentable.__init__()=paramz.core.parentable.Parentable-class.html#__init__,Method paramz.core.pickleable.Pickleable.__init__()=paramz.core.pickleable.Pickleable-class.html#__init__,Method paramz.core.updateable.Updateable.__init__()=paramz.core.updateable.Updateable-class.html#__init__,Method paramz.examples.ridge_regression.Basis.__init__()=paramz.examples.ridge_regression.Basis-class.html#__init__,Method paramz.examples.ridge_regression.Lasso.__init__()=paramz.examples.ridge_regression.Lasso-class.html#__init__,Method paramz.examples.ridge_regression.Polynomial.__init__()=paramz.examples.ridge_regression.Polynomial-class.html#__init__,Method paramz.examples.ridge_regression.Regularizer.__init__()=paramz.examples.ridge_regression.Regularizer-class.html#__init__,Method paramz.examples.ridge_regression.Ridge.__init__()=paramz.examples.ridge_regression.Ridge-class.html#__init__,Method paramz.examples.ridge_regression.RidgeRegression.__init__()=paramz.examples.ridge_regression.RidgeRegression-class.html#__init__,Method paramz.model.Model.__init__()=paramz.model.Model-class.html#__init__,Method paramz.optimization.optimization.Adam.__init__()=paramz.optimization.optimization.Adam-class.html#__init__,Method paramz.optimization.optimization.Opt_Adadelta.__init__()=paramz.optimization.optimization.Opt_Adadelta-class.html#__init__,Method paramz.optimization.optimization.Optimizer.__init__()=paramz.optimization.optimization.Optimizer-class.html#__init__,Method paramz.optimization.optimization.RProp.__init__()=paramz.optimization.optimization.RProp-class.html#__init__,Method paramz.optimization.optimization.opt_SCG.__init__()=paramz.optimization.optimization.opt_SCG-class.html#__init__,Method paramz.optimization.optimization.opt_bfgs.__init__()=paramz.optimization.optimization.opt_bfgs-class.html#__init__,Method paramz.optimization.optimization.opt_lbfgsb.__init__()=paramz.optimization.optimization.opt_lbfgsb-class.html#__init__,Method paramz.optimization.optimization.opt_simplex.__init__()=paramz.optimization.optimization.opt_simplex-class.html#__init__,Method paramz.optimization.optimization.opt_tnc.__init__()=paramz.optimization.optimization.opt_tnc-class.html#__init__,Method paramz.optimization.verbose_optimization.VerboseOptimization.__init__()=paramz.optimization.verbose_optimization.VerboseOptimization-class.html#__init__,Method paramz.param.Param.__init__()=paramz.param.Param-class.html#__init__,Method paramz.param.ParamConcatenation.__init__()=paramz.param.ParamConcatenation-class.html#__init__,Method paramz.parameterized.Parameterized.__init__()=paramz.parameterized.Parameterized-class.html#__init__,Method paramz.tests.parameterized_tests.P.__init__()=paramz.tests.parameterized_tests.P-class.html#__init__,Method paramz.ties_and_remappings.Tie.__init__()=paramz.ties_and_remappings.Tie-class.html#__init__,Method paramz.transformations.LogexpClipped.__init__()=paramz.transformations.LogexpClipped-class.html#__init__,Method paramz.transformations.Logistic.__init__()=paramz.transformations.Logistic-class.html#__init__,Method paramz.transformations.NormalEta.__init__()=paramz.transformations.NormalEta-class.html#__init__,Method paramz.transformations.NormalNaturalAntti.__init__()=paramz.transformations.NormalNaturalAntti-class.html#__init__,Method paramz.transformations.NormalNaturalThroughEta.__init__()=paramz.transformations.NormalNaturalThroughEta-class.html#__init__,Method paramz.transformations.NormalNaturalThroughTheta.__init__()=paramz.transformations.NormalNaturalThroughTheta-class.html#__init__,Method paramz.transformations.NormalNaturalWhooot.__init__()=paramz.transformations.NormalNaturalWhooot-class.html#__init__,Method paramz.transformations.NormalTheta.__init__()=paramz.transformations.NormalTheta-class.html#__init__"><a title="paramz.caching.Cache_this.__init__
+paramz.caching.Cacher.__init__
+paramz.caching.FunctionCache.__init__
+paramz.core.constrainable.Constrainable.__init__
+paramz.core.gradcheckable.Gradcheckable.__init__
+paramz.core.index_operations.ParameterIndexOperations.__init__
+paramz.core.index_operations.ParameterIndexOperationsView.__init__
+paramz.core.indexable.Indexable.__init__
+paramz.core.lists_and_dicts.IntArrayDict.__init__
+paramz.core.lists_and_dicts.ObserverList.__init__
+paramz.core.nameable.Nameable.__init__
+paramz.core.observable.Observable.__init__
+paramz.core.parameter_core.OptimizationHandlable.__init__
+paramz.core.parameter_core.Parameterizable.__init__
+paramz.core.parentable.Parentable.__init__
+paramz.core.pickleable.Pickleable.__init__
+paramz.core.updateable.Updateable.__init__
+paramz.examples.ridge_regression.Basis.__init__
+paramz.examples.ridge_regression.Lasso.__init__
+paramz.examples.ridge_regression.Polynomial.__init__
+paramz.examples.ridge_regression.Regularizer.__init__
+paramz.examples.ridge_regression.Ridge.__init__
+paramz.examples.ridge_regression.RidgeRegression.__init__
+paramz.model.Model.__init__
+paramz.optimization.optimization.Adam.__init__
+paramz.optimization.optimization.Opt_Adadelta.__init__
+paramz.optimization.optimization.Optimizer.__init__
+paramz.optimization.optimization.RProp.__init__
+paramz.optimization.optimization.opt_SCG.__init__
+paramz.optimization.optimization.opt_bfgs.__init__
+paramz.optimization.optimization.opt_lbfgsb.__init__
+paramz.optimization.optimization.opt_simplex.__init__
+paramz.optimization.optimization.opt_tnc.__init__
+paramz.optimization.verbose_optimization.VerboseOptimization.__init__
+paramz.param.Param.__init__
+paramz.param.ParamConcatenation.__init__
+paramz.parameterized.Parameterized.__init__
+paramz.tests.parameterized_tests.P.__init__
+paramz.ties_and_remappings.Tie.__init__
+paramz.transformations.LogexpClipped.__init__
+paramz.transformations.Logistic.__init__
+paramz.transformations.NormalEta.__init__
+paramz.transformations.NormalNaturalAntti.__init__
+paramz.transformations.NormalNaturalThroughEta.__init__
+paramz.transformations.NormalNaturalThroughTheta.__init__
+paramz.transformations.NormalNaturalWhooot.__init__
+paramz.transformations.NormalTheta.__init__" class="py-name" href="#" onclick="return doclink('link-1', '__init__', 'link-1');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-comment">#===========================================================================</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">    <tt class="py-comment"># Pickling operations</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">    <tt class="py-comment">#===========================================================================</tt> </tt>
+<a name="Pickleable.pickle"></a><div id="Pickleable.pickle-def"><a name="L45"></a><tt class="py-lineno"> 45</tt> <a class="py-toggle" href="#" id="Pickleable.pickle-toggle" onclick="return toggle('Pickleable.pickle');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.pickleable.Pickleable-class.html#pickle">pickle</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">,</tt> <tt class="py-param">protocol</tt><tt class="py-op">=</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Pickleable.pickle-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Pickleable.pickle-expanded"><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">        :param f: either filename or open file object to write to.</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">                  if it is an open buffer, you have to make sure to close</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">                  it properly.</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">        :param protocol: pickling protocol to use, python-pickle for details.</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> <tt class="py-comment">#Py2</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">            <tt class="py-keyword">import</tt> <tt class="py-name">cPickle</tt> <tt class="py-keyword">as</tt> <tt id="link-2" class="py-name" targets="Method paramz.core.pickleable.Pickleable.pickle()=paramz.core.pickleable.Pickleable-class.html#pickle"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-2', 'pickle', 'link-2');">pickle</a></tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-3" class="py-name" targets="Method paramz.transformations.Exponent.f()=paramz.transformations.Exponent-class.html#f,Method paramz.transformations.Logexp.f()=paramz.transformations.Logexp-class.html#f,Method paramz.transformations.LogexpClipped.f()=paramz.transformations.LogexpClipped-class.html#f,Method paramz.transformations.LogexpNeg.f()=paramz.transformations.LogexpNeg-class.html#f,Method paramz.transformations.Logistic.f()=paramz.transformations.Logistic-class.html#f,Method paramz.transformations.NegativeExponent.f()=paramz.transformations.NegativeExponent-class.html#f,Method paramz.transformations.NegativeLogexp.f()=paramz.transformations.NegativeLogexp-class.html#f,Method paramz.transformations.NormalEta.f()=paramz.transformations.NormalEta-class.html#f,Method paramz.transformations.NormalTheta.f()=paramz.transformations.NormalTheta-class.html#f,Method paramz.transformations.Square.f()=paramz.transformations.Square-class.html#f,Method paramz.transformations.Transformation.f()=paramz.transformations.Transformation-class.html#f"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-3', 'f', 'link-3');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">basestring</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                <tt class="py-keyword">with</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt id="link-4" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-4', 'f', 'link-3');">f</a></tt><tt class="py-op">,</tt> <tt class="py-string">'wb'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt id="link-5" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-5', 'f', 'link-3');">f</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                    <tt id="link-6" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-6', 'pickle', 'link-2');">pickle</a></tt><tt class="py-op">.</tt><tt class="py-name">dump</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-7', 'f', 'link-3');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">protocol</tt><tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                <tt id="link-8" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-8', 'pickle', 'link-2');">pickle</a></tt><tt class="py-op">.</tt><tt class="py-name">dump</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-9', 'f', 'link-3');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">protocol</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> <tt class="py-comment">#python3</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">            <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-10', 'pickle', 'link-2');">pickle</a></tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-11" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-11', 'f', 'link-3');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                <tt class="py-keyword">with</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt id="link-12" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-12', 'f', 'link-3');">f</a></tt><tt class="py-op">,</tt> <tt class="py-string">'wb'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt id="link-13" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-13', 'f', 'link-3');">f</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                    <tt id="link-14" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-14', 'pickle', 'link-2');">pickle</a></tt><tt class="py-op">.</tt><tt class="py-name">dump</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-15', 'f', 'link-3');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">protocol</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">                <tt id="link-16" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-16', 'pickle', 'link-2');">pickle</a></tt><tt class="py-op">.</tt><tt class="py-name">dump</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-17" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-17', 'f', 'link-3');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">protocol</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-comment">#===========================================================================</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-comment"># copy and pickling</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-comment">#===========================================================================</tt> </tt>
+<a name="Pickleable.copy"></a><div id="Pickleable.copy-def"><a name="L70"></a><tt class="py-lineno"> 70</tt> <a class="py-toggle" href="#" id="Pickleable.copy-toggle" onclick="return toggle('Pickleable.copy');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.pickleable.Pickleable-class.html#copy">copy</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">memo</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">which</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Pickleable.copy-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Pickleable.copy-expanded"><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring">        Returns a (deep) copy of the current parameter handle.</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">        All connections to parents of the copy will be cut.</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring">        :param dict memo: memo for deepcopy</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">        :param Parameterized which: parameterized object which started the copy process [default: self]</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-comment">#raise NotImplementedError, "Copy is not yet implemented, TODO: Observable hierarchy"</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">memo</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">            <tt class="py-name">memo</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-18" class="py-name" targets="Method paramz.core.index_operations.ParameterIndexOperations.copy()=paramz.core.index_operations.ParameterIndexOperations-class.html#copy,Method paramz.core.index_operations.ParameterIndexOperationsView.copy()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#copy,Method paramz.core.observable_array.ObsAr.copy()=paramz.core.observable_array.ObsAr-class.html#copy,Method paramz.core.pickleable.Pickleable.copy()=paramz.core.pickleable.Pickleable-class.html#copy,Method paramz.param.Param.copy()=paramz.param.Param-class.html#copy,Method paramz.parameterized.Parameterized.copy()=paramz.parameterized.Parameterized-class.html#copy"><a title="paramz.core.index_operations.ParameterIndexOperations.copy
+paramz.core.index_operations.ParameterIndexOperationsView.copy
+paramz.core.observable_array.ObsAr.copy
+paramz.core.pickleable.Pickleable.copy
+paramz.param.Param.copy
+paramz.parameterized.Parameterized.copy" class="py-name" href="#" onclick="return doclink('link-18', 'copy', 'link-18');">copy</a></tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-comment"># the next part makes sure that we do not include parents in any form:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-name">parents</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">which</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">            <tt class="py-name">which</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-name">which</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method paramz.core.parameter_core.Parameterizable.traverse_parents()=paramz.core.parameter_core.Parameterizable-class.html#traverse_parents"><a title="paramz.core.parameter_core.Parameterizable.traverse_parents" class="py-name" href="#" onclick="return doclink('link-19', 'traverse_parents', 'link-19');">traverse_parents</a></tt><tt class="py-op">(</tt><tt class="py-name">parents</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">)</tt> <tt class="py-comment"># collect parents</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt class="py-name">parents</tt><tt class="py-op">:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-20" class="py-name" targets="Method paramz.caching.Cacher.id()=paramz.caching.Cacher-class.html#id"><a title="paramz.caching.Cacher.id" class="py-name" href="#" onclick="return doclink('link-20', 'id', 'link-20');">id</a></tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">memo</tt> <tt class="py-op">:</tt><tt class="py-name">memo</tt><tt class="py-op">[</tt><tt id="link-21" class="py-name"><a title="paramz.caching.Cacher.id" class="py-name" href="#" onclick="return doclink('link-21', 'id', 'link-20');">id</a></tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-comment"># set all parents to be None, so they will not be copied</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-22" class="py-name"><a title="paramz.caching.Cacher.id" class="py-name" href="#" onclick="return doclink('link-22', 'id', 'link-20');">id</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Variable paramz.core.parameter_core.Parameterizable.gradient=paramz.core.parameter_core.Parameterizable-class.html#gradient,Variable paramz.param.Param.gradient=paramz.param.Param-class.html#gradient"><a title="paramz.core.parameter_core.Parameterizable.gradient
+paramz.param.Param.gradient" class="py-name" href="#" onclick="return doclink('link-23', 'gradient', 'link-23');">gradient</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">memo</tt><tt class="py-op">:</tt><tt class="py-name">memo</tt><tt class="py-op">[</tt><tt id="link-24" class="py-name"><a title="paramz.caching.Cacher.id" class="py-name" href="#" onclick="return doclink('link-24', 'id', 'link-20');">id</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="paramz.core.parameter_core.Parameterizable.gradient
+paramz.param.Param.gradient" class="py-name" href="#" onclick="return doclink('link-25', 'gradient', 'link-23');">gradient</a></tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-comment"># reset the gradient</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-26" class="py-name"><a title="paramz.caching.Cacher.id" class="py-name" href="#" onclick="return doclink('link-26', 'id', 'link-20');">id</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Variable paramz.param.Param._fixes_=paramz.param.Param-class.html#_fixes_"><a title="paramz.param.Param._fixes_" class="py-name" href="#" onclick="return doclink('link-27', '_fixes_', 'link-27');">_fixes_</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">memo</tt> <tt class="py-op">:</tt><tt class="py-name">memo</tt><tt class="py-op">[</tt><tt id="link-28" class="py-name"><a title="paramz.caching.Cacher.id" class="py-name" href="#" onclick="return doclink('link-28', 'id', 'link-20');">id</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="paramz.param.Param._fixes_" class="py-name" href="#" onclick="return doclink('link-29', '_fixes_', 'link-27');">_fixes_</a></tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-comment"># fixes have to be reset, as this is now highest parent</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt id="link-30" class="py-name"><a title="paramz.core.index_operations.ParameterIndexOperations.copy
+paramz.core.index_operations.ParameterIndexOperationsView.copy
+paramz.core.observable_array.ObsAr.copy
+paramz.core.pickleable.Pickleable.copy
+paramz.param.Param.copy
+paramz.parameterized.Parameterized.copy" class="py-name" href="#" onclick="return doclink('link-30', 'copy', 'link-18');">copy</a></tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name"><a title="paramz.core.index_operations.ParameterIndexOperations.copy
+paramz.core.index_operations.ParameterIndexOperationsView.copy
+paramz.core.observable_array.ObsAr.copy
+paramz.core.pickleable.Pickleable.copy
+paramz.param.Param.copy
+paramz.parameterized.Parameterized.copy" class="py-name" href="#" onclick="return doclink('link-31', 'copy', 'link-18');">copy</a></tt><tt class="py-op">.</tt><tt class="py-name">deepcopy</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">memo</tt><tt class="py-op">)</tt> <tt class="py-comment"># and start the copy</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt id="link-32" class="py-name"><a title="paramz.core.index_operations.ParameterIndexOperations.copy
+paramz.core.index_operations.ParameterIndexOperationsView.copy
+paramz.core.observable_array.ObsAr.copy
+paramz.core.pickleable.Pickleable.copy
+paramz.param.Param.copy
+paramz.parameterized.Parameterized.copy" class="py-name" href="#" onclick="return doclink('link-32', 'copy', 'link-18');">copy</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Variable paramz.core.parentable.Parentable._parent_index_=paramz.core.parentable.Parentable-class.html#_parent_index_"><a title="paramz.core.parentable.Parentable._parent_index_" class="py-name" href="#" onclick="return doclink('link-33', '_parent_index_', 'link-33');">_parent_index_</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt id="link-34" class="py-name"><a title="paramz.core.index_operations.ParameterIndexOperations.copy
+paramz.core.index_operations.ParameterIndexOperationsView.copy
+paramz.core.observable_array.ObsAr.copy
+paramz.core.pickleable.Pickleable.copy
+paramz.param.Param.copy
+paramz.parameterized.Parameterized.copy" class="py-name" href="#" onclick="return doclink('link-34', 'copy', 'link-18');">copy</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method paramz.core.parameter_core.OptimizationHandlable._trigger_params_changed()=paramz.core.parameter_core.OptimizationHandlable-class.html#_trigger_params_changed"><a title="paramz.core.parameter_core.OptimizationHandlable._trigger_params_changed" class="py-name" href="#" onclick="return doclink('link-35', '_trigger_params_changed', 'link-35');">_trigger_params_changed</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-36" class="py-name"><a title="paramz.core.index_operations.ParameterIndexOperations.copy
+paramz.core.index_operations.ParameterIndexOperationsView.copy
+paramz.core.observable_array.ObsAr.copy
+paramz.core.pickleable.Pickleable.copy
+paramz.param.Param.copy
+paramz.parameterized.Parameterized.copy" class="py-name" href="#" onclick="return doclink('link-36', 'copy', 'link-18');">copy</a></tt> </tt>
+</div><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="Pickleable.__deepcopy__"></a><div id="Pickleable.__deepcopy__-def"><a name="L97"></a><tt class="py-lineno"> 97</tt> <a class="py-toggle" href="#" id="Pickleable.__deepcopy__-toggle" onclick="return toggle('Pickleable.__deepcopy__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.pickleable.Pickleable-class.html#__deepcopy__">__deepcopy__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">memo</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Pickleable.__deepcopy__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Pickleable.__deepcopy__-expanded"><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Static Method paramz.core.observable_array.ObsAr.__new__()=paramz.core.observable_array.ObsAr-class.html#__new__,Static Method paramz.param.Param.__new__()=paramz.param.Param-class.html#__new__,Static Method paramz.transformations.LogexpClipped.__new__()=paramz.transformations.LogexpClipped-class.html#__new__,Static Method paramz.transformations.Logistic.__new__()=paramz.transformations.Logistic-class.html#__new__,Static Method paramz.transformations.NormalEta.__new__()=paramz.transformations.NormalEta-class.html#__new__,Static Method paramz.transformations.NormalNaturalAntti.__new__()=paramz.transformations.NormalNaturalAntti-class.html#__new__,Static Method paramz.transformations.NormalNaturalThroughEta.__new__()=paramz.transformations.NormalNaturalThroughEta-class.html#__new__,Static Method paramz.transformations.NormalNaturalThroughTheta.__new__()=paramz.transformations.NormalNaturalThroughTheta-class.html#__new__,Static Method paramz.transformations.NormalNaturalWhooot.__new__()=paramz.transformations.NormalNaturalWhooot-class.html#__new__,Static Method paramz.transformations.NormalTheta.__new__()=paramz.transformations.NormalTheta-class.html#__new__,Static Method paramz.transformations.Transformation.__new__()=paramz.transformations.Transformation-class.html#__new__"><a title="paramz.core.observable_array.ObsAr.__new__
+paramz.param.Param.__new__
+paramz.transformations.LogexpClipped.__new__
+paramz.transformations.Logistic.__new__
+paramz.transformations.NormalEta.__new__
+paramz.transformations.NormalNaturalAntti.__new__
+paramz.transformations.NormalNaturalThroughEta.__new__
+paramz.transformations.NormalNaturalThroughTheta.__new__
+paramz.transformations.NormalNaturalWhooot.__new__
+paramz.transformations.NormalTheta.__new__
+paramz.transformations.Transformation.__new__" class="py-name" href="#" onclick="return doclink('link-37', '__new__', 'link-37');">__new__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">)</tt> <tt class="py-comment"># fresh instance</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-name">memo</tt><tt class="py-op">[</tt><tt id="link-38" class="py-name"><a title="paramz.caching.Cacher.id" class="py-name" href="#" onclick="return doclink('link-38', 'id', 'link-20');">id</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">s</tt> <tt class="py-comment"># be sure to break all cycles --&gt; self is already done</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-39" class="py-name"><a title="paramz.core.index_operations.ParameterIndexOperations.copy
+paramz.core.index_operations.ParameterIndexOperationsView.copy
+paramz.core.observable_array.ObsAr.copy
+paramz.core.pickleable.Pickleable.copy
+paramz.param.Param.copy
+paramz.parameterized.Parameterized.copy" class="py-name" href="#" onclick="return doclink('link-39', 'copy', 'link-18');">copy</a></tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-name">s</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Method paramz.caching.Cacher.__setstate__()=paramz.caching.Cacher-class.html#__setstate__,Method paramz.core.index_operations.ParameterIndexOperationsView.__setstate__()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#__setstate__,Method paramz.core.indexable.Indexable.__setstate__()=paramz.core.indexable.Indexable-class.html#__setstate__,Method paramz.core.observable_array.ObsAr.__setstate__()=paramz.core.observable_array.ObsAr-class.html#__setstate__,Method paramz.core.parameter_core.Parameterizable.__setstate__()=paramz.core.parameter_core.Parameterizable-class.html#__setstate__,Method paramz.core.pickleable.Pickleable.__setstate__()=paramz.core.pickleable.Pickleable-class.html#__setstate__,Method paramz.parameterized.Parameterized.__setstate__()=paramz.parameterized.Parameterized-class.html#__setstate__,Method paramz.transformations.NormalTheta.__setstate__()=paramz.transformations.NormalTheta-class.html#__setstate__"><a title="paramz.caching.Cacher.__setstate__
+paramz.core.index_operations.ParameterIndexOperationsView.__setstate__
+paramz.core.indexable.Indexable.__setstate__
+paramz.core.observable_array.ObsAr.__setstate__
+paramz.core.parameter_core.Parameterizable.__setstate__
+paramz.core.pickleable.Pickleable.__setstate__
+paramz.parameterized.Parameterized.__setstate__
+paramz.transformations.NormalTheta.__setstate__" class="py-name" href="#" onclick="return doclink('link-40', '__setstate__', 'link-40');">__setstate__</a></tt><tt class="py-op">(</tt><tt id="link-41" class="py-name"><a title="paramz.core.index_operations.ParameterIndexOperations.copy
+paramz.core.index_operations.ParameterIndexOperationsView.copy
+paramz.core.observable_array.ObsAr.copy
+paramz.core.pickleable.Pickleable.copy
+paramz.param.Param.copy
+paramz.parameterized.Parameterized.copy" class="py-name" href="#" onclick="return doclink('link-41', 'copy', 'link-18');">copy</a></tt><tt class="py-op">.</tt><tt class="py-name">deepcopy</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method paramz.caching.Cacher.__getstate__()=paramz.caching.Cacher-class.html#__getstate__,Method paramz.core.index_operations.ParameterIndexOperationsView.__getstate__()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#__getstate__,Method paramz.core.pickleable.Pickleable.__getstate__()=paramz.core.pickleable.Pickleable-class.html#__getstate__,Method paramz.optimization.optimization.Optimizer.__getstate__()=paramz.optimization.optimization.Optimizer-class.html#__getstate__,Method paramz.transformations.NormalTheta.__getstate__()=paramz.transformations.NormalTheta-class.html#__getstate__"><a title="paramz.caching.Cacher.__getstate__
+paramz.core.index_operations.ParameterIndexOperationsView.__getstate__
+paramz.core.pickleable.Pickleable.__getstate__
+paramz.optimization.optimization.Optimizer.__getstate__
+paramz.transformations.NormalTheta.__getstate__" class="py-name" href="#" onclick="return doclink('link-42', '__getstate__', 'link-42');">__getstate__</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">memo</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-comment"># standard copy</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> </tt>
+</div><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"> </tt>
+<a name="Pickleable.__getstate__"></a><div id="Pickleable.__getstate__-def"><a name="L104"></a><tt class="py-lineno">104</tt> <a class="py-toggle" href="#" id="Pickleable.__getstate__-toggle" onclick="return toggle('Pickleable.__getstate__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.pickleable.Pickleable-class.html#__getstate__">__getstate__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Pickleable.__getstate__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Pickleable.__getstate__-expanded"><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-name">ignore_list</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'_param_array_'</tt><tt class="py-op">,</tt> <tt class="py-comment"># parameters get set from bottom to top</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                       <tt class="py-string">'_gradient_array_'</tt><tt class="py-op">,</tt> <tt class="py-comment"># as well as gradients</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                       <tt class="py-string">'_optimizer_copy_'</tt><tt class="py-op">,</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                       <tt class="py-string">'logger'</tt><tt class="py-op">,</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                       <tt class="py-string">'observers'</tt><tt class="py-op">,</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                       <tt class="py-string">'_fixes_'</tt><tt class="py-op">,</tt> <tt class="py-comment"># and fixes</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">                       <tt class="py-string">'cache'</tt><tt class="py-op">,</tt> <tt class="py-comment"># never pickle the cache</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                       <tt class="py-op">]</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-name">dc</tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-comment">#py3 fix</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-comment">#for k,v in self.__dict__.iteritems():</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">k</tt><tt class="py-op">,</tt><tt class="py-name">v</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Method paramz.core.index_operations.ParameterIndexOperations.items()=paramz.core.index_operations.ParameterIndexOperations-class.html#items,Method paramz.core.index_operations.ParameterIndexOperationsView.items()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#items"><a title="paramz.core.index_operations.ParameterIndexOperations.items
+paramz.core.index_operations.ParameterIndexOperationsView.items" class="py-name" href="#" onclick="return doclink('link-43', 'items', 'link-43');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">k</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">ignore_list</tt><tt class="py-op">:</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">                <tt class="py-name">dc</tt><tt class="py-op">[</tt><tt class="py-name">k</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">v</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">dc</tt> </tt>
+</div><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
+<a name="Pickleable.__setstate__"></a><div id="Pickleable.__setstate__-def"><a name="L121"></a><tt class="py-lineno">121</tt> <a class="py-toggle" href="#" id="Pickleable.__setstate__-toggle" onclick="return toggle('Pickleable.__setstate__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz.core.pickleable.Pickleable-class.html#__setstate__">__setstate__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Pickleable.__setstate__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Pickleable.__setstate__-expanded"><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method paramz.core.index_operations.ParameterIndexOperations.update()=paramz.core.index_operations.ParameterIndexOperations-class.html#update,Method paramz.core.index_operations.ParameterIndexOperationsView.update()=paramz.core.index_operations.ParameterIndexOperationsView-class.html#update,Method paramz.optimization.verbose_optimization.VerboseOptimization.update()=paramz.optimization.verbose_optimization.VerboseOptimization-class.html#update"><a title="paramz.core.index_operations.ParameterIndexOperations.update
+paramz.core.index_operations.ParameterIndexOperationsView.update
+paramz.optimization.verbose_optimization.VerboseOptimization.update" class="py-name" href="#" onclick="return doclink('link-44', 'update', 'link-44');">update</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Module paramz.core.lists_and_dicts=paramz.core.lists_and_dicts-module.html"><a title="paramz.core.lists_and_dicts" class="py-name" href="#" onclick="return doclink('link-45', 'lists_and_dicts', 'link-45');">lists_and_dicts</a></tt> <tt class="py-keyword">import</tt> <tt id="link-46" class="py-name" targets="Class paramz.core.lists_and_dicts.ObserverList=paramz.core.lists_and_dicts.ObserverList-class.html"><a title="paramz.core.lists_and_dicts.ObserverList" class="py-name" href="#" onclick="return doclink('link-46', 'ObserverList', 'link-46');">ObserverList</a></tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Module paramz.caching=paramz.caching-module.html"><a title="paramz.caching" class="py-name" href="#" onclick="return doclink('link-47', 'caching', 'link-47');">caching</a></tt> <tt class="py-keyword">import</tt> <tt id="link-48" class="py-name" targets="Class paramz.caching.FunctionCache=paramz.caching.FunctionCache-class.html"><a title="paramz.caching.FunctionCache" class="py-name" href="#" onclick="return doclink('link-48', 'FunctionCache', 'link-48');">FunctionCache</a></tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">observers</tt> <tt class="py-op">=</tt> <tt id="link-49" class="py-name"><a title="paramz.core.lists_and_dicts.ObserverList" class="py-name" href="#" onclick="return doclink('link-49', 'ObserverList', 'link-46');">ObserverList</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cache</tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name"><a title="paramz.caching.FunctionCache" class="py-name" href="#" onclick="return doclink('link-50', 'FunctionCache', 'link-48');">FunctionCache</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name" targets="Method paramz.core.observable_array.ObsAr._setup_observers()=paramz.core.observable_array.ObsAr-class.html#_setup_observers,Method paramz.core.parameter_core.Parameterizable._setup_observers()=paramz.core.parameter_core.Parameterizable-class.html#_setup_observers,Method paramz.param.Param._setup_observers()=paramz.param.Param-class.html#_setup_observers"><a title="paramz.core.observable_array.ObsAr._setup_observers
+paramz.core.parameter_core.Parameterizable._setup_observers
+paramz.param.Param._setup_observers" class="py-name" href="#" onclick="return doclink('link-51', '_setup_observers', 'link-51');">_setup_observers</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_optimizer_copy_transformed</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+</div></div><a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 12:00:20 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

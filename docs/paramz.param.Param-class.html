@@ -1,0 +1,1673 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.param.Param</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.param-module.html">Module&nbsp;param</a> ::
+        Class&nbsp;Param
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.param.Param-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Param</h1><p class="nomargin-top"><span class="codelink"><a href="paramz.param-pysrc.html#Param">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_paramz_p" name="uml_class_diagram_for_paramz_p">
+<area shape="rect" id="node1_108" href="paramz.core.constrainable.Constrainable-class.html#constrain_fixed" title="Constrain this parameter to be fixed to the current value it carries." alt="" coords="315,1277,760,1297"/>
+<area shape="rect" id="node1_109" href="paramz.core.constrainable.Constrainable-class.html#fix" title="Constrain this parameter to be fixed to the current value it carries." alt="" coords="315,1297,760,1317"/>
+<area shape="rect" id="node1_110" href="paramz.core.constrainable.Constrainable-class.html#unconstrain_fixed" title="This parameter will no longer be fixed." alt="" coords="315,1317,760,1337"/>
+<area shape="rect" id="node1_111" href="paramz.core.constrainable.Constrainable-class.html#unfix" title="This parameter will no longer be fixed." alt="" coords="315,1337,760,1357"/>
+<area shape="rect" id="node1_112" href="paramz.core.constrainable.Constrainable-class.html#constrain" title=":param transform: the :py:class:`paramz.transformations.Transformation` &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;to constrain the this parameter to." alt="" coords="315,1357,760,1377"/>
+<area shape="rect" id="node1_113" href="paramz.core.constrainable.Constrainable-class.html#unconstrain" title=":param transforms: The transformations to unconstrain from." alt="" coords="315,1377,760,1397"/>
+<area shape="rect" id="node1_114" href="paramz.core.constrainable.Constrainable-class.html#constrain_positive" title=":param warning: print a warning if re&#45;constraining parameters." alt="" coords="315,1397,760,1417"/>
+<area shape="rect" id="node1_115" href="paramz.core.constrainable.Constrainable-class.html#constrain_negative" title=":param warning: print a warning if re&#45;constraining parameters." alt="" coords="315,1417,760,1437"/>
+<area shape="rect" id="node1_116" href="paramz.core.constrainable.Constrainable-class.html#constrain_bounded" title=":param lower, upper: the limits to bound this parameter to :param warning: &#160;print a warning if re&#45;constraining parameters." alt="" coords="315,1437,760,1457"/>
+<area shape="rect" id="node1_117" href="paramz.core.constrainable.Constrainable-class.html#unconstrain_positive" title="Remove positive constraint of this parameter." alt="" coords="315,1457,760,1477"/>
+<area shape="rect" id="node1_118" href="paramz.core.constrainable.Constrainable-class.html#unconstrain_negative" title="Remove negative constraint of this parameter." alt="" coords="315,1477,760,1497"/>
+<area shape="rect" id="node1_119" href="paramz.core.constrainable.Constrainable-class.html#unconstrain_bounded" title=":param lower, upper: the limits to unbound this parameter from" alt="" coords="315,1497,760,1517"/>
+<area shape="rect" id="node1" href="paramz.core.constrainable.Constrainable-class.html" title="paramz.core.constrainable.Constrainable" alt="" coords="303,1244,772,1523"/>
+<area shape="rect" id="node2_120" href="paramz.core.parameter_core.OptimizationHandlable-class.html#optimizer_array" title="Array for the optimizer to work on." alt="" coords="347,1566,647,1586"/>
+<area shape="rect" id="node2_121" href="paramz.core.parameter_core.OptimizationHandlable-class.html#gradient_full" title="Note to users: This does not return the gradient in the right shape! Use &#160;self.gradient for the right gradient array." alt="" coords="347,1586,647,1606"/>
+<area shape="rect" id="node2_122" href="paramz.core.parameter_core.OptimizationHandlable-class.html#parameter_names_flat" title="Return the flattened parameter names for all subsequent parameters of this parameter." alt="" coords="347,1609,647,1629"/>
+<area shape="rect" id="node2_123" href="paramz.core.parameter_core.OptimizationHandlable-class.html#randomize" title="Randomize the model." alt="" coords="347,1629,647,1649"/>
+<area shape="rect" id="node2" href="paramz.core.parameter_core.OptimizationHandlable-class.html" title="This enables optimization handles on an Object as done in GPy 0.4." alt="" coords="334,1541,658,1655"/>
+<area shape="rect" id="node6_124" href="paramz.core.parameter_core.Parameterizable-class.html#unfixed_param_array" title="Array representing the parameters of this class." alt="" coords="335,1697,599,1717"/>
+<area shape="rect" id="node6_125" href="paramz.core.parameter_core.Parameterizable-class.html#initialize_parameter" title="Call this function to initialize the model, if you built it without &#160;initialization." alt="" coords="335,1720,599,1740"/>
+<area shape="rect" id="node6_126" href="paramz.core.parameter_core.Parameterizable-class.html#traverse" title="Traverse the hierarchy performing `visit(self, *args, **kwargs)` at every &#160;node passed by downwards." alt="" coords="335,1740,599,1760"/>
+<area shape="rect" id="node6_127" href="paramz.core.parameter_core.Parameterizable-class.html#traverse_parents" title="Traverse the hierarchy upwards, visiting all parents and their children &#160;except self." alt="" coords="335,1760,599,1780"/>
+<area shape="rect" id="node6_128" href="paramz.core.parameter_core.Parameterizable-class.html#enable_caching" title="paramz.core.parameter_core.Parameterizable.enable_caching" alt="" coords="335,1780,599,1800"/>
+<area shape="rect" id="node6_129" href="paramz.core.parameter_core.Parameterizable-class.html#disable_caching" title="paramz.core.parameter_core.Parameterizable.disable_caching" alt="" coords="335,1800,599,1820"/>
+<area shape="rect" id="node6_130" href="paramz.core.parameter_core.Parameterizable-class.html#__setstate__" title="paramz.core.parameter_core.Parameterizable.__setstate__" alt="" coords="335,1820,599,1840"/>
+<area shape="rect" id="node6_131" href="paramz.core.parameter_core.Parameterizable-class.html#parameters_changed" title="This method gets called when parameters have changed." alt="" coords="335,1840,599,1860"/>
+<area shape="rect" id="node6_132" href="paramz.core.parameter_core.Parameterizable-class.html#save" title="Save all the model parameters into a file (HDF5 by default)." alt="" coords="335,1860,599,1880"/>
+<area shape="rect" id="node6" href="paramz.core.parameter_core.Parameterizable-class.html" title="A parameterisable class." alt="" coords="323,1673,611,1887"/>
+<area shape="rect" id="node3_133" href="paramz.core.pickleable.Pickleable-class.html#pickle" title=":param f: either filename or open file object to write to." alt="" coords="359,55,514,75"/>
+<area shape="rect" id="node3_134" href="paramz.core.pickleable.Pickleable-class.html#__getstate__" title="paramz.core.pickleable.Pickleable.__getstate__" alt="" coords="359,75,514,95"/>
+<area shape="rect" id="node3" href="paramz.core.pickleable.Pickleable-class.html" title="Make an object pickleable (See python doc &#39;pickling&#39;)." alt="" coords="347,23,526,101"/>
+<area shape="rect" id="node8_135" href="paramz.core.observable_array.ObsAr-class.html#__array_wrap__" title="paramz.core.observable_array.ObsAr.__array_wrap__" alt="" coords="103,821,375,841"/>
+<area shape="rect" id="node8_136" href="paramz.core.observable_array.ObsAr-class.html#__reduce__" title="For pickling." alt="" coords="103,841,375,861"/>
+<area shape="rect" id="node8_137" href="paramz.core.observable_array.ObsAr-class.html#__setitem__" title="x[i]=y" alt="" coords="103,861,375,881"/>
+<area shape="rect" id="node8_138" href="paramz.core.observable_array.ObsAr-class.html#__getslice__" title="x[i:j]" alt="" coords="103,881,375,901"/>
+<area shape="rect" id="node8_139" href="paramz.core.observable_array.ObsAr-class.html#__setslice__" title="x[i:j]=y" alt="" coords="103,901,375,921"/>
+<area shape="rect" id="node8_140" href="paramz.core.observable_array.ObsAr-class.html#__ilshift__" title="x&lt;&lt;=y" alt="" coords="103,921,375,941"/>
+<area shape="rect" id="node8_141" href="paramz.core.observable_array.ObsAr-class.html#__irshift__" title="x&gt;&gt;=y" alt="" coords="103,941,375,961"/>
+<area shape="rect" id="node8_142" href="paramz.core.observable_array.ObsAr-class.html#__ixor__" title="x^=y" alt="" coords="103,961,375,981"/>
+<area shape="rect" id="node8_143" href="paramz.core.observable_array.ObsAr-class.html#__ipow__" title="x**=y" alt="" coords="103,981,375,1001"/>
+<area shape="rect" id="node8_144" href="paramz.core.observable_array.ObsAr-class.html#__ifloordiv__" title="x//=y" alt="" coords="103,1001,375,1021"/>
+<area shape="rect" id="node8_145" href="paramz.core.observable_array.ObsAr-class.html#__isub__" title="x&#45;=y" alt="" coords="103,1021,375,1041"/>
+<area shape="rect" id="node8_146" href="paramz.core.observable_array.ObsAr-class.html#__ior__" title="x|=y" alt="" coords="103,1041,375,1061"/>
+<area shape="rect" id="node8_147" href="paramz.core.observable_array.ObsAr-class.html#__itruediv__" title="x/=y" alt="" coords="103,1061,375,1081"/>
+<area shape="rect" id="node8_148" href="paramz.core.observable_array.ObsAr-class.html#__imul__" title="x*=y" alt="" coords="103,1101,375,1121"/>
+<area shape="rect" id="node8" href="paramz.core.observable_array.ObsAr-class.html" title="An ndarray which reports changes to its observers." alt="" coords="91,789,387,1128"/>
+<area shape="rect" id="node11_149" href="paramz.core.gradcheckable.Gradcheckable-class.html#checkgrad" title="Check the gradient of this parameter with respect to the highest parent&#39;s &#160;objective function." alt="" coords="775,457,1243,477"/>
+<area shape="rect" id="node11" href="paramz.core.gradcheckable.Gradcheckable-class.html" title="Adds the functionality for an object to be gradcheckable." alt="" coords="762,425,1254,483"/>
+<area shape="rect" id="node4_150" href="javascript:void(0);" title="Same as self.transpose(), except that self is returned if self.ndim &lt; 2." alt="" coords="135,162,336,182"/>
+<area shape="rect" id="node4_151" href="javascript:void(0);" title="Array protocol: Python side." alt="" coords="135,182,336,202"/>
+<area shape="rect" id="node4_152" href="javascript:void(0);" title="Array protocol: C&#45;struct side." alt="" coords="135,202,336,222"/>
+<area shape="rect" id="node4_153" href="javascript:void(0);" title="hash(x)" alt="" coords="135,222,336,242"/>
+<area shape="rect" id="node4_154" href="javascript:void(0);" title="Base object if memory is from some other object." alt="" coords="135,242,336,262"/>
+<area shape="rect" id="node4_155" href="javascript:void(0);" title="An object to simplify the interaction of the array with the ctypes module." alt="" coords="135,262,336,282"/>
+<area shape="rect" id="node4_156" href="javascript:void(0);" title="Python buffer object pointing to the start of the array&#39;s data." alt="" coords="135,282,336,302"/>
+<area shape="rect" id="node4_157" href="javascript:void(0);" title="Data&#45;type of the array&#39;s elements." alt="" coords="135,302,336,322"/>
+<area shape="rect" id="node4_158" href="javascript:void(0);" title="Information about the memory layout of the array." alt="" coords="135,322,336,342"/>
+<area shape="rect" id="node4_159" href="javascript:void(0);" title="A 1&#45;D iterator over the array." alt="" coords="135,342,336,362"/>
+<area shape="rect" id="node4_160" href="javascript:void(0);" title="The imaginary part of the array." alt="" coords="135,362,336,382"/>
+<area shape="rect" id="node4_161" href="javascript:void(0);" title="Length of one array element in bytes." alt="" coords="135,382,336,402"/>
+<area shape="rect" id="node4_162" href="javascript:void(0);" title="Total bytes consumed by the elements of the array." alt="" coords="135,402,336,422"/>
+<area shape="rect" id="node4_163" href="javascript:void(0);" title="Tuple of bytes to step in each dimension when traversing an array." alt="" coords="135,442,336,462"/>
+<area shape="rect" id="node4_164" href="javascript:void(0);" title="abs(x)" alt="" coords="135,465,336,485"/>
+<area shape="rect" id="node4_165" href="javascript:void(0);" title="x+y" alt="" coords="135,485,336,505"/>
+<area shape="rect" id="node4_166" href="javascript:void(0);" title="x&amp;y" alt="" coords="135,505,336,525"/>
+<area shape="rect" id="node4_167" href="javascript:void(0);" title="a.__array__(|dtype) &#45;&gt; reference if type unchanged, copy otherwise." alt="" coords="135,525,336,545"/>
+<area shape="rect" id="node4_168" href="javascript:void(0);" title="numpy.ndarray.__array_prepare__" alt="" coords="135,545,336,565"/>
+<area shape="rect" id="node4_169" href="javascript:void(0);" title="numpy.ndarray.__complex__" alt="" coords="135,565,336,585"/>
+<area shape="rect" id="node4_170" href="javascript:void(0);" title="y in x" alt="" coords="135,585,336,605"/>
+<area shape="rect" id="node4_171" href="javascript:void(0);" title="Return a copy of the array." alt="" coords="135,605,336,625"/>
+<area shape="rect" id="node4_172" href="javascript:void(0);" title="del x[y]" alt="" coords="135,625,336,645"/>
+<area shape="rect" id="node4_173" href="javascript:void(0);" title="del x[i:j]" alt="" coords="135,645,336,665"/>
+<area shape="rect" id="node4_174" href="javascript:void(0);" title="x/y" alt="" coords="135,665,336,685"/>
+<area shape="rect" id="node4_175" href="javascript:void(0);" title="divmod(x, y)" alt="" coords="135,685,336,705"/>
+<area shape="rect" id="node4_176" href="javascript:void(0);" title="x==y" alt="" coords="135,705,336,725"/>
+<area shape="rect" id="node4_177" href="javascript:void(0);" title="New view of array with the same data." alt="" coords="135,745,336,765"/>
+<area shape="rect" id="node4" href="javascript:void(0);" title="ndarray(shape, dtype=float, buffer=None, offset=0, strides=None, order=None)" alt="" coords="122,137,348,771"/>
+<area shape="rect" id="node5_178" href="paramz.core.updateable.Updateable-class.html#update_model" title="Get or set, whether automatic updates are performed." alt="" coords="431,932,678,952"/>
+<area shape="rect" id="node5_179" href="paramz.core.updateable.Updateable-class.html#toggle_update" title="paramz.core.updateable.Updateable.toggle_update" alt="" coords="431,952,678,972"/>
+<area shape="rect" id="node5_180" href="paramz.core.updateable.Updateable-class.html#update_toggle" title="paramz.core.updateable.Updateable.update_toggle" alt="" coords="431,972,678,992"/>
+<area shape="rect" id="node5_181" href="paramz.core.updateable.Updateable-class.html#trigger_update" title="Update the model from the current state." alt="" coords="431,992,678,1012"/>
+<area shape="rect" id="node5" href="paramz.core.updateable.Updateable-class.html" title="A model can be updated or not." alt="" coords="418,899,689,1018"/>
+<area shape="rect" id="node10_182" href="paramz.core.indexable.Indexable-class.html#add_index_operation" title="Add index operation with name to the operations given." alt="" coords="419,1179,690,1199"/>
+<area shape="rect" id="node10_183" href="paramz.core.indexable.Indexable-class.html#remove_index_operation" title="paramz.core.indexable.Indexable.remove_index_operation" alt="" coords="419,1199,690,1219"/>
+<area shape="rect" id="node10" href="paramz.core.indexable.Indexable-class.html" title="Make an object constrainable with Priors and Transformations." alt="" coords="406,1147,701,1225"/>
+<area shape="rect" id="node12_184" href="paramz.param.Param-class.html#__array_priority__" title="Array priority." alt="" coords="55,1929,659,1949"/>
+<area shape="rect" id="node12_185" href="paramz.param.Param-class.html#_fixes_" title="hash(x)" alt="" coords="55,1949,659,1969"/>
+<area shape="rect" id="node12_186" href="paramz.param.Param-class.html#parameters" title="paramz.param.Param.parameters" alt="" coords="55,1969,659,1989"/>
+<area shape="rect" id="node12_187" href="paramz.param.Param-class.html#param_array" title="As we are a leaf, this just returns self" alt="" coords="55,1989,659,2009"/>
+<area shape="rect" id="node12_188" href="paramz.param.Param-class.html#values" title="Return self as numpy array view" alt="" coords="55,2009,659,2029"/>
+<area shape="rect" id="node12_189" href="paramz.param.Param-class.html#gradient" title="Return a view on the gradient, which is in the same shape as this parameter is." alt="" coords="55,2029,659,2049"/>
+<area shape="rect" id="node12_190" href="paramz.param.Param-class.html#is_fixed" title="paramz.param.Param.is_fixed" alt="" coords="55,2049,659,2069"/>
+<area shape="rect" id="node12_191" href="paramz.param.Param-class.html#flattened_parameters" title="paramz.param.Param.flattened_parameters" alt="" coords="55,2069,659,2089"/>
+<area shape="rect" id="node12_192" href="paramz.param.Param-class.html#num_params" title="Return the number of parameters of this parameter_handle." alt="" coords="55,2089,659,2109"/>
+<area shape="rect" id="node12_193" href="paramz.param.Param-class.html#__new__" title="paramz.param.Param.__new__" alt="" coords="55,2112,659,2132"/>
+<area shape="rect" id="node12_194" href="paramz.param.Param-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="55,2132,659,2152"/>
+<area shape="rect" id="node12_195" href="paramz.param.Param-class.html#__array_finalize__" title="None." alt="" coords="55,2152,659,2172"/>
+<area shape="rect" id="node12_196" href="paramz.param.Param-class.html#__getitem__" title="x[y]" alt="" coords="55,2172,659,2192"/>
+<area shape="rect" id="node12_197" href="paramz.param.Param-class.html#copy" title="Make a copy." alt="" coords="55,2192,659,2212"/>
+<area shape="rect" id="node12_198" href="paramz.param.Param-class.html#__deepcopy__" title="Used if copy.deepcopy is called on an array." alt="" coords="55,2212,659,2232"/>
+<area shape="rect" id="node12_199" href="paramz.param.Param-class.html#parameter_names" title="Get the names of all parameters of this model or parameter." alt="" coords="55,2232,659,2252"/>
+<area shape="rect" id="node12_200" href="paramz.param.Param-class.html#get_property_string" title="paramz.param.Param.get_property_string" alt="" coords="55,2252,659,2272"/>
+<area shape="rect" id="node12_201" href="paramz.param.Param-class.html#__repr__" title="repr(x)" alt="" coords="55,2272,659,2292"/>
+<area shape="rect" id="node12_202" href="paramz.param.Param-class.html#_repr_html_" title="Representation of the parameter in html for notebook display." alt="" coords="55,2292,659,2312"/>
+<area shape="rect" id="node12_203" href="paramz.param.Param-class.html#__str__" title="str(x)" alt="" coords="55,2312,659,2332"/>
+<area shape="rect" id="node12_204" href="paramz.param.Param-class.html#build_pydot" title="Build a pydot representation of this model." alt="" coords="55,2332,659,2352"/>
+<area shape="rect" id="node12" href="paramz.param.Param-class.html" title="Parameter object for GPy models." alt="" coords="42,1905,670,2359"/>
+<area shape="rect" id="node7_205" href="paramz.core.observable.Observable-class.html#set_updates" title="paramz.core.observable.Observable.set_updates" alt="" coords="390,417,720,437"/>
+<area shape="rect" id="node7_206" href="paramz.core.observable.Observable-class.html#add_observer" title="Add an observer `observer` with the callback `callble` and priority &#160;`priority` to this observers list." alt="" coords="390,437,720,457"/>
+<area shape="rect" id="node7_207" href="paramz.core.observable.Observable-class.html#remove_observer" title="Either (if callble is None) remove all callables, which were added &#160;alongside observer, or remove callable `callble` which was added alongside &#160;the observer `observer`." alt="" coords="390,457,720,477"/>
+<area shape="rect" id="node7_208" href="paramz.core.observable.Observable-class.html#notify_observers" title="Notifies all observers." alt="" coords="390,477,720,497"/>
+<area shape="rect" id="node7_209" href="paramz.core.observable.Observable-class.html#change_priority" title="paramz.core.observable.Observable.change_priority" alt="" coords="390,497,720,517"/>
+<area shape="rect" id="node7" href="paramz.core.observable.Observable-class.html" title="Observable pattern for parameterization." alt="" coords="378,385,732,523"/>
+<area shape="rect" id="node9_210" href="paramz.core.parentable.Parentable-class.html#_parent_" title="hash(x)" alt="" coords="928,30,1090,50"/>
+<area shape="rect" id="node9_211" href="paramz.core.parentable.Parentable-class.html#_parent_index_" title="hash(x)" alt="" coords="928,50,1090,70"/>
+<area shape="rect" id="node9_212" href="paramz.core.parentable.Parentable-class.html#_highest_parent_" title="Gets the highest parent by traversing up to the root node of the hierarchy." alt="" coords="928,70,1090,90"/>
+<area shape="rect" id="node9_213" href="paramz.core.parentable.Parentable-class.html#has_parent" title="Return whether this parentable object currently has a parent." alt="" coords="928,93,1090,113"/>
+<area shape="rect" id="node9" href="paramz.core.parentable.Parentable-class.html" title="Enable an Object to have a parent." alt="" coords="916,5,1101,119"/>
+<area shape="rect" id="node13_214" href="paramz.core.nameable.Nameable-class.html#name" title="The name of this object" alt="" coords="799,947,1083,967"/>
+<area shape="rect" id="node13_215" href="paramz.core.nameable.Nameable-class.html#hierarchy_name" title="return the name for this object with the parents names attached by dots." alt="" coords="799,969,1083,989"/>
+<area shape="rect" id="node13" href="paramz.core.nameable.Nameable-class.html" title="Make an object nameable inside the hierarchy." alt="" coords="786,922,1094,995"/>
+</map>
+  <img src="uml_class_diagram_for_paramz_p.gif" alt='' usemap="#uml_class_diagram_for_paramz_p" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Parameter object for GPy models.</p>
+  <p>:param str name:           name of the parameter to be printed :param 
+  input_array:        array which this parameter handles :type input_array:
+  np.ndarray :param default_constraint: The default constraint for this 
+  parameter :type default_constraint:</p>
+  <p>You can add/remove constraints by calling constrain on the parameter 
+  itself, e.g:</p>
+  <ul>
+    <li>
+      self[:,1].constrain_positive()
+    </li>
+    <li>
+      self[0].tie_to(other)
+    </li>
+    <li>
+      self.untie()
+    </li>
+    <li>
+      self[:3,:].unconstrain()
+    </li>
+    <li>
+      self[1].fix()
+    </li>
+  </ul>
+  <p>Fixing parameters will fix them to the value they are right now. If 
+  you change the fixed value, it will be fixed to the new value!</p>
+  <p>Important Notes:</p>
+  <p>The array given into this, will be used as the Param object. That is, 
+  the memory of the numpy array given will be the memory of this object. If
+  you want to make a new Param object you need to copy the input array!</p>
+  <p>Multilevel indexing (e.g. self[:2][1:]) is not supported and might 
+  lead to unexpected behaviour. Try to index in one go, using boolean 
+  indexing or the numpy builtin np.index function.</p>
+  <p>See :py:class:`GPy.core.parameterized.Parameterized` for more details 
+  on constraining etc.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">input_array</span>,
+        <span class="summary-sig-arg">default_constraint</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">*a</span>,
+        <span class="summary-sig-arg">**kw</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#__array_finalize__" class="summary-sig-name">__array_finalize__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>)</span><br />
+      None.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.__array_finalize__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#__getitem__" class="summary-sig-name">__getitem__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x[y]</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.__getitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#_raveled_index" class="summary-sig-name" onclick="show_private();">_raveled_index</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">slice_index</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Flattened array of ints, specifying the index of this object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._raveled_index">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#_raveled_index_for" class="summary-sig-name" onclick="show_private();">_raveled_index_for</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>)</span><br />
+      get the raveled index for a param that is an int array, containing 
+      the indexes for the flattened param inside this parameterized logic.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._raveled_index_for">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#_ensure_fixes" class="summary-sig-name" onclick="show_private();">_ensure_fixes</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._ensure_fixes">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#_get_original" class="summary-sig-name" onclick="show_private();">_get_original</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">param</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._get_original">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#copy" class="summary-sig-name">copy</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Make a copy.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.copy">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Deep copy of array</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#__deepcopy__" class="summary-sig-name">__deepcopy__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">memo</span>)</span><br />
+      Used if copy.deepcopy is called on an array.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.__deepcopy__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#_setup_observers" class="summary-sig-name" onclick="show_private();">_setup_observers</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Setup the default observers</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._setup_observers">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#parameter_names" class="summary-sig-name">parameter_names</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">add_self</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">adjust_for_printing</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">recursive</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">**kw</span>)</span><br />
+      Get the names of all parameters of this model or parameter.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.parameter_names">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_property_string"></a><span class="summary-sig-name">get_property_string</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">propname</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.get_property_string">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      repr(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.__repr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_indices"></a><span class="summary-sig-name">_indices</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">slice_index</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._indices">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_max_len_names"></a><span class="summary-sig-name">_max_len_names</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">gen</span>,
+        <span class="summary-sig-arg">header</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._max_len_names">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_max_len_values"></a><span class="summary-sig-name">_max_len_values</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._max_len_values">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_max_len_index"></a><span class="summary-sig-name">_max_len_index</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ind</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._max_len_index">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_repr_html_"></a><span class="summary-sig-name">_repr_html_</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">indices</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">iops</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">lx</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">li</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">lls</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Representation of the parameter in html for notebook display.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._repr_html_">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_format_spec"></a><span class="summary-sig-name">_format_spec</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">indices</span>,
+        <span class="summary-sig-arg">iops</span>,
+        <span class="summary-sig-arg">lx</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">li</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">lls</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">VT100</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param._format_spec">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">indices</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">iops</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">lx</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">li</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">lls</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">only_name</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">VT100</span>=<span class="summary-sig-default">True</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#build_pydot" class="summary-sig-name">build_pydot</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">G</span>)</span><br />
+      Build a pydot representation of this model.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.build_pydot">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.Parameterizable-class.html">core.parameter_core.Parameterizable</a></code></b>:
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#__setstate__">__setstate__</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#disable_caching">disable_caching</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#enable_caching">enable_caching</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#initialize_parameter">initialize_parameter</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#parameters_changed">parameters_changed</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#save">save</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#traverse">traverse</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#traverse_parents">traverse_parents</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.Parameterizable-class.html">core.parameter_core.Parameterizable</a></code></b> (private):
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_add_parameter_name" onclick="show_private();">_add_parameter_name</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_name_changed" onclick="show_private();">_name_changed</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_notify_parent_change" onclick="show_private();">_notify_parent_change</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_parameters_changed_notification" onclick="show_private();">_parameters_changed_notification</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_pass_through_notify_observers" onclick="show_private();">_pass_through_notify_observers</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_remove_parameter_name" onclick="show_private();">_remove_parameter_name</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_traverse" onclick="show_private();">_traverse</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">core.parameter_core.OptimizationHandlable</a></code></b>:
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#parameter_names_flat">parameter_names_flat</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#randomize">randomize</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">core.parameter_core.OptimizationHandlable</a></code></b> (private):
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_connect_parameters" onclick="show_private();">_connect_parameters</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_propagate_param_grad" onclick="show_private();">_propagate_param_grad</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_size_transformed" onclick="show_private();">_size_transformed</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_transform_gradients" onclick="show_private();">_transform_gradients</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_trigger_params_changed" onclick="show_private();">_trigger_params_changed</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.constrainable.Constrainable-class.html">core.constrainable.Constrainable</a></code></b>:
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain">constrain</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain_bounded">constrain_bounded</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain_fixed">constrain_fixed</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain_negative">constrain_negative</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain_positive">constrain_positive</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#fix">fix</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain">unconstrain</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain_bounded">unconstrain_bounded</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain_fixed">unconstrain_fixed</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain_negative">unconstrain_negative</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain_positive">unconstrain_positive</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unfix">unfix</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.constrainable.Constrainable-class.html">core.constrainable.Constrainable</a></code></b> (private):
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_connect_fixes" onclick="show_private();">_connect_fixes</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_has_fixes" onclick="show_private();">_has_fixes</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_set_fixed" onclick="show_private();">_set_fixed</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_set_unfixed" onclick="show_private();">_set_unfixed</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.indexable.Indexable-class.html">core.indexable.Indexable</a></code></b>:
+      <code><a href="paramz.core.indexable.Indexable-class.html#add_index_operation">add_index_operation</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#remove_index_operation">remove_index_operation</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.indexable.Indexable-class.html">core.indexable.Indexable</a></code></b> (private):
+      <code><a href="paramz.core.indexable.Indexable-class.html#_add_io" onclick="show_private();">_add_io</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_add_to_index_operations" onclick="show_private();">_add_to_index_operations</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_disconnect_parent" onclick="show_private();">_disconnect_parent</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_offset_for" onclick="show_private();">_offset_for</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_parent_changed" onclick="show_private();">_parent_changed</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_raveled_index_for_transformed" onclick="show_private();">_raveled_index_for_transformed</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_remove_from_index_operations" onclick="show_private();">_remove_from_index_operations</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.nameable.Nameable-class.html">core.nameable.Nameable</a></code></b>:
+      <code><a href="paramz.core.nameable.Nameable-class.html#hierarchy_name">hierarchy_name</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.gradcheckable.Gradcheckable-class.html">core.gradcheckable.Gradcheckable</a></code></b>:
+      <code><a href="paramz.core.gradcheckable.Gradcheckable-class.html#checkgrad">checkgrad</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.gradcheckable.Gradcheckable-class.html">core.gradcheckable.Gradcheckable</a></code></b> (private):
+      <code><a href="paramz.core.gradcheckable.Gradcheckable-class.html#_checkgrad" onclick="show_private();">_checkgrad</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.observable_array.ObsAr-class.html">core.observable_array.ObsAr</a></code></b>:
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__array_wrap__">__array_wrap__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__getslice__">__getslice__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__iadd__">__iadd__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__iand__">__iand__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__idiv__">__idiv__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__ifloordiv__">__ifloordiv__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__ilshift__">__ilshift__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__imod__">__imod__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__imul__">__imul__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__ior__">__ior__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__ipow__">__ipow__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__irshift__">__irshift__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__isub__">__isub__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__itruediv__">__itruediv__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__ixor__">__ixor__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__reduce__">__reduce__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__setitem__">__setitem__</a></code>,
+      <code><a href="paramz.core.observable_array.ObsAr-class.html#__setslice__">__setslice__</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>numpy.ndarray</code></b>:
+      <code>__abs__</code>,
+      <code>__add__</code>,
+      <code>__and__</code>,
+      <code>__array__</code>,
+      <code>__array_prepare__</code>,
+      <code>__complex__</code>,
+      <code>__contains__</code>,
+      <code>__copy__</code>,
+      <code>__delitem__</code>,
+      <code>__delslice__</code>,
+      <code>__div__</code>,
+      <code>__divmod__</code>,
+      <code>__eq__</code>,
+      <code>__float__</code>,
+      <code>__floordiv__</code>,
+      <code>__ge__</code>,
+      <code>__gt__</code>,
+      <code>__hex__</code>,
+      <code>__index__</code>,
+      <code>__int__</code>,
+      <code>__invert__</code>,
+      <code>__iter__</code>,
+      <code>__le__</code>,
+      <code>__len__</code>,
+      <code>__long__</code>,
+      <code>__lshift__</code>,
+      <code>__lt__</code>,
+      <code>__mod__</code>,
+      <code>__mul__</code>,
+      <code>__ne__</code>,
+      <code>__neg__</code>,
+      <code>__nonzero__</code>,
+      <code>__oct__</code>,
+      <code>__or__</code>,
+      <code>__pos__</code>,
+      <code>__pow__</code>,
+      <code>__radd__</code>,
+      <code>__rand__</code>,
+      <code>__rdiv__</code>,
+      <code>__rdivmod__</code>,
+      <code>__rfloordiv__</code>,
+      <code>__rlshift__</code>,
+      <code>__rmod__</code>,
+      <code>__rmul__</code>,
+      <code>__ror__</code>,
+      <code>__rpow__</code>,
+      <code>__rrshift__</code>,
+      <code>__rshift__</code>,
+      <code>__rsub__</code>,
+      <code>__rtruediv__</code>,
+      <code>__rxor__</code>,
+      <code>__sizeof__</code>,
+      <code>__sub__</code>,
+      <code>__truediv__</code>,
+      <code>__xor__</code>,
+      <code>all</code>,
+      <code>any</code>,
+      <code>argmax</code>,
+      <code>argmin</code>,
+      <code>argpartition</code>,
+      <code>argsort</code>,
+      <code>astype</code>,
+      <code>byteswap</code>,
+      <code>choose</code>,
+      <code>clip</code>,
+      <code>compress</code>,
+      <code>conj</code>,
+      <code>conjugate</code>,
+      <code>cumprod</code>,
+      <code>cumsum</code>,
+      <code>diagonal</code>,
+      <code>dot</code>,
+      <code>dump</code>,
+      <code>dumps</code>,
+      <code>fill</code>,
+      <code>flatten</code>,
+      <code>getfield</code>,
+      <code>item</code>,
+      <code>itemset</code>,
+      <code>max</code>,
+      <code>mean</code>,
+      <code>min</code>,
+      <code>newbyteorder</code>,
+      <code>nonzero</code>,
+      <code>partition</code>,
+      <code>prod</code>,
+      <code>ptp</code>,
+      <code>put</code>,
+      <code>ravel</code>,
+      <code>repeat</code>,
+      <code>reshape</code>,
+      <code>resize</code>,
+      <code>round</code>,
+      <code>searchsorted</code>,
+      <code>setfield</code>,
+      <code>setflags</code>,
+      <code>sort</code>,
+      <code>squeeze</code>,
+      <code>std</code>,
+      <code>sum</code>,
+      <code>swapaxes</code>,
+      <code>take</code>,
+      <code>tobytes</code>,
+      <code>tofile</code>,
+      <code>tolist</code>,
+      <code>tostring</code>,
+      <code>trace</code>,
+      <code>transpose</code>,
+      <code>var</code>,
+      <code>view</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.pickleable.Pickleable-class.html">core.pickleable.Pickleable</a></code></b>:
+      <code><a href="paramz.core.pickleable.Pickleable-class.html#__getstate__">__getstate__</a></code>,
+      <code><a href="paramz.core.pickleable.Pickleable-class.html#pickle">pickle</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parentable.Parentable-class.html">core.parentable.Parentable</a></code></b>:
+      <code><a href="paramz.core.parentable.Parentable-class.html#has_parent">has_parent</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.updateable.Updateable-class.html">core.updateable.Updateable</a></code></b>:
+      <code><a href="paramz.core.updateable.Updateable-class.html#toggle_update">toggle_update</a></code>,
+      <code><a href="paramz.core.updateable.Updateable-class.html#trigger_update">trigger_update</a></code>,
+      <code><a href="paramz.core.updateable.Updateable-class.html#update_model">update_model</a></code>,
+      <code><a href="paramz.core.updateable.Updateable-class.html#update_toggle">update_toggle</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.observable.Observable-class.html">core.observable.Observable</a></code></b>:
+      <code><a href="paramz.core.observable.Observable-class.html#add_observer">add_observer</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#change_priority">change_priority</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#notify_observers">notify_observers</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#remove_observer">remove_observer</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#set_updates">set_updates</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Static Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-StaticMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">a new object with type S, a subtype of T</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.param.Param-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">input_array</span>,
+        <span class="summary-sig-arg">default_constraint</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.param-pysrc.html#Param.__new__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__array_priority__"></a><span class="summary-name">__array_priority__</span> = <code title="-1">-1</code><br />
+      Array priority.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_fixes_"></a><span class="summary-name">_fixes_</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="parameters"></a><span class="summary-name">parameters</span> = <code title="[]"><code class="variable-group">[</code><code class="variable-group">]</code></code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>numpy.ndarray</code></b>:
+      <code>__hash__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parentable.Parentable-class.html">core.parentable.Parentable</a></code></b>:
+      <code><a href="paramz.core.parentable.Parentable-class.html#_parent_">_parent_</a></code>,
+      <code><a href="paramz.core.parentable.Parentable-class.html#_parent_index_">_parent_index_</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.param.Param-class.html#param_array" class="summary-name">param_array</a><br />
+      As we are a leaf, this just returns self
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.param.Param-class.html#values" class="summary-name">values</a><br />
+      Return self as numpy array view
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.param.Param-class.html#gradient" class="summary-name">gradient</a><br />
+      Return a view on the gradient, which is in the same shape as this 
+      parameter is.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.param.Param-class.html#is_fixed" class="summary-name">is_fixed</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.param.Param-class.html#_description_str" class="summary-name" onclick="show_private();">_description_str</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.param.Param-class.html#flattened_parameters" class="summary-name">flattened_parameters</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.param.Param-class.html#num_params" class="summary-name">num_params</a><br />
+      Return the number of parameters of this parameter_handle.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.Parameterizable-class.html">core.parameter_core.Parameterizable</a></code></b>:
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#unfixed_param_array">unfixed_param_array</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">core.parameter_core.OptimizationHandlable</a></code></b>:
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#gradient_full">gradient_full</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#optimizer_array">optimizer_array</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.nameable.Nameable-class.html">core.nameable.Nameable</a></code></b>:
+      <code><a href="paramz.core.nameable.Nameable-class.html#name">name</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>numpy.ndarray</code></b>:
+      <code>T</code>,
+      <code>__array_interface__</code>,
+      <code>__array_struct__</code>,
+      <code>base</code>,
+      <code>ctypes</code>,
+      <code>data</code>,
+      <code>dtype</code>,
+      <code>flags</code>,
+      <code>flat</code>,
+      <code>imag</code>,
+      <code>itemsize</code>,
+      <code>nbytes</code>,
+      <code>ndim</code>,
+      <code>real</code>,
+      <code>shape</code>,
+      <code>size</code>,
+      <code>strides</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parentable.Parentable-class.html">core.parentable.Parentable</a></code></b>:
+      <code><a href="paramz.core.parentable.Parentable-class.html#_highest_parent_">_highest_parent_</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__new__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__new__</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">input_array</span>,
+        <span class="sig-arg">default_constraint</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.__new__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns: a new object with type S, a subtype of T</dt>
+    <dt>Overrides:
+        object.__new__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">input_array</span>,
+        <span class="sig-arg">default_constraint</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">*a</span>,
+        <span class="sig-arg">**kw</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__array_finalize__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__array_finalize__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">obj</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.__array_finalize__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>None.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        __array_finalize__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__getitem__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getitem__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">s</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Indexing operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.__getitem__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x[y]</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__getitem__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_raveled_index"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_raveled_index</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">slice_index</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param._raveled_index">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Flattened array of ints, specifying the index of this object. This has
+  to account for shaped parameters!</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.indexable.Indexable-class.html#_raveled_index" onclick="show_private();">core.indexable.Indexable._raveled_index</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_raveled_index_for"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_raveled_index_for</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">obj</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param._raveled_index_for">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>get the raveled index for a param that is an int array, containing the
+  indexes for the flattened param inside this parameterized logic.</p>
+  <p>!Warning! be sure to call this method on the highest parent of a 
+  hierarchy, as it uses the fixes to do its work</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.indexable.Indexable-class.html#_raveled_index_for" onclick="show_private();">core.indexable.Indexable._raveled_index_for</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_ensure_fixes"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_ensure_fixes</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param._ensure_fixes">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.constrainable.Constrainable-class.html#_ensure_fixes" onclick="show_private();">core.constrainable.Constrainable._ensure_fixes</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_get_original"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_get_original</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">param</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param._get_original">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.constrainable.Constrainable-class.html#_get_original" onclick="show_private();">core.constrainable.Constrainable._get_original</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="copy"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copy</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.copy">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Make a copy. This means, we delete all observers and return a copy of 
+  this array. It will still be an ObsAr!</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.pickleable.Pickleable-class.html#copy">core.pickleable.Pickleable.copy</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__deepcopy__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__deepcopy__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">memo</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.__deepcopy__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Used if copy.deepcopy is called on an array.</p>
+  <dl class="fields">
+    <dt>Returns: Deep copy of array</dt>
+    <dt>Overrides:
+        <a href="paramz.core.pickleable.Pickleable-class.html#__deepcopy__">core.pickleable.Pickleable.__deepcopy__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_setup_observers"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_setup_observers</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param._setup_observers">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Setup the default observers</p>
+  <p>1: pass through to parent, if present</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.observable_array.ObsAr-class.html#_setup_observers" onclick="show_private();">core.observable_array.ObsAr._setup_observers</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="parameter_names"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parameter_names</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">add_self</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">adjust_for_printing</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">recursive</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">**kw</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.parameter_names">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Get the names of all parameters of this model or parameter. It starts
+from the parameterized object you are calling this method on.
+
+Note: This does not unravel multidimensional parameters,
+      use parameter_names_flat to unravel parameters!
+
+:param bool add_self: whether to add the own name in front of names
+:param bool adjust_for_printing: whether to call `adjust_name_for_printing` on names
+:param bool recursive: whether to traverse through hierarchy and append leaf node names
+:param bool intermediate: whether to add intermediate names, that is parameterized objects
+
+</pre>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.parameter_core.OptimizationHandlable-class.html#parameter_names">core.parameter_core.OptimizationHandlable.parameter_names</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.__repr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>repr(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">indices</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">iops</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">lx</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">li</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">lls</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">only_name</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">VT100</span>=<span class="sig-default">True</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="build_pydot"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">build_pydot</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">G</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.param-pysrc.html#Param.build_pydot">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Build a pydot representation of this model. This needs pydot 
+  installed.</p>
+  <p>Example Usage:</p>
+  <p>np.random.seed(1000) X = np.random.normal(0,1,(20,2)) beta = 
+  np.random.uniform(0,1,(2,1)) Y = X.dot(beta) m = RidgeRegression(X, Y) G 
+  = m.build_pydot() G.write_png('example_hierarchy_layout.png')</p>
+  <p>The output looks like:</p>
+  <p>.. image:: example_hierarchy_layout.png</p>
+  <p>Rectangles are parameterized objects (nodes or leafs of 
+  hierarchy).</p>
+  <p>Trapezoids are param objects, which represent the arrays for 
+  parameters.</p>
+  <p>Black arrows show parameter hierarchical dependence. The arrow points 
+  from parents towards children.</p>
+  <p>Orange arrows show the observer pattern. Self references (here) are 
+  the references to the call to parameters changed and references upwards 
+  are the references to tell the parents they need to update.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Property Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-PropertyDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="param_array"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">param_array</h3>
+  <p>As we are a leaf, this just returns self</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.param_array(<span class="summary-sig-arg">self</span>)</span>
+        - As we are a leaf, this just returns self
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="values"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">values</h3>
+  <p>Return self as numpy array view</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.values(<span class="summary-sig-arg">self</span>)</span>
+        - Return self as numpy array view
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="gradient"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">gradient</h3>
+  <p>Return a view on the gradient, which is in the same shape as this 
+  parameter is. Note: this is not the real gradient array, it is just a 
+  view on it.</p>
+  <p>To work on the real gradient array use: self.full_gradient</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.gradient(<span class="summary-sig-arg">self</span>)</span>
+        - Return a view on the gradient, which is in the same shape as this parameter
+is.
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.gradient(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="is_fixed"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">is_fixed</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.is_fixed(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_description_str"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_description_str</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>._description_str(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="flattened_parameters"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">flattened_parameters</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.flattened_parameters(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="num_params"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">num_params</h3>
+  <p>Return the number of parameters of this parameter_handle. Param 
+  objects will always return 0.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.num_params(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 11:59:53 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

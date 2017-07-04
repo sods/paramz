@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.caching.Cacher</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.caching-module.html">Module&nbsp;caching</a> ::
+        Class&nbsp;Cacher
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.caching.Cacher-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Cacher</h1><p class="nomargin-top"><span class="codelink"><a href="paramz.caching-pysrc.html#Cacher">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_paramz_c_2" name="uml_class_diagram_for_paramz_c_2">
+<area shape="rect" id="node1_16" href="paramz.caching.Cacher-class.html#__name__" title="paramz.caching.Cacher.__name__" alt="" coords="18,30,545,50"/>
+<area shape="rect" id="node1_17" href="paramz.caching.Cacher-class.html#__init__" title="Cache an `operation`." alt="" coords="18,53,545,73"/>
+<area shape="rect" id="node1_18" href="paramz.caching.Cacher-class.html#disable_cacher" title="Disable the caching of this cacher." alt="" coords="18,73,545,93"/>
+<area shape="rect" id="node1_19" href="paramz.caching.Cacher-class.html#enable_cacher" title="Enable the caching of this cacher." alt="" coords="18,93,545,113"/>
+<area shape="rect" id="node1_20" href="paramz.caching.Cacher-class.html#id" title="returns the self.id of an object, to be used in caching individual self.ids" alt="" coords="18,113,545,133"/>
+<area shape="rect" id="node1_21" href="paramz.caching.Cacher-class.html#combine_inputs" title="Combines the args and kw in a unique way, such that ordering of kwargs does not lead to recompute" alt="" coords="18,133,545,153"/>
+<area shape="rect" id="node1_22" href="paramz.caching.Cacher-class.html#prepare_cache_id" title="get the cacheid (conc." alt="" coords="18,153,545,173"/>
+<area shape="rect" id="node1_23" href="paramz.caching.Cacher-class.html#ensure_cache_length" title="Ensures the cache is within its limits and has one place free" alt="" coords="18,173,545,193"/>
+<area shape="rect" id="node1_24" href="paramz.caching.Cacher-class.html#add_to_cache" title="This adds cache_id to the cache, with inputs and output" alt="" coords="18,193,545,213"/>
+<area shape="rect" id="node1_25" href="paramz.caching.Cacher-class.html#__call__" title="A wrapper function for self.operation," alt="" coords="18,213,545,233"/>
+<area shape="rect" id="node1_26" href="paramz.caching.Cacher-class.html#on_cache_changed" title="A callback funtion, which sets local flags when the elements of some cached inputs change" alt="" coords="18,233,545,253"/>
+<area shape="rect" id="node1_27" href="paramz.caching.Cacher-class.html#reset" title="Totally reset the cache" alt="" coords="18,253,545,273"/>
+<area shape="rect" id="node1_28" href="paramz.caching.Cacher-class.html#__deepcopy__" title="paramz.caching.Cacher.__deepcopy__" alt="" coords="18,273,545,293"/>
+<area shape="rect" id="node1_29" href="paramz.caching.Cacher-class.html#__getstate__" title="paramz.caching.Cacher.__getstate__" alt="" coords="18,293,545,313"/>
+<area shape="rect" id="node1_30" href="paramz.caching.Cacher-class.html#__setstate__" title="paramz.caching.Cacher.__setstate__" alt="" coords="18,313,545,333"/>
+<area shape="rect" id="node1_31" href="paramz.caching.Cacher-class.html#__str__" title="str(x)" alt="" coords="18,333,545,353"/>
+<area shape="rect" id="node1" href="paramz.caching.Cacher-class.html" title="paramz.caching.Cacher" alt="" coords="5,5,556,359"/>
+</map>
+  <img src="uml_class_diagram_for_paramz_c_2.gif" alt='' usemap="#uml_class_diagram_for_paramz_c_2" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.caching.Cacher-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">operation</span>,
+        <span class="summary-sig-arg">limit</span>=<span class="summary-sig-default">3</span>,
+        <span class="summary-sig-arg">ignore_args</span>=<span class="summary-sig-default"><code class="variable-group">(</code><code class="variable-group">)</code></span>,
+        <span class="summary-sig-arg">force_kwargs</span>=<span class="summary-sig-default"><code class="variable-group">(</code><code class="variable-group">)</code></span>,
+        <span class="summary-sig-arg">cacher_enabled</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Cache an `operation`.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.caching.Cacher-class.html#disable_cacher" class="summary-sig-name">disable_cacher</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Disable the caching of this cacher.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.disable_cacher">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="enable_cacher"></a><span class="summary-sig-name">enable_cacher</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Enable the caching of this cacher.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.enable_cacher">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="id"></a><span class="summary-sig-name">id</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>)</span><br />
+      returns the self.id of an object, to be used in caching individual 
+      self.ids</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="combine_inputs"></a><span class="summary-sig-name">combine_inputs</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">kw</span>,
+        <span class="summary-sig-arg">ignore_args</span>)</span><br />
+      Combines the args and kw in a unique way, such that ordering of 
+      kwargs does not lead to recompute</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.combine_inputs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.caching.Cacher-class.html#prepare_cache_id" class="summary-sig-name">prepare_cache_id</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">combined_args_kw</span>)</span><br />
+      get the cacheid (conc.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.prepare_cache_id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ensure_cache_length"></a><span class="summary-sig-name">ensure_cache_length</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Ensures the cache is within its limits and has one place free</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.ensure_cache_length">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="add_to_cache"></a><span class="summary-sig-name">add_to_cache</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cache_id</span>,
+        <span class="summary-sig-arg">inputs</span>,
+        <span class="summary-sig-arg">output</span>)</span><br />
+      This adds cache_id to the cache, with inputs and output</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.add_to_cache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__call__"></a><span class="summary-sig-name">__call__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kw</span>)</span><br />
+      A wrapper function for self.operation,</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.__call__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.caching.Cacher-class.html#on_cache_changed" class="summary-sig-name">on_cache_changed</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">direct</span>,
+        <span class="summary-sig-arg">which</span>=<span class="summary-sig-default">None</span>)</span><br />
+      A callback funtion, which sets local flags when the elements of some 
+      cached inputs change</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.on_cache_changed">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="reset"></a><span class="summary-sig-name">reset</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Totally reset the cache</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.reset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__deepcopy__"></a><span class="summary-sig-name">__deepcopy__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">memo</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.__deepcopy__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getstate__"></a><span class="summary-sig-name">__getstate__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">memo</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.__getstate__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setstate__"></a><span class="summary-sig-name">__setstate__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">memo</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.__setstate__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.caching.Cacher-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.caching.Cacher-class.html#__name__" class="summary-name">__name__</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">operation</span>,
+        <span class="sig-arg">limit</span>=<span class="sig-default">3</span>,
+        <span class="sig-arg">ignore_args</span>=<span class="sig-default"><code class="variable-group">(</code><code class="variable-group">)</code></span>,
+        <span class="sig-arg">force_kwargs</span>=<span class="sig-default"><code class="variable-group">(</code><code class="variable-group">)</code></span>,
+        <span class="sig-arg">cacher_enabled</span>=<span class="sig-default">True</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Cache an `operation`. If the operation is a bound method we will
+create a cache (FunctionCache) on that object in order to keep track
+of the caches on instances.
+
+Warning: If the instance already had a Cacher for the operation
+         that Cacher will be overwritten by this Cacher!
+
+:param callable operation: function to cache
+:param int limit: depth of cacher
+:param [int] ignore_args: list of indices, pointing at arguments to ignore in `*args` of `operation(*args)`. This includes self, so make sure to ignore self, if it is not cachable and you do not want this to prevent caching!
+:param [str] force_kwargs: list of kwarg names (strings). If a kwarg with that name is given, the cacher will force recompute and wont cache anything.
+:param int verbose: verbosity level. 0: no print outs, 1: casual print outs, 2: debug level print outs
+
+</pre>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="disable_cacher"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disable_cacher</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.disable_cacher">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Disable the caching of this cacher. This also removes previously 
+  cached results</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="prepare_cache_id"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">prepare_cache_id</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">combined_args_kw</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.prepare_cache_id">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>get the cacheid (conc. string of argument self.ids in order)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="on_cache_changed"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">on_cache_changed</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">direct</span>,
+        <span class="sig-arg">which</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.on_cache_changed">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>A callback funtion, which sets local flags when the elements of some 
+  cached inputs change</p>
+  <p>this function gets 'hooked up' to the inputs when we cache them, and 
+  upon their elements being changed we update here.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.caching-pysrc.html#Cacher.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Property Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-PropertyDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__name__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__name__</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.__name__(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 11:59:29 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

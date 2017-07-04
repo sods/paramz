@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;paramz
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="paramz-module.html">Package paramz</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#===============================================================================</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2012 - 2014, GPy authors (see AUTHORS.txt).</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2015, Max Zwiessele</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-comment"># All rights reserved.</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-comment"># Redistribution and use in source and binary forms, with or without</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment"># modification, are permitted provided that the following conditions are met:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-comment"># * Redistributions of source code must retain the above copyright notice, this</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-comment">#   list of conditions and the following disclaimer.</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-comment"># * Redistributions in binary form must reproduce the above copyright notice,</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-comment">#   this list of conditions and the following disclaimer in the documentation</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-comment">#   and/or other materials provided with the distribution.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-comment"># * Neither the name of paramax nor the names of its</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-comment">#   contributors may be used to endorse or promote products derived from</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-comment">#   this software without specific prior written permission.</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-comment"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-comment"># AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"><tt class="py-comment"># IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"><tt class="py-comment"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"><tt class="py-comment"># FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"><tt class="py-comment"># DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-comment"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"><tt class="py-comment"># CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"><tt class="py-comment"># OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"><tt class="py-comment"># OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"><tt class="py-comment">#===============================================================================</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module paramz.util=paramz.util-module.html"><a title="paramz.util" class="py-name" href="#" onclick="return doclink('link-0', 'util', 'link-0');">util</a></tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module paramz.model=paramz.model-module.html"><a title="paramz.model" class="py-name" href="#" onclick="return doclink('link-1', 'model', 'link-1');">model</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class paramz.model.Model=paramz.model.Model-class.html"><a title="paramz.model.Model" class="py-name" href="#" onclick="return doclink('link-2', 'Model', 'link-2');">Model</a></tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module paramz.parameterized=paramz.parameterized-module.html"><a title="paramz.parameterized" class="py-name" href="#" onclick="return doclink('link-3', 'parameterized', 'link-3');">parameterized</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class paramz.parameterized.Parameterized=paramz.parameterized.Parameterized-class.html"><a title="paramz.parameterized.Parameterized" class="py-name" href="#" onclick="return doclink('link-4', 'Parameterized', 'link-4');">Parameterized</a></tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module paramz.param=paramz.param-module.html"><a title="paramz.param" class="py-name" href="#" onclick="return doclink('link-5', 'param', 'link-5');">param</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class paramz.param.Param=paramz.param.Param-class.html"><a title="paramz.param.Param" class="py-name" href="#" onclick="return doclink('link-6', 'Param', 'link-6');">Param</a></tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Package paramz.core=paramz.core-module.html"><a title="paramz.core" class="py-name" href="#" onclick="return doclink('link-7', 'core', 'link-7');">core</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Module paramz.core.observable_array=paramz.core.observable_array-module.html"><a title="paramz.core.observable_array" class="py-name" href="#" onclick="return doclink('link-8', 'observable_array', 'link-8');">observable_array</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Class paramz.core.observable_array.ObsAr=paramz.core.observable_array.ObsAr-class.html"><a title="paramz.core.observable_array.ObsAr" class="py-name" href="#" onclick="return doclink('link-9', 'ObsAr', 'link-9');">ObsAr</a></tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-10" class="py-name" targets="Package paramz=paramz-module.html"><a title="paramz" class="py-name" href="#" onclick="return doclink('link-10', 'paramz', 'link-10');">paramz</a></tt> <tt class="py-keyword">import</tt> <tt id="link-11" class="py-name" targets="Module paramz.transformations=paramz.transformations-module.html"><a title="paramz.transformations" class="py-name" href="#" onclick="return doclink('link-11', 'transformations', 'link-11');">transformations</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">constraints</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-12" class="py-name" targets="Module paramz.caching=paramz.caching-module.html"><a title="paramz.caching" class="py-name" href="#" onclick="return doclink('link-12', 'caching', 'link-12');">caching</a></tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name" targets="Package paramz.optimization=paramz.optimization-module.html,Module paramz.optimization.optimization=paramz.optimization.optimization-module.html"><a title="paramz.optimization
+paramz.optimization.optimization" class="py-name" href="#" onclick="return doclink('link-13', 'optimization', 'link-13');">optimization</a></tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-14" class="py-name" targets="Package paramz.examples=paramz.examples-module.html"><a title="paramz.examples" class="py-name" href="#" onclick="return doclink('link-14', 'examples', 'link-14');">examples</a></tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-name">__version__</tt> <tt class="py-keyword">import</tt> <tt class="py-name">__version__</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"> </tt>
+<a name="_unpickle"></a><div id="_unpickle-def"><a name="L44"></a><tt class="py-lineno">44</tt> <a class="py-toggle" href="#" id="_unpickle-toggle" onclick="return toggle('_unpickle');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz-module.html#_unpickle">_unpickle</a><tt class="py-op">(</tt><tt class="py-param">file_or_path</tt><tt class="py-op">,</tt> <tt class="py-param">pickle</tt><tt class="py-op">,</tt> <tt class="py-param">strcl</tt><tt class="py-op">,</tt> <tt class="py-param">p3kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_unpickle-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="_unpickle-expanded"><a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">file_or_path</tt><tt class="py-op">,</tt> <tt class="py-name">strcl</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">file_or_path</tt><tt class="py-op">,</tt> <tt class="py-string">'rb'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt id="link-15" class="py-name" targets="Method paramz.transformations.Exponent.f()=paramz.transformations.Exponent-class.html#f,Method paramz.transformations.Logexp.f()=paramz.transformations.Logexp-class.html#f,Method paramz.transformations.LogexpClipped.f()=paramz.transformations.LogexpClipped-class.html#f,Method paramz.transformations.LogexpNeg.f()=paramz.transformations.LogexpNeg-class.html#f,Method paramz.transformations.Logistic.f()=paramz.transformations.Logistic-class.html#f,Method paramz.transformations.NegativeExponent.f()=paramz.transformations.NegativeExponent-class.html#f,Method paramz.transformations.NegativeLogexp.f()=paramz.transformations.NegativeLogexp-class.html#f,Method paramz.transformations.NormalEta.f()=paramz.transformations.NormalEta-class.html#f,Method paramz.transformations.NormalTheta.f()=paramz.transformations.NormalTheta-class.html#f,Method paramz.transformations.Square.f()=paramz.transformations.Square-class.html#f,Method paramz.transformations.Transformation.f()=paramz.transformations.Transformation-class.html#f"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-15', 'f', 'link-15');">f</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">            <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name" targets="Method paramz.core.pickleable.Pickleable.pickle()=paramz.core.pickleable.Pickleable-class.html#pickle"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-16', 'pickle', 'link-16');">pickle</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Function paramz.load()=paramz-module.html#load"><a title="paramz.load" class="py-name" href="#" onclick="return doclink('link-17', 'load', 'link-17');">load</a></tt><tt class="py-op">(</tt><tt id="link-18" class="py-name"><a title="paramz.transformations.Exponent.f
+paramz.transformations.Logexp.f
+paramz.transformations.LogexpClipped.f
+paramz.transformations.LogexpNeg.f
+paramz.transformations.Logistic.f
+paramz.transformations.NegativeExponent.f
+paramz.transformations.NegativeLogexp.f
+paramz.transformations.NormalEta.f
+paramz.transformations.NormalTheta.f
+paramz.transformations.Square.f
+paramz.transformations.Transformation.f" class="py-name" href="#" onclick="return doclink('link-18', 'f', 'link-15');">f</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">p3kw</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-19', 'pickle', 'link-16');">pickle</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="paramz.load" class="py-name" href="#" onclick="return doclink('link-20', 'load', 'link-17');">load</a></tt><tt class="py-op">(</tt><tt class="py-name">file_or_path</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">p3kw</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">m</tt> </tt>
+</div><a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"> </tt>
+<a name="load"></a><div id="load-def"><a name="L52"></a><tt class="py-lineno">52</tt> <a class="py-toggle" href="#" id="load-toggle" onclick="return toggle('load');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="paramz-module.html#load">load</a><tt class="py-op">(</tt><tt class="py-param">file_or_path</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="load-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="load-expanded"><a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"><tt class="py-docstring">    Load a previously pickled model, using `m.pickle('path/to/file.pickle)'`</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line"><tt class="py-docstring">    :param file_name: path/to/file.pickle</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-21" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-21', 'pickle', 'link-16');">pickle</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">UnpicklingError</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">    <tt class="py-name">_python3</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt>  </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">cPickle</tt> <tt class="py-keyword">as</tt> <tt id="link-22" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-22', 'pickle', 'link-16');">pickle</a></tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">        <tt class="py-name">_python3</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> <tt class="py-comment">#python3</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-23" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-23', 'pickle', 'link-16');">pickle</a></tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">    </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">_python3</tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">            <tt class="py-name">strcl</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">            <tt class="py-name">p3kw</tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">encoding</tt><tt class="py-op">=</tt><tt class="py-string">'latin1'</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-24" class="py-name" targets="Function paramz._unpickle()=paramz-module.html#_unpickle"><a title="paramz._unpickle" class="py-name" href="#" onclick="return doclink('link-24', '_unpickle', 'link-24');">_unpickle</a></tt><tt class="py-op">(</tt><tt class="py-name">file_or_path</tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-25', 'pickle', 'link-16');">pickle</a></tt><tt class="py-op">,</tt> <tt class="py-name">strcl</tt><tt class="py-op">,</tt> <tt class="py-name">p3kw</tt><tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">            <tt class="py-name">strcl</tt> <tt class="py-op">=</tt> <tt class="py-name">basestring</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">            <tt class="py-name">p3kw</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-26" class="py-name"><a title="paramz._unpickle" class="py-name" href="#" onclick="return doclink('link-26', '_unpickle', 'link-24');">_unpickle</a></tt><tt class="py-op">(</tt><tt class="py-name">file_or_path</tt><tt class="py-op">,</tt> <tt id="link-27" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-27', 'pickle', 'link-16');">pickle</a></tt><tt class="py-op">,</tt> <tt class="py-name">strcl</tt><tt class="py-op">,</tt> <tt class="py-name">p3kw</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">     </tt>
+<a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">UnpicklingError</tt><tt class="py-op">:</tt> <tt class="py-comment"># pragma: no coverage</tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-28" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-28', 'pickle', 'link-16');">pickle</a></tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-29" class="py-name"><a title="paramz._unpickle" class="py-name" href="#" onclick="return doclink('link-29', '_unpickle', 'link-24');">_unpickle</a></tt><tt class="py-op">(</tt><tt class="py-name">file_or_path</tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name"><a title="paramz.core.pickleable.Pickleable.pickle" class="py-name" href="#" onclick="return doclink('link-30', 'pickle', 'link-16');">pickle</a></tt><tt class="py-op">,</tt> <tt class="py-name">strcl</tt><tt class="py-op">,</tt> <tt class="py-name">p3kw</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 12:00:19 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

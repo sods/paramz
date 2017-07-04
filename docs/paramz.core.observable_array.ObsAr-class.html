@@ -1,0 +1,1535 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.core.observable_array.ObsAr</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.core-module.html">Package&nbsp;core</a> ::
+        <a href="paramz.core.observable_array-module.html">Module&nbsp;observable_array</a> ::
+        Class&nbsp;ObsAr
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.core.observable_array.ObsAr-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class ObsAr</h1><p class="nomargin-top"><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_paramz_c_15" name="uml_class_diagram_for_paramz_c_15">
+<area shape="rect" id="node1_52" href="paramz.core.observable_array.ObsAr-class.html#__array_priority__" title="Array priority." alt="" coords="302,681,574,701"/>
+<area shape="rect" id="node1_53" href="paramz.core.observable_array.ObsAr-class.html#values" title="Return the ObsAr underlying array as a standard ndarray." alt="" coords="302,701,574,721"/>
+<area shape="rect" id="node1_54" href="paramz.core.observable_array.ObsAr-class.html#__new__" title="paramz.core.observable_array.ObsAr.__new__" alt="" coords="302,724,574,744"/>
+<area shape="rect" id="node1_55" href="paramz.core.observable_array.ObsAr-class.html#__array_finalize__" title="None." alt="" coords="302,744,574,764"/>
+<area shape="rect" id="node1_56" href="paramz.core.observable_array.ObsAr-class.html#__array_wrap__" title="paramz.core.observable_array.ObsAr.__array_wrap__" alt="" coords="302,764,574,784"/>
+<area shape="rect" id="node1_57" href="paramz.core.observable_array.ObsAr-class.html#copy" title="Make a copy." alt="" coords="302,784,574,804"/>
+<area shape="rect" id="node1_58" href="paramz.core.observable_array.ObsAr-class.html#__deepcopy__" title="Used if copy.deepcopy is called on an array." alt="" coords="302,804,574,824"/>
+<area shape="rect" id="node1_59" href="paramz.core.observable_array.ObsAr-class.html#__reduce__" title="For pickling." alt="" coords="302,824,574,844"/>
+<area shape="rect" id="node1_60" href="paramz.core.observable_array.ObsAr-class.html#__setstate__" title="For unpickling." alt="" coords="302,844,574,864"/>
+<area shape="rect" id="node1_61" href="paramz.core.observable_array.ObsAr-class.html#__setitem__" title="x[i]=y" alt="" coords="302,864,574,884"/>
+<area shape="rect" id="node1_62" href="paramz.core.observable_array.ObsAr-class.html#__getslice__" title="x[i:j]" alt="" coords="302,884,574,904"/>
+<area shape="rect" id="node1_63" href="paramz.core.observable_array.ObsAr-class.html#__setslice__" title="x[i:j]=y" alt="" coords="302,904,574,924"/>
+<area shape="rect" id="node1_64" href="paramz.core.observable_array.ObsAr-class.html#__ilshift__" title="x&lt;&lt;=y" alt="" coords="302,924,574,944"/>
+<area shape="rect" id="node1_65" href="paramz.core.observable_array.ObsAr-class.html#__irshift__" title="x&gt;&gt;=y" alt="" coords="302,944,574,964"/>
+<area shape="rect" id="node1_66" href="paramz.core.observable_array.ObsAr-class.html#__ixor__" title="x^=y" alt="" coords="302,964,574,984"/>
+<area shape="rect" id="node1_67" href="paramz.core.observable_array.ObsAr-class.html#__imul__" title="x*=y" alt="" coords="302,1004,574,1024"/>
+<area shape="rect" id="node1" href="paramz.core.observable_array.ObsAr-class.html" title="An ndarray which reports changes to its observers." alt="" coords="290,657,586,1031"/>
+<area shape="rect" id="node5" href="paramz.param.Param-class.html" title="Parameter object for GPy models." alt="" coords="380,1049,496,1088"/>
+<area shape="rect" id="node2_68" href="javascript:void(0);" title="Same as self.transpose(), except that self is returned if self.ndim &lt; 2." alt="" coords="18,30,219,50"/>
+<area shape="rect" id="node2_69" href="javascript:void(0);" title="Array protocol: Python side." alt="" coords="18,50,219,70"/>
+<area shape="rect" id="node2_70" href="javascript:void(0);" title="Array protocol: C&#45;struct side." alt="" coords="18,70,219,90"/>
+<area shape="rect" id="node2_71" href="javascript:void(0);" title="hash(x)" alt="" coords="18,90,219,110"/>
+<area shape="rect" id="node2_72" href="javascript:void(0);" title="Base object if memory is from some other object." alt="" coords="18,110,219,130"/>
+<area shape="rect" id="node2_73" href="javascript:void(0);" title="An object to simplify the interaction of the array with the ctypes module." alt="" coords="18,130,219,150"/>
+<area shape="rect" id="node2_74" href="javascript:void(0);" title="Python buffer object pointing to the start of the array&#39;s data." alt="" coords="18,150,219,170"/>
+<area shape="rect" id="node2_75" href="javascript:void(0);" title="Data&#45;type of the array&#39;s elements." alt="" coords="18,170,219,190"/>
+<area shape="rect" id="node2_76" href="javascript:void(0);" title="Information about the memory layout of the array." alt="" coords="18,190,219,210"/>
+<area shape="rect" id="node2_77" href="javascript:void(0);" title="A 1&#45;D iterator over the array." alt="" coords="18,210,219,230"/>
+<area shape="rect" id="node2_78" href="javascript:void(0);" title="The imaginary part of the array." alt="" coords="18,230,219,250"/>
+<area shape="rect" id="node2_79" href="javascript:void(0);" title="Length of one array element in bytes." alt="" coords="18,250,219,270"/>
+<area shape="rect" id="node2_80" href="javascript:void(0);" title="Total bytes consumed by the elements of the array." alt="" coords="18,270,219,290"/>
+<area shape="rect" id="node2_81" href="javascript:void(0);" title="Tuple of bytes to step in each dimension when traversing an array." alt="" coords="18,310,219,330"/>
+<area shape="rect" id="node2_82" href="javascript:void(0);" title="abs(x)" alt="" coords="18,333,219,353"/>
+<area shape="rect" id="node2_83" href="javascript:void(0);" title="x+y" alt="" coords="18,353,219,373"/>
+<area shape="rect" id="node2_84" href="javascript:void(0);" title="x&amp;y" alt="" coords="18,373,219,393"/>
+<area shape="rect" id="node2_85" href="javascript:void(0);" title="a.__array__(|dtype) &#45;&gt; reference if type unchanged, copy otherwise." alt="" coords="18,393,219,413"/>
+<area shape="rect" id="node2_86" href="javascript:void(0);" title="numpy.ndarray.__array_prepare__" alt="" coords="18,413,219,433"/>
+<area shape="rect" id="node2_87" href="javascript:void(0);" title="numpy.ndarray.__complex__" alt="" coords="18,433,219,453"/>
+<area shape="rect" id="node2_88" href="javascript:void(0);" title="y in x" alt="" coords="18,453,219,473"/>
+<area shape="rect" id="node2_89" href="javascript:void(0);" title="Return a copy of the array." alt="" coords="18,473,219,493"/>
+<area shape="rect" id="node2_90" href="javascript:void(0);" title="del x[y]" alt="" coords="18,493,219,513"/>
+<area shape="rect" id="node2_91" href="javascript:void(0);" title="del x[i:j]" alt="" coords="18,513,219,533"/>
+<area shape="rect" id="node2_92" href="javascript:void(0);" title="x/y" alt="" coords="18,533,219,553"/>
+<area shape="rect" id="node2_93" href="javascript:void(0);" title="divmod(x, y)" alt="" coords="18,553,219,573"/>
+<area shape="rect" id="node2_94" href="javascript:void(0);" title="x==y" alt="" coords="18,573,219,593"/>
+<area shape="rect" id="node2_95" href="javascript:void(0);" title="New view of array with the same data." alt="" coords="18,613,219,633"/>
+<area shape="rect" id="node2" href="javascript:void(0);" title="ndarray(shape, dtype=float, buffer=None, offset=0, strides=None, order=None)" alt="" coords="5,5,231,639"/>
+<area shape="rect" id="node3_96" href="paramz.core.observable.Observable-class.html#set_updates" title="paramz.core.observable.Observable.set_updates" alt="" coords="273,285,603,305"/>
+<area shape="rect" id="node3_97" href="paramz.core.observable.Observable-class.html#add_observer" title="Add an observer `observer` with the callback `callble` and priority &#160;`priority` to this observers list." alt="" coords="273,305,603,325"/>
+<area shape="rect" id="node3_98" href="paramz.core.observable.Observable-class.html#remove_observer" title="Either (if callble is None) remove all callables, which were added &#160;alongside observer, or remove callable `callble` which was added alongside &#160;the observer `observer`." alt="" coords="273,325,603,345"/>
+<area shape="rect" id="node3_99" href="paramz.core.observable.Observable-class.html#notify_observers" title="Notifies all observers." alt="" coords="273,345,603,365"/>
+<area shape="rect" id="node3_100" href="paramz.core.observable.Observable-class.html#change_priority" title="paramz.core.observable.Observable.change_priority" alt="" coords="273,365,603,385"/>
+<area shape="rect" id="node3" href="paramz.core.observable.Observable-class.html" title="Observable pattern for parameterization." alt="" coords="261,253,615,391"/>
+<area shape="rect" id="node4_101" href="paramz.core.pickleable.Pickleable-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="657,305,811,325"/>
+<area shape="rect" id="node4_102" href="paramz.core.pickleable.Pickleable-class.html#pickle" title=":param f: either filename or open file object to write to." alt="" coords="657,325,811,345"/>
+<area shape="rect" id="node4_103" href="paramz.core.pickleable.Pickleable-class.html#__getstate__" title="paramz.core.pickleable.Pickleable.__getstate__" alt="" coords="657,345,811,365"/>
+<area shape="rect" id="node4" href="paramz.core.pickleable.Pickleable-class.html" title="Make an object pickleable (See python doc &#39;pickling&#39;)." alt="" coords="645,273,823,371"/>
+</map>
+  <img src="uml_class_diagram_for_paramz_c_15.gif" alt='' usemap="#uml_class_diagram_for_paramz_c_15" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>An ndarray which reports changes to its observers.</p>
+  <p>.. warning:</p>
+<pre class="literalblock">
+  ObsAr tries to not ever give back an observable array itself. Thus,
+  if you want to preserve an ObsAr you need to work in memory. Let
+  `a` be an ObsAr and you want to add a random number `r` to it. You need to
+  make sure it stays an ObsAr by working in memory (see numpy for details):
+
+  .. code-block:: python
+
+      a[:] += r
+</pre>
+  <p>The observers can add themselves with a callable, which will be called
+  every time this array changes. The callable takes exactly one argument, 
+  which is this array itself.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__array_finalize__" class="summary-sig-name">__array_finalize__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>)</span><br />
+      None.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__array_finalize__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Object of same type as ndarray object a.</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__array_wrap__" class="summary-sig-name">__array_wrap__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">out_arr</span>,
+        <span class="summary-sig-arg">context</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__array_wrap__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_setup_observers"></a><span class="summary-sig-name">_setup_observers</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr._setup_observers">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#copy" class="summary-sig-name">copy</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Make a copy.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.copy">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Deep copy of array</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__deepcopy__" class="summary-sig-name">__deepcopy__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">memo</span>)</span><br />
+      Used if copy.deepcopy is called on an array.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__deepcopy__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__reduce__" class="summary-sig-name">__reduce__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      For pickling.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__reduce__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__setstate__" class="summary-sig-name">__setstate__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>)</span><br />
+      For unpickling.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__setstate__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__setitem__" class="summary-sig-name">__setitem__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      x[i]=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__setitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__getslice__" class="summary-sig-name">__getslice__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">stop</span>)</span><br />
+      x[i:j]</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__getslice__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__setslice__" class="summary-sig-name">__setslice__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">stop</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      x[i:j]=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__setslice__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__ilshift__" class="summary-sig-name">__ilshift__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x&lt;&lt;=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ilshift__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__irshift__" class="summary-sig-name">__irshift__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x&gt;&gt;=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__irshift__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__ixor__" class="summary-sig-name">__ixor__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x^=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ixor__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__ipow__" class="summary-sig-name">__ipow__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x**=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ipow__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__ifloordiv__" class="summary-sig-name">__ifloordiv__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x//=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ifloordiv__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__isub__" class="summary-sig-name">__isub__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x-=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__isub__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__ior__" class="summary-sig-name">__ior__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x|=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ior__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__itruediv__" class="summary-sig-name">__itruediv__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x/=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__itruediv__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__idiv__" class="summary-sig-name">__idiv__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x/=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__idiv__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__iand__" class="summary-sig-name">__iand__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x&amp;=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__iand__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__imod__" class="summary-sig-name">__imod__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x%=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__imod__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__iadd__" class="summary-sig-name">__iadd__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x+=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__iadd__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__imul__" class="summary-sig-name">__imul__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x*=y</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__imul__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>numpy.ndarray</code></b>:
+      <code>__abs__</code>,
+      <code>__add__</code>,
+      <code>__and__</code>,
+      <code>__array__</code>,
+      <code>__array_prepare__</code>,
+      <code>__complex__</code>,
+      <code>__contains__</code>,
+      <code>__copy__</code>,
+      <code>__delitem__</code>,
+      <code>__delslice__</code>,
+      <code>__div__</code>,
+      <code>__divmod__</code>,
+      <code>__eq__</code>,
+      <code>__float__</code>,
+      <code>__floordiv__</code>,
+      <code>__ge__</code>,
+      <code>__getitem__</code>,
+      <code>__gt__</code>,
+      <code>__hex__</code>,
+      <code>__index__</code>,
+      <code>__int__</code>,
+      <code>__invert__</code>,
+      <code>__iter__</code>,
+      <code>__le__</code>,
+      <code>__len__</code>,
+      <code>__long__</code>,
+      <code>__lshift__</code>,
+      <code>__lt__</code>,
+      <code>__mod__</code>,
+      <code>__mul__</code>,
+      <code>__ne__</code>,
+      <code>__neg__</code>,
+      <code>__nonzero__</code>,
+      <code>__oct__</code>,
+      <code>__or__</code>,
+      <code>__pos__</code>,
+      <code>__pow__</code>,
+      <code>__radd__</code>,
+      <code>__rand__</code>,
+      <code>__rdiv__</code>,
+      <code>__rdivmod__</code>,
+      <code>__repr__</code>,
+      <code>__rfloordiv__</code>,
+      <code>__rlshift__</code>,
+      <code>__rmod__</code>,
+      <code>__rmul__</code>,
+      <code>__ror__</code>,
+      <code>__rpow__</code>,
+      <code>__rrshift__</code>,
+      <code>__rshift__</code>,
+      <code>__rsub__</code>,
+      <code>__rtruediv__</code>,
+      <code>__rxor__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__sub__</code>,
+      <code>__truediv__</code>,
+      <code>__xor__</code>,
+      <code>all</code>,
+      <code>any</code>,
+      <code>argmax</code>,
+      <code>argmin</code>,
+      <code>argpartition</code>,
+      <code>argsort</code>,
+      <code>astype</code>,
+      <code>byteswap</code>,
+      <code>choose</code>,
+      <code>clip</code>,
+      <code>compress</code>,
+      <code>conj</code>,
+      <code>conjugate</code>,
+      <code>cumprod</code>,
+      <code>cumsum</code>,
+      <code>diagonal</code>,
+      <code>dot</code>,
+      <code>dump</code>,
+      <code>dumps</code>,
+      <code>fill</code>,
+      <code>flatten</code>,
+      <code>getfield</code>,
+      <code>item</code>,
+      <code>itemset</code>,
+      <code>max</code>,
+      <code>mean</code>,
+      <code>min</code>,
+      <code>newbyteorder</code>,
+      <code>nonzero</code>,
+      <code>partition</code>,
+      <code>prod</code>,
+      <code>ptp</code>,
+      <code>put</code>,
+      <code>ravel</code>,
+      <code>repeat</code>,
+      <code>reshape</code>,
+      <code>resize</code>,
+      <code>round</code>,
+      <code>searchsorted</code>,
+      <code>setfield</code>,
+      <code>setflags</code>,
+      <code>sort</code>,
+      <code>squeeze</code>,
+      <code>std</code>,
+      <code>sum</code>,
+      <code>swapaxes</code>,
+      <code>take</code>,
+      <code>tobytes</code>,
+      <code>tofile</code>,
+      <code>tolist</code>,
+      <code>tostring</code>,
+      <code>trace</code>,
+      <code>transpose</code>,
+      <code>var</code>,
+      <code>view</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.pickleable.Pickleable-class.html">pickleable.Pickleable</a></code></b>:
+      <code><a href="paramz.core.pickleable.Pickleable-class.html#__getstate__">__getstate__</a></code>,
+      <code><a href="paramz.core.pickleable.Pickleable-class.html#__init__">__init__</a></code>,
+      <code><a href="paramz.core.pickleable.Pickleable-class.html#pickle">pickle</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.observable.Observable-class.html">observable.Observable</a></code></b>:
+      <code><a href="paramz.core.observable.Observable-class.html#add_observer">add_observer</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#change_priority">change_priority</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#notify_observers">notify_observers</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#remove_observer">remove_observer</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#set_updates">set_updates</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Static Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-StaticMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">a new object with type S, a subtype of T</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.core.observable_array.ObsAr-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">input_array</span>,
+        <span class="summary-sig-arg">*a</span>,
+        <span class="summary-sig-arg">**kw</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__new__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__array_priority__"></a><span class="summary-name">__array_priority__</span> = <code title="-1">-1</code><br />
+      Array priority.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>numpy.ndarray</code></b>:
+      <code>__hash__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="paramz.core.observable_array.ObsAr-class.html#values" class="summary-name">values</a><br />
+      Return the ObsAr underlying array as a standard ndarray.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>numpy.ndarray</code></b>:
+      <code>T</code>,
+      <code>__array_interface__</code>,
+      <code>__array_struct__</code>,
+      <code>base</code>,
+      <code>ctypes</code>,
+      <code>data</code>,
+      <code>dtype</code>,
+      <code>flags</code>,
+      <code>flat</code>,
+      <code>imag</code>,
+      <code>itemsize</code>,
+      <code>nbytes</code>,
+      <code>ndim</code>,
+      <code>real</code>,
+      <code>shape</code>,
+      <code>size</code>,
+      <code>strides</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__new__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__new__</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">input_array</span>,
+        <span class="sig-arg">*a</span>,
+        <span class="sig-arg">**kw</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__new__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns: a new object with type S, a subtype of T</dt>
+    <dt>Overrides:
+        object.__new__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__array_finalize__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__array_finalize__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">obj</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__array_finalize__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>None.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        __array_finalize__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__array_wrap__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__array_wrap__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">out_arr</span>,
+        <span class="sig-arg">context</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__array_wrap__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns: Object of same type as ndarray object a.</dt>
+    <dt>Overrides:
+        numpy.ndarray.__array_wrap__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="copy"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copy</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.copy">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Make a copy. This means, we delete all observers and return a copy of 
+  this array. It will still be an ObsAr!</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.pickleable.Pickleable-class.html#copy">pickleable.Pickleable.copy</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__deepcopy__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__deepcopy__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">memo</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__deepcopy__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Used if copy.deepcopy is called on an array.</p>
+  <dl class="fields">
+    <dt>Returns: Deep copy of array</dt>
+    <dt>Overrides:
+        <a href="paramz.core.pickleable.Pickleable-class.html#__deepcopy__">pickleable.Pickleable.__deepcopy__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__reduce__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__reduce__</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__reduce__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>For pickling.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__reduce__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__setstate__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__setstate__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">state</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__setstate__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+For unpickling.
+
+Parameters
+----------
+version : int
+    optional pickle version. If omitted defaults to 0.
+shape : tuple
+dtype : data-type
+isFortran : bool
+rawdata : string or list
+    a binary string with the data (or a list if 'a' is an object array)
+
+</pre>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.pickleable.Pickleable-class.html#__setstate__">pickleable.Pickleable.__setstate__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__setitem__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__setitem__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">s</span>,
+        <span class="sig-arg">val</span>)</span>
+    <br /><em class="fname">(Index assignment operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__setitem__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x[i]=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__setitem__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__getslice__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getslice__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">start</span>,
+        <span class="sig-arg">stop</span>)</span>
+    <br /><em class="fname">(Slicling operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__getslice__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x[i:j]</p>
+  <p>Use of negative indices is not supported.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__getslice__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__setslice__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__setslice__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">start</span>,
+        <span class="sig-arg">stop</span>,
+        <span class="sig-arg">val</span>)</span>
+    <br /><em class="fname">(Slice assignment operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__setslice__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x[i:j]=y</p>
+  <p>Use  of negative indices is not supported.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__setslice__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__ilshift__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__ilshift__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ilshift__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x&lt;&lt;=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__ilshift__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__irshift__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__irshift__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__irshift__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x&gt;&gt;=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__irshift__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__ixor__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__ixor__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ixor__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x^=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__ixor__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__ipow__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__ipow__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ipow__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x**=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__ipow__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__ifloordiv__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__ifloordiv__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ifloordiv__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x//=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__ifloordiv__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__isub__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__isub__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__isub__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x-=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__isub__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__ior__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__ior__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__ior__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x|=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__ior__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__itruediv__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__itruediv__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__itruediv__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x/=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__itruediv__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__idiv__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__idiv__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__idiv__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x/=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__idiv__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__iand__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__iand__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__iand__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x&amp;=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__iand__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__imod__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__imod__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__imod__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x%=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__imod__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__iadd__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__iadd__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__iadd__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x+=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__iadd__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__imul__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__imul__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.core.observable_array-pysrc.html#ObsAr.__imul__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x*=y</p>
+  <dl class="fields">
+    <dt>Overrides:
+        numpy.ndarray.__imul__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Property Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-PropertyDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="values"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">values</h3>
+  <p>Return the ObsAr underlying array as a standard ndarray.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.values(<span class="summary-sig-arg">self</span>)</span>
+        - Return the ObsAr underlying array as a standard ndarray.
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 11:59:38 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

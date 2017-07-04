@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>paramz.tests.observable_tests.ParamTestParent</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="paramz-module.html">Package&nbsp;paramz</a> ::
+        <a href="paramz.tests-module.html">Package&nbsp;tests</a> ::
+        <a href="paramz.tests.observable_tests-module.html">Module&nbsp;observable_tests</a> ::
+        Class&nbsp;ParamTestParent
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="paramz.tests.observable_tests.ParamTestParent-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class ParamTestParent</h1><p class="nomargin-top"><span class="codelink"><a href="paramz.tests.observable_tests-pysrc.html#ParamTestParent">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_paramz_t_6" name="uml_class_diagram_for_paramz_t_6">
+<area shape="rect" id="node1_66" href="paramz.tests.observable_tests.ParamTestParent-class.html#parent_changed_count" title="Array priority." alt="" coords="345,1622,507,1642"/>
+<area shape="rect" id="node1_67" href="paramz.tests.observable_tests.ParamTestParent-class.html#parameters_changed" title="This method gets called when parameters have changed." alt="" coords="345,1645,507,1665"/>
+<area shape="rect" id="node1" href="paramz.tests.observable_tests.ParamTestParent-class.html" title="paramz.tests.observable_tests.ParamTestParent" alt="" coords="333,1597,518,1671"/>
+<area shape="rect" id="node2_68" href="paramz.core.constrainable.Constrainable-class.html#is_fixed" title="paramz.core.constrainable.Constrainable.is_fixed" alt="" coords="204,553,649,573"/>
+<area shape="rect" id="node2_69" href="paramz.core.constrainable.Constrainable-class.html#constrain_fixed" title="Constrain this parameter to be fixed to the current value it carries." alt="" coords="204,576,649,596"/>
+<area shape="rect" id="node2_70" href="paramz.core.constrainable.Constrainable-class.html#fix" title="Constrain this parameter to be fixed to the current value it carries." alt="" coords="204,596,649,616"/>
+<area shape="rect" id="node2_71" href="paramz.core.constrainable.Constrainable-class.html#unconstrain_fixed" title="This parameter will no longer be fixed." alt="" coords="204,616,649,636"/>
+<area shape="rect" id="node2_72" href="paramz.core.constrainable.Constrainable-class.html#unfix" title="This parameter will no longer be fixed." alt="" coords="204,636,649,656"/>
+<area shape="rect" id="node2_73" href="paramz.core.constrainable.Constrainable-class.html#constrain" title=":param transform: the :py:class:`paramz.transformations.Transformation` &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;to constrain the this parameter to." alt="" coords="204,656,649,676"/>
+<area shape="rect" id="node2_74" href="paramz.core.constrainable.Constrainable-class.html#unconstrain" title=":param transforms: The transformations to unconstrain from." alt="" coords="204,676,649,696"/>
+<area shape="rect" id="node2_75" href="paramz.core.constrainable.Constrainable-class.html#constrain_positive" title=":param warning: print a warning if re&#45;constraining parameters." alt="" coords="204,696,649,716"/>
+<area shape="rect" id="node2_76" href="paramz.core.constrainable.Constrainable-class.html#constrain_negative" title=":param warning: print a warning if re&#45;constraining parameters." alt="" coords="204,716,649,736"/>
+<area shape="rect" id="node2_77" href="paramz.core.constrainable.Constrainable-class.html#constrain_bounded" title=":param lower, upper: the limits to bound this parameter to :param warning: &#160;print a warning if re&#45;constraining parameters." alt="" coords="204,736,649,756"/>
+<area shape="rect" id="node2_78" href="paramz.core.constrainable.Constrainable-class.html#unconstrain_positive" title="Remove positive constraint of this parameter." alt="" coords="204,756,649,776"/>
+<area shape="rect" id="node2_79" href="paramz.core.constrainable.Constrainable-class.html#unconstrain_negative" title="Remove negative constraint of this parameter." alt="" coords="204,776,649,796"/>
+<area shape="rect" id="node2_80" href="paramz.core.constrainable.Constrainable-class.html#unconstrain_bounded" title=":param lower, upper: the limits to unbound this parameter from" alt="" coords="204,796,649,816"/>
+<area shape="rect" id="node2" href="paramz.core.constrainable.Constrainable-class.html" title="paramz.core.constrainable.Constrainable" alt="" coords="192,529,661,823"/>
+<area shape="rect" id="node12_81" href="paramz.core.parameter_core.OptimizationHandlable-class.html#optimizer_array" title="Array for the optimizer to work on." alt="" coords="117,865,735,885"/>
+<area shape="rect" id="node12_82" href="paramz.core.parameter_core.OptimizationHandlable-class.html#gradient_full" title="Note to users: This does not return the gradient in the right shape! Use &#160;self.gradient for the right gradient array." alt="" coords="117,885,735,905"/>
+<area shape="rect" id="node12_83" href="paramz.core.parameter_core.OptimizationHandlable-class.html#parameter_names" title="Get the names of all parameters of this model or parameter." alt="" coords="117,908,735,928"/>
+<area shape="rect" id="node12_84" href="paramz.core.parameter_core.OptimizationHandlable-class.html#parameter_names_flat" title="Return the flattened parameter names for all subsequent parameters of this parameter." alt="" coords="117,928,735,948"/>
+<area shape="rect" id="node12_85" href="paramz.core.parameter_core.OptimizationHandlable-class.html#randomize" title="Randomize the model." alt="" coords="117,948,735,968"/>
+<area shape="rect" id="node12" href="paramz.core.parameter_core.OptimizationHandlable-class.html" title="This enables optimization handles on an Object as done in GPy 0.4." alt="" coords="105,841,746,975"/>
+<area shape="rect" id="node3_86" href="paramz.core.pickleable.Pickleable-class.html#pickle" title=":param f: either filename or open file object to write to." alt="" coords="443,45,611,65"/>
+<area shape="rect" id="node3_87" href="paramz.core.pickleable.Pickleable-class.html#__deepcopy__" title="paramz.core.pickleable.Pickleable.__deepcopy__" alt="" coords="443,65,611,85"/>
+<area shape="rect" id="node3_88" href="paramz.core.pickleable.Pickleable-class.html#__getstate__" title="paramz.core.pickleable.Pickleable.__getstate__" alt="" coords="443,85,611,105"/>
+<area shape="rect" id="node3" href="paramz.core.pickleable.Pickleable-class.html" title="Make an object pickleable (See python doc &#39;pickling&#39;)." alt="" coords="431,13,623,111"/>
+<area shape="rect" id="node9_89" href="paramz.core.gradcheckable.Gradcheckable-class.html#checkgrad" title="Check the gradient of this parameter with respect to the highest parent&#39;s &#160;objective function." alt="" coords="403,209,871,229"/>
+<area shape="rect" id="node9" href="paramz.core.gradcheckable.Gradcheckable-class.html" title="Adds the functionality for an object to be gradcheckable." alt="" coords="390,177,882,236"/>
+<area shape="rect" id="node4_90" href="paramz.core.updateable.Updateable-class.html#update_model" title="Get or set, whether automatic updates are performed." alt="" coords="127,327,373,347"/>
+<area shape="rect" id="node4_91" href="paramz.core.updateable.Updateable-class.html#toggle_update" title="paramz.core.updateable.Updateable.toggle_update" alt="" coords="127,347,373,367"/>
+<area shape="rect" id="node4_92" href="paramz.core.updateable.Updateable-class.html#update_toggle" title="paramz.core.updateable.Updateable.update_toggle" alt="" coords="127,367,373,387"/>
+<area shape="rect" id="node4_93" href="paramz.core.updateable.Updateable-class.html#trigger_update" title="Update the model from the current state." alt="" coords="127,387,373,407"/>
+<area shape="rect" id="node4" href="paramz.core.updateable.Updateable-class.html" title="A model can be updated or not." alt="" coords="114,295,385,413"/>
+<area shape="rect" id="node10_94" href="paramz.core.indexable.Indexable-class.html#add_index_operation" title="Add index operation with name to the operations given." alt="" coords="291,465,561,485"/>
+<area shape="rect" id="node10_95" href="paramz.core.indexable.Indexable-class.html#remove_index_operation" title="paramz.core.indexable.Indexable.remove_index_operation" alt="" coords="291,485,561,505"/>
+<area shape="rect" id="node10" href="paramz.core.indexable.Indexable-class.html" title="Make an object constrainable with Priors and Transformations." alt="" coords="278,432,573,511"/>
+<area shape="rect" id="node5_96" href="paramz.parameterized.Parameterized-class.html#flattened_parameters" title="paramz.parameterized.Parameterized.flattened_parameters" alt="" coords="281,1269,571,1289"/>
+<area shape="rect" id="node5_97" href="paramz.parameterized.Parameterized-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="281,1292,571,1312"/>
+<area shape="rect" id="node5_98" href="paramz.parameterized.Parameterized-class.html#link_parameter" title=":param parameters: &#160;the parameters to add :type parameters: &#160;&#160;list of or &#160;one :py:class:`paramz.param.Param` :param [index]: &#160;&#160;&#160;&#160;index of where to &#160;put parameters" alt="" coords="281,1312,571,1332"/>
+<area shape="rect" id="node5_99" href="paramz.parameterized.Parameterized-class.html#link_parameters" title="convenience method for adding several parameters without gradient &#160;specification" alt="" coords="281,1332,571,1352"/>
+<area shape="rect" id="node5_100" href="paramz.parameterized.Parameterized-class.html#unlink_parameter" title=":param param: param object to remove from being a parameter of this &#160;parameterized object." alt="" coords="281,1352,571,1372"/>
+<area shape="rect" id="node5_101" href="paramz.parameterized.Parameterized-class.html#grep_param_names" title="create a list of parameters, matching regular expression regexp" alt="" coords="281,1372,571,1392"/>
+<area shape="rect" id="node5_102" href="paramz.parameterized.Parameterized-class.html#__getitem__" title="paramz.parameterized.Parameterized.__getitem__" alt="" coords="281,1392,571,1412"/>
+<area shape="rect" id="node5_103" href="paramz.parameterized.Parameterized-class.html#__setitem__" title="paramz.parameterized.Parameterized.__setitem__" alt="" coords="281,1412,571,1432"/>
+<area shape="rect" id="node5_104" href="paramz.parameterized.Parameterized-class.html#__setattr__" title="x.__setattr__(&#39;name&#39;, value) &lt;==&gt; x.name = value" alt="" coords="281,1432,571,1452"/>
+<area shape="rect" id="node5_105" href="paramz.parameterized.Parameterized-class.html#__setstate__" title="paramz.parameterized.Parameterized.__setstate__" alt="" coords="281,1452,571,1472"/>
+<area shape="rect" id="node5_106" href="paramz.parameterized.Parameterized-class.html#copy" title="Returns a (deep) copy of the current parameter handle." alt="" coords="281,1472,571,1492"/>
+<area shape="rect" id="node5_107" href="paramz.parameterized.Parameterized-class.html#get_property_string" title="paramz.parameterized.Parameterized.get_property_string" alt="" coords="281,1492,571,1512"/>
+<area shape="rect" id="node5_108" href="paramz.parameterized.Parameterized-class.html#_repr_html_" title="Representation of the parameters in html for notebook display." alt="" coords="281,1512,571,1532"/>
+<area shape="rect" id="node5_109" href="paramz.parameterized.Parameterized-class.html#__str__" title="str(x)" alt="" coords="281,1532,571,1552"/>
+<area shape="rect" id="node5_110" href="paramz.parameterized.Parameterized-class.html#build_pydot" title="Build a pydot representation of this model." alt="" coords="281,1552,571,1572"/>
+<area shape="rect" id="node5" href="paramz.parameterized.Parameterized-class.html" title="Say m is a handle to a parameterized class." alt="" coords="269,1245,582,1579"/>
+<area shape="rect" id="node6_111" href="paramz.core.observable.Observable-class.html#set_updates" title="paramz.core.observable.Observable.set_updates" alt="" coords="17,169,348,189"/>
+<area shape="rect" id="node6_112" href="paramz.core.observable.Observable-class.html#add_observer" title="Add an observer `observer` with the callback `callble` and priority &#160;`priority` to this observers list." alt="" coords="17,189,348,209"/>
+<area shape="rect" id="node6_113" href="paramz.core.observable.Observable-class.html#remove_observer" title="Either (if callble is None) remove all callables, which were added &#160;alongside observer, or remove callable `callble` which was added alongside &#160;the observer `observer`." alt="" coords="17,209,348,229"/>
+<area shape="rect" id="node6_114" href="paramz.core.observable.Observable-class.html#notify_observers" title="Notifies all observers." alt="" coords="17,229,348,249"/>
+<area shape="rect" id="node6_115" href="paramz.core.observable.Observable-class.html#change_priority" title="paramz.core.observable.Observable.change_priority" alt="" coords="17,249,348,269"/>
+<area shape="rect" id="node6" href="paramz.core.observable.Observable-class.html" title="Observable pattern for parameterization." alt="" coords="5,137,360,276"/>
+<area shape="rect" id="node7_116" href="paramz.core.parentable.Parentable-class.html#_parent_" title="hash(x)" alt="" coords="665,30,827,50"/>
+<area shape="rect" id="node7_117" href="paramz.core.parentable.Parentable-class.html#_parent_index_" title="hash(x)" alt="" coords="665,50,827,70"/>
+<area shape="rect" id="node7_118" href="paramz.core.parentable.Parentable-class.html#_highest_parent_" title="Gets the highest parent by traversing up to the root node of the hierarchy." alt="" coords="665,70,827,90"/>
+<area shape="rect" id="node7_119" href="paramz.core.parentable.Parentable-class.html#has_parent" title="Return whether this parentable object currently has a parent." alt="" coords="665,93,827,113"/>
+<area shape="rect" id="node7" href="paramz.core.parentable.Parentable-class.html" title="Enable an Object to have a parent." alt="" coords="653,5,838,119"/>
+<area shape="rect" id="node8_120" href="paramz.core.parameter_core.Parameterizable-class.html#param_array" title="Array representing the parameters of this class." alt="" coords="295,1018,559,1038"/>
+<area shape="rect" id="node8_121" href="paramz.core.parameter_core.Parameterizable-class.html#unfixed_param_array" title="Array representing the parameters of this class." alt="" coords="295,1038,559,1058"/>
+<area shape="rect" id="node8_122" href="paramz.core.parameter_core.Parameterizable-class.html#gradient" title="paramz.core.parameter_core.Parameterizable.gradient" alt="" coords="295,1058,559,1078"/>
+<area shape="rect" id="node8_123" href="paramz.core.parameter_core.Parameterizable-class.html#num_params" title="Return the number of parameters of this parameter_handle." alt="" coords="295,1078,559,1098"/>
+<area shape="rect" id="node8_124" href="paramz.core.parameter_core.Parameterizable-class.html#initialize_parameter" title="Call this function to initialize the model, if you built it without &#160;initialization." alt="" coords="295,1101,559,1121"/>
+<area shape="rect" id="node8_125" href="paramz.core.parameter_core.Parameterizable-class.html#traverse" title="Traverse the hierarchy performing `visit(self, *args, **kwargs)` at every &#160;node passed by downwards." alt="" coords="295,1121,559,1141"/>
+<area shape="rect" id="node8_126" href="paramz.core.parameter_core.Parameterizable-class.html#traverse_parents" title="Traverse the hierarchy upwards, visiting all parents and their children &#160;except self." alt="" coords="295,1141,559,1161"/>
+<area shape="rect" id="node8_127" href="paramz.core.parameter_core.Parameterizable-class.html#enable_caching" title="paramz.core.parameter_core.Parameterizable.enable_caching" alt="" coords="295,1161,559,1181"/>
+<area shape="rect" id="node8_128" href="paramz.core.parameter_core.Parameterizable-class.html#disable_caching" title="paramz.core.parameter_core.Parameterizable.disable_caching" alt="" coords="295,1181,559,1201"/>
+<area shape="rect" id="node8_129" href="paramz.core.parameter_core.Parameterizable-class.html#save" title="Save all the model parameters into a file (HDF5 by default)." alt="" coords="295,1201,559,1221"/>
+<area shape="rect" id="node8" href="paramz.core.parameter_core.Parameterizable-class.html" title="A parameterisable class." alt="" coords="283,993,571,1227"/>
+<area shape="rect" id="node11_130" href="paramz.core.nameable.Nameable-class.html#name" title="The name of this object" alt="" coords="460,342,744,362"/>
+<area shape="rect" id="node11_131" href="paramz.core.nameable.Nameable-class.html#hierarchy_name" title="return the name for this object with the parents names attached by dots." alt="" coords="460,365,744,385"/>
+<area shape="rect" id="node11" href="paramz.core.nameable.Nameable-class.html" title="Make an object nameable inside the hierarchy." alt="" coords="447,317,755,391"/>
+</map>
+  <img src="uml_class_diagram_for_paramz_t_6.gif" alt='' usemap="#uml_class_diagram_for_paramz_t_6" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="paramz.tests.observable_tests.ParamTestParent-class.html#parameters_changed" class="summary-sig-name">parameters_changed</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method gets called when parameters have changed.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="paramz.tests.observable_tests-pysrc.html#ParamTestParent.parameters_changed">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.parameterized.Parameterized-class.html">parameterized.Parameterized</a></code></b>:
+      <code><a href="paramz.parameterized.Parameterized-class.html#__getitem__">__getitem__</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#__init__">__init__</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#__setattr__">__setattr__</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#__setitem__">__setitem__</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#__setstate__">__setstate__</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#__str__">__str__</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#_repr_html_">_repr_html_</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#build_pydot">build_pydot</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#copy">copy</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#get_property_string">get_property_string</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#grep_param_names">grep_param_names</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#link_parameter">link_parameter</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#link_parameters">link_parameters</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#unlink_parameter">unlink_parameter</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.parameterized.Parameterized-class.html">parameterized.Parameterized</a></code></b> (private):
+      <code><a href="paramz.parameterized.Parameterized-class.html#_connect_parameters" onclick="show_private();">_connect_parameters</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#_format_spec" onclick="show_private();">_format_spec</a></code>,
+      <code><a href="paramz.parameterized.Parameterized-class.html#_short" onclick="show_private();">_short</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.Parameterizable-class.html">core.parameter_core.Parameterizable</a></code></b>:
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#disable_caching">disable_caching</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#enable_caching">enable_caching</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#initialize_parameter">initialize_parameter</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#save">save</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#traverse">traverse</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#traverse_parents">traverse_parents</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.Parameterizable-class.html">core.parameter_core.Parameterizable</a></code></b> (private):
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_add_parameter_name" onclick="show_private();">_add_parameter_name</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_name_changed" onclick="show_private();">_name_changed</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_notify_parent_change" onclick="show_private();">_notify_parent_change</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_parameters_changed_notification" onclick="show_private();">_parameters_changed_notification</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_pass_through_notify_observers" onclick="show_private();">_pass_through_notify_observers</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_remove_parameter_name" onclick="show_private();">_remove_parameter_name</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_setup_observers" onclick="show_private();">_setup_observers</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#_traverse" onclick="show_private();">_traverse</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">core.parameter_core.OptimizationHandlable</a></code></b>:
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#parameter_names">parameter_names</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#parameter_names_flat">parameter_names_flat</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#randomize">randomize</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">core.parameter_core.OptimizationHandlable</a></code></b> (private):
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_propagate_param_grad" onclick="show_private();">_propagate_param_grad</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_size_transformed" onclick="show_private();">_size_transformed</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_transform_gradients" onclick="show_private();">_transform_gradients</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#_trigger_params_changed" onclick="show_private();">_trigger_params_changed</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.constrainable.Constrainable-class.html">core.constrainable.Constrainable</a></code></b>:
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain">constrain</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain_bounded">constrain_bounded</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain_fixed">constrain_fixed</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain_negative">constrain_negative</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#constrain_positive">constrain_positive</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#fix">fix</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain">unconstrain</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain_bounded">unconstrain_bounded</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain_fixed">unconstrain_fixed</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain_negative">unconstrain_negative</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unconstrain_positive">unconstrain_positive</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#unfix">unfix</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.constrainable.Constrainable-class.html">core.constrainable.Constrainable</a></code></b> (private):
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_connect_fixes" onclick="show_private();">_connect_fixes</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_ensure_fixes" onclick="show_private();">_ensure_fixes</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_get_original" onclick="show_private();">_get_original</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_has_fixes" onclick="show_private();">_has_fixes</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_set_fixed" onclick="show_private();">_set_fixed</a></code>,
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#_set_unfixed" onclick="show_private();">_set_unfixed</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.indexable.Indexable-class.html">core.indexable.Indexable</a></code></b>:
+      <code><a href="paramz.core.indexable.Indexable-class.html#add_index_operation">add_index_operation</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#remove_index_operation">remove_index_operation</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.indexable.Indexable-class.html">core.indexable.Indexable</a></code></b> (private):
+      <code><a href="paramz.core.indexable.Indexable-class.html#_add_io" onclick="show_private();">_add_io</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_add_to_index_operations" onclick="show_private();">_add_to_index_operations</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_disconnect_parent" onclick="show_private();">_disconnect_parent</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_offset_for" onclick="show_private();">_offset_for</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_parent_changed" onclick="show_private();">_parent_changed</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_raveled_index" onclick="show_private();">_raveled_index</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_raveled_index_for" onclick="show_private();">_raveled_index_for</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_raveled_index_for_transformed" onclick="show_private();">_raveled_index_for_transformed</a></code>,
+      <code><a href="paramz.core.indexable.Indexable-class.html#_remove_from_index_operations" onclick="show_private();">_remove_from_index_operations</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.nameable.Nameable-class.html">core.nameable.Nameable</a></code></b>:
+      <code><a href="paramz.core.nameable.Nameable-class.html#hierarchy_name">hierarchy_name</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.gradcheckable.Gradcheckable-class.html">core.gradcheckable.Gradcheckable</a></code></b>:
+      <code><a href="paramz.core.gradcheckable.Gradcheckable-class.html#checkgrad">checkgrad</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.gradcheckable.Gradcheckable-class.html">core.gradcheckable.Gradcheckable</a></code></b> (private):
+      <code><a href="paramz.core.gradcheckable.Gradcheckable-class.html#_checkgrad" onclick="show_private();">_checkgrad</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.pickleable.Pickleable-class.html">core.pickleable.Pickleable</a></code></b>:
+      <code><a href="paramz.core.pickleable.Pickleable-class.html#__deepcopy__">__deepcopy__</a></code>,
+      <code><a href="paramz.core.pickleable.Pickleable-class.html#__getstate__">__getstate__</a></code>,
+      <code><a href="paramz.core.pickleable.Pickleable-class.html#pickle">pickle</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parentable.Parentable-class.html">core.parentable.Parentable</a></code></b>:
+      <code><a href="paramz.core.parentable.Parentable-class.html#has_parent">has_parent</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.updateable.Updateable-class.html">core.updateable.Updateable</a></code></b>:
+      <code><a href="paramz.core.updateable.Updateable-class.html#toggle_update">toggle_update</a></code>,
+      <code><a href="paramz.core.updateable.Updateable-class.html#trigger_update">trigger_update</a></code>,
+      <code><a href="paramz.core.updateable.Updateable-class.html#update_model">update_model</a></code>,
+      <code><a href="paramz.core.updateable.Updateable-class.html#update_toggle">update_toggle</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.observable.Observable-class.html">core.observable.Observable</a></code></b>:
+      <code><a href="paramz.core.observable.Observable-class.html#add_observer">add_observer</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#change_priority">change_priority</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#notify_observers">notify_observers</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#remove_observer">remove_observer</a></code>,
+      <code><a href="paramz.core.observable.Observable-class.html#set_updates">set_updates</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="parent_changed_count"></a><span class="summary-name">parent_changed_count</span> = <code title="-1">-1</code><br />
+      Array priority.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parentable.Parentable-class.html">core.parentable.Parentable</a></code></b>:
+      <code><a href="paramz.core.parentable.Parentable-class.html#_parent_">_parent_</a></code>,
+      <code><a href="paramz.core.parentable.Parentable-class.html#_parent_index_">_parent_index_</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.parameterized.Parameterized-class.html">parameterized.Parameterized</a></code></b>:
+      <code><a href="paramz.parameterized.Parameterized-class.html#flattened_parameters">flattened_parameters</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.parameterized.Parameterized-class.html">parameterized.Parameterized</a></code></b> (private):
+      <code><a href="paramz.parameterized.Parameterized-class.html#_description_str" onclick="show_private();">_description_str</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.Parameterizable-class.html">core.parameter_core.Parameterizable</a></code></b>:
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#gradient">gradient</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#num_params">num_params</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#param_array">param_array</a></code>,
+      <code><a href="paramz.core.parameter_core.Parameterizable-class.html#unfixed_param_array">unfixed_param_array</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html">core.parameter_core.OptimizationHandlable</a></code></b>:
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#gradient_full">gradient_full</a></code>,
+      <code><a href="paramz.core.parameter_core.OptimizationHandlable-class.html#optimizer_array">optimizer_array</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.constrainable.Constrainable-class.html">core.constrainable.Constrainable</a></code></b>:
+      <code><a href="paramz.core.constrainable.Constrainable-class.html#is_fixed">is_fixed</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.nameable.Nameable-class.html">core.nameable.Nameable</a></code></b>:
+      <code><a href="paramz.core.nameable.Nameable-class.html#name">name</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="paramz.core.parentable.Parentable-class.html">core.parentable.Parentable</a></code></b>:
+      <code><a href="paramz.core.parentable.Parentable-class.html#_highest_parent_">_highest_parent_</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="parameters_changed"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parameters_changed</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="paramz.tests.observable_tests-pysrc.html#ParamTestParent.parameters_changed">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method gets called when parameters have changed. Another way of 
+  listening to param changes is to add self as a listener to the param, 
+  such that updates get passed through. See 
+  :py:function:``paramz.param.Observable.add_observer``</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="paramz.core.parameter_core.Parameterizable-class.html#parameters_changed">core.parameter_core.Parameterizable.parameters_changed</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="paramz-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  4 11:59:59 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
