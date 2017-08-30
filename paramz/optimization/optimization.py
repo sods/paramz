@@ -64,7 +64,7 @@ class Optimizer(object):
         return diagnostics
 
     def __getstate__(self):
-        return {}
+        return self.__dict__
 
 
 class opt_tnc(Optimizer):
