@@ -91,25 +91,27 @@ class P(Parameterized):
         return 0
 
 
+class M(Model):
+    def __init__(self, name, **kwargs):
+        super(M, self).__init__(name=name)
+        for k, val in kwargs.items():
+            self.__setattr__(k, val)
+            self.link_parameter(self.__getattribute__(k))
+    def objective_function(self):
+        return self._obj
+    def log_likelihood(self):
+        return -self.objective_function()
+    def parameters_changed(self):
+        self._obj = (self.param_array**2).sum()
+        for p in self.parameters:
+            if hasattr(p, 'heres_johnny'):
+                p.heres_johnny()
+        self.gradient[:] = 2*self.param_array
+
+
 class ModelTest(unittest.TestCase):
 
     def setUp(self):
-        class M(Model):
-            def __init__(self, name, **kwargs):
-                super(M, self).__init__(name=name)
-                for k, val in kwargs.items():
-                    self.__setattr__(k, val)
-                    self.link_parameter(self.__getattribute__(k))
-            def objective_function(self):
-                return self._obj
-            def log_likelihood(self):
-                return -self.objective_function()
-            def parameters_changed(self):
-                self._obj = (self.param_array**2).sum()
-                for p in self.parameters:
-                    if hasattr(p, 'heres_johnny'):
-                        p.heres_johnny()
-                self.gradient[:] = 2*self.param_array
 
         self.testmodel = M('testmodel')
         self.testmodel.kern = P('rbf')
@@ -173,6 +175,7 @@ class ModelTest(unittest.TestCase):
         self.testmodel.optimize(messages=True, xtol=0, ftol=0, gtol=1e-6, bfgs_factor=1)
         self.testmodel.optimize(messages=False)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+
     def test_optimize_scg(self):
         import warnings
         with warnings.catch_warnings():
@@ -182,6 +185,7 @@ class ModelTest(unittest.TestCase):
             self.testmodel.optimize('scg', messages=0, xtol=0, ftol=20, gtol=0, max_iters=2)
             self.testmodel.optimize('scg', messages=0, xtol=20, ftol=0, gtol=0, max_iters=2)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-1)
+
     def test_optimize_tnc(self):
         from ..optimization.optimization import opt_tnc
         import warnings
@@ -191,6 +195,7 @@ class ModelTest(unittest.TestCase):
             self.testmodel.optimize('tnc', messages=1, xtol=0, ftol=0, gtol=1e-6)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
         # self.assertDictEqual(self.testmodel.optimization_runs[-1].__getstate__(), {})
+
     def test_optimize_rprop(self):
         try:
             import climin
@@ -201,6 +206,7 @@ class ModelTest(unittest.TestCase):
             warnings.simplefilter("ignore")
             self.testmodel.optimize('rprop', messages=1)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+
     def test_optimize_ada(self):
         try:
             import climin
@@ -212,6 +218,7 @@ class ModelTest(unittest.TestCase):
             self.testmodel.trigger_update()
             self.testmodel.optimize('adadelta', messages=1, step_rate=1, momentum=1)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+
     def test_optimize_adam(self):
         try:
             import climin
@@ -223,6 +230,7 @@ class ModelTest(unittest.TestCase):
             self.testmodel.trigger_update()
             self.testmodel.optimize('adam', messages=1, step_rate=1., momentum=1.)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+
     def test_optimize_org_bfgs(self):
         import warnings
         with warnings.catch_warnings():
@@ -231,6 +239,7 @@ class ModelTest(unittest.TestCase):
                 self.testmodel.optimize_restarts(1, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6)
                 self.testmodel.optimize(messages=1, optimizer='org-bfgs')
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+
     def test_optimize_fix(self):
         self.testmodel.fix()
         self.assertTrue(self.testmodel.checkgrad())
@@ -238,6 +247,7 @@ class ModelTest(unittest.TestCase):
         self.testmodel.optimize(messages=1)
     def test_optimize_cgd(self):
         self.assertRaises(KeyError, self.testmodel.optimize, 'cgd', messages=1)
+
     def test_optimize_simplex(self):
         import warnings
         with warnings.catch_warnings():
@@ -245,6 +255,7 @@ class ModelTest(unittest.TestCase):
             self.testmodel.optimize('simplex', messages=1, xtol=0, ftol=0, gtol=1e-6)
             self.testmodel.optimize('simplex', start=self.testmodel.optimizer_array, messages=0)
         np.testing.assert_array_less(self.testmodel.gradient, np.ones(self.testmodel.size)*1e-2)
+
     def test_optimize_error(self):
         class M(Model):
             def __init__(self, name, **kwargs):
@@ -263,10 +274,18 @@ class ModelTest(unittest.TestCase):
         testmodel = M("test", var=Param('test', np.random.normal(0,1,(20))))
         testmodel.optimize_restarts(2, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=True)
         self.assertRaises(ValueError, testmodel.optimize_restarts, 1, messages=0, optimizer='org-bfgs', xtol=0, ftol=0, gtol=1e-6, robust=False)
+
     def test_optimize_restarts(self):
         m = self.testmodel.copy()
         m.optimize_restarts(2, messages=0, xtol=0, ftol=0, gtol=1e-6, robust=False)
         np.testing.assert_array_less(m.gradient, np.ones(self.testmodel.size)*1e-2)
+        self.assertIs(len(m.optimization_runs), 2)
+
+    def test_optimize_restarts_parallel(self):
+        m = self.testmodel.copy()
+        m.optimize_restarts(2, messages=0, xtol=0, ftol=0, gtol=1e-6, robust=False, parallel=True)
+        np.testing.assert_array_less(m.gradient, np.ones(self.testmodel.size) * 1e-2)
+        self.assertIs(len(m.optimization_runs), 2)
 
     def test_raveled_index(self):
         self.assertListEqual(self.testmodel._raveled_index_for(self.testmodel['.*variance']).tolist(), [1, 2])
