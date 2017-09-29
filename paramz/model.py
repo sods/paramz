@@ -150,6 +150,7 @@ class Model(Parameterized):
         """
         initial_parameters = self.optimizer_array.copy()
 
+        fail_count = 0
         if parallel: #pragma: no cover
             try:
                 pool = mp.Pool(processes=num_processes)
@@ -174,14 +175,15 @@ class Model(Parameterized):
                 if verbose:
                     print(("Optimization restart {0}/{1}, f = {2}".format(i + 1, num_restarts, self.optimization_runs[-1].f_opt)))
             except Exception as e:
+                fail_count += 1
                 if robust:
                     print(("Warning - optimization restart {0}/{1} failed".format(i + 1, num_restarts)))
                 else:
                     raise e
 
         if len(self.optimization_runs):
-            i = np.argmin([o.f_opt for o in self.optimization_runs[-num_restarts:]])
-            self.optimizer_array = self.optimization_runs[-num_restarts+i].x_opt
+            i = np.argmin([o.f_opt for o in self.optimization_runs[-num_restarts+fail_count:]])
+            self.optimizer_array = self.optimization_runs[-num_restarts+fail_count+i].x_opt
         else:
             self.optimizer_array = initial_parameters
         return self.optimization_runs
