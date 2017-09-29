@@ -20,6 +20,8 @@ New
 Fix
 ~~~
 
+- #20. [mzwiessele]
+
 - Changing to python 3.6, supporting 3.5 still. [mzwiessele]
 
 - Added license in manifest for package distribution. [mzwiessele]
@@ -44,6 +46,8 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.8.1 → 0.8.2. [mzwiessele]
 
 - Bump version: 0.8.0 → 0.8.1. [mzwiessele]
 
