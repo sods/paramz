@@ -45,6 +45,22 @@ Fix
 Other
 ~~~~~
 
+- Bump version: 0.8.0 → 0.8.1. [mzwiessele]
+
+- Merge pull request #21 from alexfeld/parallel_opt. [Max Zwiessele]
+
+  Parallel optimization fix
+
+- Add test for parallel optimization with restarts. [Alex Feldstein]
+
+- Return the optimization object in dict form with
+  Optimize.__getstate__() [Alex Feldstein]
+
+- Add pycharm system folder to gitignore. [Alex Feldstein]
+
+- Fix optimization failure counting in order to properly set
+  optimization run history. [Alex Feldstein]
+
 - Bump version: 0.7.8 → 0.8.0. [mzwiessele]
 
 - Cleanup for code coverage. [mzwiessele]
