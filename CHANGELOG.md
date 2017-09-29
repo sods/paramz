@@ -7,6 +7,10 @@ Changelog
 New
 ~~~
 
+- Added paramz tutorial notebook. [mzwiessele]
+
+- Github pages doc with uml classes. [mzwiessele]
+
 - Changelog now markdown. [mzwiessele]
 
 - Added CHANGELOG from GITCHANGELOG. [mzwiessele]
@@ -40,6 +44,10 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.7.8 → 0.8.0. [mzwiessele]
+
+- Cleanup for code coverage. [mzwiessele]
 
 - Bump version: 0.7.7 → 0.7.8. [mzwiessele]
 
