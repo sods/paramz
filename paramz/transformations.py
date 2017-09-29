@@ -33,7 +33,7 @@
 
 import numpy as np
 from .domains import _POSITIVE,_NEGATIVE, _BOUNDED
-import weakref
+import weakref, logging
 
 import sys
 
@@ -48,7 +48,7 @@ __fixed__ = "fixed"
 FIXED = False
 UNFIXED = True
 #===============================================================================
-
+logger = logging.getLogger(__name__)
 
 class Transformation(object):
     domain = None
@@ -111,7 +111,7 @@ class Logexp(Transformation):
         return df*np.where(f>_lim_val, 1.,  - np.expm1(-f))
     def initialize(self, f):
         if np.any(f < 0.):
-            print("Warning: changing parameters to satisfy constraints")
+            logger.info("Warning: changing parameters to satisfy constraints")
         return np.abs(f)
     def log_jacobian(self, model_param):
         return np.where(model_param>_lim_val, model_param, np.log(np.expm1(model_param))) - model_param
@@ -130,7 +130,7 @@ class Exponent(Transformation):
         return np.einsum('i,i->i', df, f)
     def initialize(self, f):
         if np.any(f < 0.):
-            print("Warning: changing parameters to satisfy constraints")
+            logger.info("Warning: changing parameters to satisfy constraints")
         return np.abs(f)
     def log_jacobian(self, model_param):
         return np.log(model_param)
@@ -150,7 +150,7 @@ class LogexpNeg(Transformation):
         return np.einsum('i,i->i', df, np.where(f>_lim_val, -1, -1 + np.exp(-f)))
     def initialize(self, f):
         if np.any(f < 0.):
-            print("Warning: changing parameters to satisfy constraints")
+            logger.info("Warning: changing parameters to satisfy constraints")
         return np.abs(f)
     def __str__(self):
         return '+ve'
@@ -202,7 +202,7 @@ class LogexpClipped(Logexp):
         return np.einsum('i,i->i', df, gf) # np.where(f < self.lower, 0, gf)
     def initialize(self, f):
         if np.any(f < 0.):
-            print("Warning: changing parameters to satisfy constraints")
+            logger.info("Warning: changing parameters to satisfy constraints")
         return np.abs(f)
     def __str__(self):
         return '+ve_c'
@@ -264,7 +264,7 @@ class Logistic(Transformation):
         return np.einsum('i,i->i', df, (f - self.lower) * (self.upper - f) / self.difference)
     def initialize(self, f):
         if np.any(np.logical_or(f < self.lower, f > self.upper)):
-            print("Warning: changing parameters to satisfy constraints")
+            logger.info("Warning: changing parameters to satisfy constraints")
         #return np.where(np.logical_or(f < self.lower, f > self.upper), self.f(f * 0.), f)
         #FIXME: Max, zeros_like right?
         return np.where(np.logical_or(f < self.lower, f > self.upper), self.f(np.zeros_like(f)), f)
