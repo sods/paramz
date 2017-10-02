@@ -20,6 +20,10 @@ New
 Fix
 ~~~
 
+- Logger get from name. [mzwiessele]
+
+- Decay in adam set to standard. [mzwiessele]
+
 - Transformation warnings now logger. [mzwiessele]
 
 - #20. [mzwiessele]
@@ -48,6 +52,8 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.8.4 → 0.8.5. [mzwiessele]
 
 - Bump version: 0.8.3 → 0.8.4. [mzwiessele]
 
