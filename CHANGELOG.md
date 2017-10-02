@@ -20,6 +20,8 @@ New
 Fix
 ~~~
 
+- Transformation warnings now logger. [mzwiessele]
+
 - #20. [mzwiessele]
 
 - Changing to python 3.6, supporting 3.5 still. [mzwiessele]
@@ -46,6 +48,8 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.8.3 → 0.8.4. [mzwiessele]
 
 - Bump version: 0.8.2 → 0.8.3. [mzwiessele]
 
