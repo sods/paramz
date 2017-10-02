@@ -65,12 +65,14 @@ class Transformation(object):
         """
         compute the log of the jacobian of f, evaluated at f(x)= model_param
         """
-        raise NotImplementedError
+        logger.warning("log Jacobian for transformation {} not implemented, approximating by 0.".format(self.__class__))
+        return 0.
     def log_jacobian_grad(self, model_param):
         """
         compute the drivative of the log of the jacobian of f, evaluated at f(x)= model_param
         """
-        raise NotImplementedError
+        logger.warning("gradient of log Jacobian for transformation {} not implemented, approximating by 0.".format(self.__class__))
+        return 0.
     def gradfactor(self, model_param, dL_dmodel_param):
         """ df(opt_param)_dopt_param evaluated at self.f(opt_param)=model_param, times the gradient dL_dmodel_param,
 
@@ -139,23 +141,6 @@ class Exponent(Transformation):
     def __str__(self):
         return '+ve'
 
-class LogexpNeg(Transformation):
-    domain = _POSITIVE
-    def f(self, x):
-        return np.where(x>_lim_val, -x, -np.log(1. + np.exp(np.clip(x, -np.inf, _lim_val))))
-        #raises overflow warning: return np.where(x>_lim_val, x, np.log(1. + np.exp(x)))
-    def finv(self, f):
-        return np.where(f>_lim_val, 0, np.log(np.exp(-f) - 1.))
-    def gradfactor(self, f, df):
-        return np.einsum('i,i->i', df, np.where(f>_lim_val, -1, -1 + np.exp(-f)))
-    def initialize(self, f):
-        if np.any(f < 0.):
-            logger.info("Warning: changing parameters to satisfy constraints")
-        return np.abs(f)
-    def __str__(self):
-        return '+ve'
-
-
 class NegativeLogexp(Transformation):
     domain = _NEGATIVE
     logexp = Logexp()
@@ -164,59 +149,22 @@ class NegativeLogexp(Transformation):
     def finv(self, f):
         return self.logexp.finv(-f)  # np.log(np.exp(-f) - 1.)
     def gradfactor(self, f, df):
-        return np.einsum('i,i->i', df, -self.logexp.gradfactor(-f, df))
+        return self.logexp.gradfactor(-f, -df)
     def initialize(self, f):
-        return -self.logexp.initialize(f)  # np.abs(f)
+        return -self.logexp.initialize(-f)  # np.abs(f)
     def __str__(self):
         return '-ve'
-
-class LogexpClipped(Logexp):
-    max_bound = 1e100
-    min_bound = 1e-10
-    log_max_bound = np.log(max_bound)
-    log_min_bound = np.log(min_bound)
-    domain = _POSITIVE
-    _instances = []
-    def __new__(cls, lower=1e-6, *args, **kwargs):
-        if cls._instances:
-            cls._instances[:] = [instance for instance in cls._instances if instance()]
-            for instance in cls._instances:
-                if instance().lower == lower:
-                    return instance()
-        o = super(Transformation, cls).__new__(cls, lower, *args, **kwargs)
-        cls._instances.append(weakref.ref(o))
-        return cls._instances[-1]()
-    def __init__(self, lower=1e-6):
-        self.lower = lower
-    def f(self, x):
-        exp = np.exp(np.clip(x, self.log_min_bound, self.log_max_bound))
-        f = np.log(1. + exp)
-#         if np.isnan(f).any():
-#             import ipdb;ipdb.set_trace()
-        return np.clip(f, self.min_bound, self.max_bound)
-    def finv(self, f):
-        return np.log(np.exp(f - 1.))
-    def gradfactor(self, f, df):
-        ef = np.exp(f) # np.clip(f, self.min_bound, self.max_bound))
-        gf = (ef - 1.) / ef
-        return np.einsum('i,i->i', df, gf) # np.where(f < self.lower, 0, gf)
-    def initialize(self, f):
-        if np.any(f < 0.):
-            logger.info("Warning: changing parameters to satisfy constraints")
-        return np.abs(f)
-    def __str__(self):
-        return '+ve_c'
 
 class NegativeExponent(Exponent):
     domain = _NEGATIVE
     def f(self, x):
-        return -Exponent.f(x)
+        return -Exponent.f(self, x)
     def finv(self, f):
-        return Exponent.finv(-f)
+        return -Exponent.finv(self, -f)
     def gradfactor(self, f, df):
-        return np.einsum('i,i->i', df, f)
+        return -Exponent.gradfactor(self, f, df)
     def initialize(self, f):
-        return -Exponent.initialize(f) #np.abs(f)
+        return -Exponent.initialize(self, f) #np.abs(f)
     def __str__(self):
         return '-ve'
 
