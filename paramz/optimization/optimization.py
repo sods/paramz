@@ -314,7 +314,7 @@ class RProp(Optimizer):
 class Adam(Optimizer):
     # We want the optimizer to know some things in the Optimizer implementation:
     def __init__(self, step_rate=.0002,
-                                  decay=None,
+                                  decay=0,
                                   decay_mom1=0.1,
                                   decay_mom2=0.001,
                                   momentum=0,
@@ -322,7 +322,7 @@ class Adam(Optimizer):
         super(Adam, self).__init__(*args, **kwargs)
         self.opt_name = 'Adam (climin)'
         self.step_rate = step_rate
-        self.decay = decay
+        self.decay = 1-1e-8
         self.decay_mom1 = decay_mom1
         self.decay_mom2 = decay_mom2
         self.momentum = momentum
