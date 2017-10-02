@@ -34,6 +34,7 @@ from ..transformations import __fixed__
 from operator import delitem
 from functools import reduce
 from collections import OrderedDict
+import logging
 
 class Indexable(Nameable, Updateable):
     """
@@ -247,7 +248,7 @@ class Indexable(Nameable, Updateable):
         """
         if warning and reconstrained.size > 0:
             # TODO: figure out which parameters have changed and only print those
-            self.logger.warning("reconstraining parameters {}".format(self.hierarchy_name() or self.name))
+            logging.getLogger(self.name).warning("reconstraining parameters {}".format(self.hierarchy_name() or self.name))
         index = self._raveled_index()
         which.add(what, index)
         return index
