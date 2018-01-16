@@ -12,7 +12,7 @@
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
 # 
-# * Neither the name of paramz.tests.nameable_tests nor the names of its
+# * Neither the name of paramz.tests.array_core_tests nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
 # 
@@ -27,20 +27,23 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
+from paramz.core.observable_array import ObsAr
+import numpy as np
+import unittest
 
-import unittest, GPy
 
-class NameableTest(unittest.TestCase):
 
-    def test_recursion_limit(self):
-        # Recursion limit reached for unnamed kernels:
-        self.assertRaisesRegexp(RuntimeError,
-                                "Maximum recursion depth reached, try naming the parts of your kernel uniquely to avoid naming conflicts.", 
-                                lambda: GPy.kern.Add([GPy.kern.RBF(1) for i in range(20)])
-                                )
-        # Recursion limit not reached if kernels are named individually:
-        sum = GPy.kern.Add([GPy.kern.RBF(1, name='rbf_{}'.format(i)) for i in range(50)])
+class ArrayCoreTest(unittest.TestCase):
+    def setUp(self):
+        self.X = np.random.normal(1,1, size=(100,10))
+        self.obsX = ObsAr(self.X)
 
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    def test_init(self):
+        X = ObsAr(self.X)
+        X2 = ObsAr(X)
+        self.assertIs(X, X2, "no new Observable array, when Observable is given")
+
+    def test_slice(self):
+        t1 = self.X[2:78]
+        t2 = self.obsX[2:78]
+        self.assertListEqual(t1.tolist(), t2.tolist(), "Slicing should be the exact same, as in ndarray")
