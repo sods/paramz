@@ -46,8 +46,8 @@ from ..caching import FunctionCache
 try:
     from builtins import RecursionError as RE
 except:
-    from builtins import RuntimeError as RE
-
+    RE = RuntimeError
+    pass
 
 class OptimizationHandlable(Constrainable):
     """
