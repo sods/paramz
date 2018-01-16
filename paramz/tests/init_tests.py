@@ -32,6 +32,7 @@ from paramz import transformations
 from paramz.model import Model
 from paramz.param import Param
 from paramz.parameterized import Parameterized
+from paramz.tests.parameterized_tests import P
 import numpy as np
 import unittest
 
