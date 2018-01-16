@@ -29,6 +29,7 @@
 #===============================================================================
 from .gradcheckable import Gradcheckable
 import re
+from exceptions import RuntimeError
 
 def adjust_name_for_printing(name):
     """
@@ -67,11 +68,14 @@ class Nameable(Gradcheckable):
         Set the name of this object.
         Tell the parent if the name has changed.
         """
-        from_name = self.name
-        assert isinstance(name, str)
-        self._name = name
-        if self.has_parent():
-            self._parent_._name_changed(self, from_name)
+        try:
+            from_name = self.name
+            assert isinstance(name, str)
+            self._name = name
+            if self.has_parent():
+                self._parent_._name_changed(self, from_name)
+        except RuntimeError as r:
+            raise RuntimeError("Maximum recursion depth reached, try naming the parts of your kernel uniquely to avoid naming conflicts.")
             
     def hierarchy_name(self, adjust_for_printing=True):
         """
