@@ -36,7 +36,7 @@ from paramz.parameterized import Parameterized
 from paramz.param import Param, ParamConcatenation
 from paramz.model import Model
 from unittest.case import SkipTest
-from paramz.tests.parameterized_tests import P
+from paramz.tests.parameterized_tests import P, M
 
 class ModelTest(unittest.TestCase):
 
