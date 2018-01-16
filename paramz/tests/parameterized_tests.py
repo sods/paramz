@@ -131,8 +131,8 @@ class ParameterizedTest(unittest.TestCase):
         self.assertEqual(self.test1.add.rbf.num_params, 2)
 
     def test_index_operations(self):
-        self.assertRaises(AttributeError, self.test1.add_index_operation, 'constraints', None)
-        self.assertRaises(AttributeError, self.test1.remove_index_operation, 'not_an_index_operation')
+        self.assertRaisesRegexp(AttributeError, "An index operation with the name constraints was already taken", self.test1.add_index_operation, 'constraints', None)
+        self.assertRaisesRegexp(AttributeError, "No index operation with the name", self.test1.remove_index_operation, 'not_an_index_operation')
 
     def test_names(self):
         self.assertSequenceEqual(self.test1.parameter_names(adjust_for_printing=True), self.test1.parameter_names(adjust_for_printing=False))
@@ -173,15 +173,16 @@ class ParameterizedTest(unittest.TestCase):
     def test_recursion_limit(self):
         # Recursion limit reached for unnamed kernels:
         def max_recursion():
-            kerns = [P('rbf', lengthscale=Param('lengthscale', 1), variance=Param('variance', 1)) for i in range(10)]
+            kerns = [P('rbf', lengthscale=Param('lengthscale', 1), variance=Param('variance', 1)) for i in range(20)]
             p = Parameterized('add')
             p.link_parameters(*kerns)
         import sys
         sys.setrecursionlimit(100)
-        self.assertRaisesRegexp(RuntimeError,
-                                "Maximum recursion depth reached, try naming the parts of your kernel uniquely to avoid naming conflicts.", 
-                                max_recursion
-                                )
+        try:
+            from builtins import RecursionError as RE
+        except:
+            from builtins import RuntimeError as RE
+        self.assertRaisesRegexp(RE, "aximum recursion depth", max_recursion)
         # Recursion limit not reached if kernels are named individually:
         sys.setrecursionlimit(1000)
         p = Parameterized('add')
@@ -189,9 +190,9 @@ class ParameterizedTest(unittest.TestCase):
         p.link_parameters(*kerns)
 
     def test_add_parameter(self):
-        self.assertEquals(self.rbf._parent_index_, 0)
-        self.assertEquals(self.white._parent_index_, 1)
-        self.assertEquals(self.param._parent_index_, 0)
+        self.assertEqual(self.rbf._parent_index_, 0)
+        self.assertEqual(self.white._parent_index_, 1)
+        self.assertEqual(self.param._parent_index_, 0)
         pass
 
     def test_fixes(self):
@@ -238,7 +239,7 @@ class ParameterizedTest(unittest.TestCase):
         self.assertListEqual(self.test1.kern.param_array.tolist(), val[:2].tolist())
 
     def test_add_parameter_already_in_hirarchy(self):
-        self.assertRaises(HierarchyError, self.test1.link_parameter, self.white.parameters[0])
+        self.assertRaisesRegexp(HierarchyError, "You cannot add a parameter twice into the hierarchy", self.test1.link_parameter, self.white.parameters[0])
 
     def test_default_constraints(self):
         self.assertIs(self.rbf.variance.constraints._param_index_ops, self.rbf.constraints._param_index_ops)

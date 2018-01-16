@@ -43,6 +43,12 @@ from .constrainable import Constrainable
 from .nameable import adjust_name_for_printing
 from ..caching import FunctionCache
 
+try:
+    from builtins import RecursionError as RE
+except:
+    from builtins import RuntimeError as RE
+
+
 class OptimizationHandlable(Constrainable):
     """
     This enables optimization handles on an Object as done in GPy 0.4.
@@ -436,38 +442,42 @@ class Parameterizable(OptimizationHandlable):
         return len(self.parameters)
 
     def _add_parameter_name(self, param):
-        pname = adjust_name_for_printing(param.name)
+        try:
+            pname = adjust_name_for_printing(param.name)
+    
+            def warn_and_retry(param, match=None):
+                #===================================================================
+                # print """
+                # WARNING: added a parameter with formatted name {},
+                # which is already assigned to {}.
+                # Trying to change the parameter name to
+                #
+                # {}.{}
+                # """.format(pname, self.hierarchy_name(), self.hierarchy_name(), param.name + "_")
+                #===================================================================
+                if match is None:
+                    param.name = param.name+"_1"
+                else:
+                    param.name = match.group('name') + "_" + str(int(match.group('digit'))+1)
+                self._add_parameter_name(param)
+            # and makes sure to not delete programmatically added parameters
+            for other in self.parameters:
+                if (not (other is param)) and (other.name == param.name):
+                    return warn_and_retry(other, _name_digit.match(other.name))
+            if pname not in dir(self):
+                self.__dict__[pname] = param
+                self._added_names_.add(pname)
+            else: # pname in self.__dict__
+                if pname in self._added_names_:
+                    other = self.__dict__[pname]
+                    #if not (param is other):
+                    #    del self.__dict__[pname]
+                    #    self._added_names_.remove(pname)
+                    #    warn_and_retry(other)
+                    #    warn_and_retry(param, _name_digit.match(other.name))
+        except RE:
+            raise RE("Maximum recursion depth reached, try naming the parts of your kernel uniquely to avoid naming conflicts.")
 
-        def warn_and_retry(param, match=None):
-            #===================================================================
-            # print """
-            # WARNING: added a parameter with formatted name {},
-            # which is already assigned to {}.
-            # Trying to change the parameter name to
-            #
-            # {}.{}
-            # """.format(pname, self.hierarchy_name(), self.hierarchy_name(), param.name + "_")
-            #===================================================================
-            if match is None:
-                param.name = param.name+"_1"
-            else:
-                param.name = match.group('name') + "_" + str(int(match.group('digit'))+1)
-            self._add_parameter_name(param)
-        # and makes sure to not delete programmatically added parameters
-        for other in self.parameters:
-            if (not (other is param)) and (other.name == param.name):
-                return warn_and_retry(other, _name_digit.match(other.name))
-        if pname not in dir(self):
-            self.__dict__[pname] = param
-            self._added_names_.add(pname)
-        else: # pname in self.__dict__
-            if pname in self._added_names_:
-                other = self.__dict__[pname]
-                #if not (param is other):
-                #    del self.__dict__[pname]
-                #    self._added_names_.remove(pname)
-                #    warn_and_retry(other)
-                #    warn_and_retry(param, _name_digit.match(other.name))
 
     def _remove_parameter_name(self, param=None, pname=None):
         assert param is None or pname is None, "can only delete either param by name, or the name of a param"

@@ -28,7 +28,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-import six # For metaclass support in Python 2 and 3 simultaneously
 import numpy; np = numpy
 from re import compile, _pattern_type
 
@@ -181,7 +180,6 @@ class Parameterized(with_metaclass(ParametersChangedMeta, Parameterizable)):
         else:
             raise HierarchyError("""Parameter exists already, try making a copy""")
 
-
     def link_parameters(self, *parameters):
         """
         convenience method for adding several
@@ -333,7 +331,7 @@ If you are loading a model, set updates off, then initialize, then set the value
             if name in pnames:
                 param = self.parameters[pnames.index(name)]
                 param[:] = val; return
-        return object.__setattr__(self, name, val);
+        return object.__setattr__(self, name, val)
 
     #===========================================================================
     # Pickling
