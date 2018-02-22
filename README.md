@@ -83,7 +83,8 @@ or using setuptools
 
 ## Developer Documentation:
 
-http://pythonhosted.org/paramz/
+- [HTML version](paramz.rtfd.io)
+- [PDF version](https://media.readthedocs.org/pdf/paramz/latest/paramz.pdf)
 
 ### Compiling documentation:
 
