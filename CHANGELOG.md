@@ -20,6 +20,21 @@ New
 Fix
 ~~~
 
+- Input array takeover same dimensions. [mzwiessele]
+
+- Python2 runtime error. [mzwiessele]
+
+- Recursion depth in naming: [mzwiessele]
+
+- Test imports. [mzwiessele]
+
+- Test imports. [mzwiessele]
+
+- Naming tests and extracted different test cases as files. [mzwiessele]
+
+- Naming recursion depth caught and added tests to cover exception.
+  [mzwiessele]
+
 - Logger get from name. [mzwiessele]
 
 - Decay in adam set to standard. [mzwiessele]
@@ -52,6 +67,12 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.8.7 → 0.8.8. [mzwiessele]
+
+- Bump version: 0.8.6 → 0.8.7. [mzwiessele]
+
+- Bump version: 0.8.5 → 0.8.6. [mzwiessele]
 
 - Bump version: 0.8.4 → 0.8.5. [mzwiessele]
 
