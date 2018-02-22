@@ -55,3 +55,4 @@ deploy:
     #repo: mzwiessele/paramz
     branch: master
   distributions: "sdist"
+  skip_cleanup: true
