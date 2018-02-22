@@ -85,7 +85,7 @@ class Param(Parameterizable, ObsAr):
     _fixes_ = None
     parameters = []
     def __new__(cls, name, input_array, default_constraint=None):
-        obj = np.atleast_1d(super(Param, cls).__new__(cls, input_array=input_array))
+        obj = super(Param, cls).__new__(cls, input_array=input_array)
         obj._current_slice_ = (slice(obj.shape[0]),)
         obj._realshape_ = obj.shape
         obj._realsize_ = obj.size
