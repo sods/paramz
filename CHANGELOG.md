@@ -70,6 +70,8 @@ Fix
 Other
 ~~~~~
 
+- Bump version: 0.8.9 → 0.9.0. [mzwiessele]
+
 - Bump version: 0.8.8 → 0.8.9. [mzwiessele]
 
 - Bump version: 0.8.7 → 0.8.8. [mzwiessele]
