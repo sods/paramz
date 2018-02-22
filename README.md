@@ -83,7 +83,7 @@ or using setuptools
 
 ## Developer Documentation:
 
-- [HTML version](paramz.rtfd.io)
+- [HTML version](http://paramz.rtfd.io)
 - [PDF version](https://media.readthedocs.org/pdf/paramz/latest/paramz.pdf)
 
 ### Compiling documentation:
