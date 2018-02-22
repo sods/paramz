@@ -20,6 +20,8 @@ New
 Fix
 ~~~
 
+- Parameterized test recursion error. [mzwiessele]
+
 - Input array takeover same dimensions. [mzwiessele]
 
 - Python2 runtime error. [mzwiessele]
@@ -67,6 +69,8 @@ Fix
 
 Other
 ~~~~~
+
+- Bump version: 0.8.8 → 0.8.9. [mzwiessele]
 
 - Bump version: 0.8.7 → 0.8.8. [mzwiessele]
 
