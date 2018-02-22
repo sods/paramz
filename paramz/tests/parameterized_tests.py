@@ -181,7 +181,7 @@ class ParameterizedTest(unittest.TestCase):
         try:
             from builtins import RecursionError as RE
         except:
-            from builtins import RuntimeError as RE
+            RE = RuntimeError
         self.assertRaisesRegexp(RE, "aximum recursion depth", max_recursion)
         # Recursion limit not reached if kernels are named individually:
         sys.setrecursionlimit(1000)
