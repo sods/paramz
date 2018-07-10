@@ -110,9 +110,9 @@ class Model(Parameterized):
         with VerboseOptimization(self, opt, maxiters=max_iters, verbose=messages, ipython_notebook=ipython_notebook, clear_after_finish=clear_after_finish) as vo:
             opt.run(start, f_fp=self._objective_grads, f=self._objective, fp=self._grads)
 
-        self.optimization_runs.append(opt)
-
         self.optimizer_array = opt.x_opt
+
+        self.optimization_runs.append(opt)
         return opt
 
     def optimize_restarts(self, num_restarts=10, robust=False, verbose=True, parallel=False, num_processes=None, **kwargs):
@@ -148,9 +148,9 @@ class Model(Parameterized):
             on the current machine.
 
         """
+        initial_length = len(self.optimization_runs)
         initial_parameters = self.optimizer_array.copy()
 
-        fail_count = 0
         if parallel: #pragma: no cover
             try:
                 pool = mp.Pool(processes=num_processes)
@@ -167,7 +167,8 @@ class Model(Parameterized):
         for i in range(num_restarts):
             try:
                 if not parallel:
-                    if i>0: self.randomize()
+                    if i > 0:
+                        self.randomize()
                     self.optimize(**kwargs)
                 else:#pragma: no cover
                     self.optimization_runs.append(jobs[i])
@@ -175,15 +176,15 @@ class Model(Parameterized):
                 if verbose:
                     print(("Optimization restart {0}/{1}, f = {2}".format(i + 1, num_restarts, self.optimization_runs[-1].f_opt)))
             except Exception as e:
-                fail_count += 1
                 if robust:
                     print(("Warning - optimization restart {0}/{1} failed".format(i + 1, num_restarts)))
                 else:
                     raise e
 
-        if len(self.optimization_runs):
-            i = np.argmin([o.f_opt for o in self.optimization_runs[-num_restarts+fail_count:]])
-            self.optimizer_array = self.optimization_runs[-num_restarts+fail_count+i].x_opt
+        if len(self.optimization_runs) > initial_length:
+            # This works, since failed jobs don't get added to the optimization_runs.
+            i = np.argmin([o.f_opt for o in self.optimization_runs[initial_length:]])
+            self.optimizer_array = self.optimization_runs[initial_length + i].x_opt
         else:
             self.optimizer_array = initial_parameters
         return self.optimization_runs
