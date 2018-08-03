@@ -29,7 +29,12 @@
 #===============================================================================
 
 import numpy; np = numpy
-from re import compile, _pattern_type
+from re import compile
+try:
+    from re import _pattern_type
+except ImportError:
+    # 3.7 and later
+    from re import Pattern as _pattern_type
 
 from .core.parameter_core import Parameterizable, adjust_name_for_printing
 from .core import HierarchyError
