@@ -16,6 +16,7 @@ New
 
 Fix
 ~~~
+- Better error handling in robust optimize_restarts. [Felix Berkenkamp]
 - Ipywidgets. [mzwiessele]
 - Docs using rtd. [mzwiessele]
 - Docs using rtd. [mzwiessele]
@@ -51,6 +52,15 @@ Fix
 
 Other
 ~~~~~
+- Bump version: 0.9.2 → 0.9.3. [mzwiessele]
+- Merge pull request #27 from vmarkovtsev/patch-1. [Max Zwiessele]
+
+  Fix the compatibility with Python 3.7
+- Fix the compatibility with Python 3.7. [Vadim Markovtsev]
+- Merge pull request #25 from befelix/better_robust. [Max Zwiessele]
+
+  fix: better error handling in robust optimize_restarts
+- Pkg: CHANGELOG. [mzwiessele]
 - Bump version: 0.9.1 → 0.9.2. [mzwiessele]
 - Bump version: 0.9.0 → 0.9.1. [mzwiessele]
 - Bump version: 0.8.9 → 0.9.0. [mzwiessele]
