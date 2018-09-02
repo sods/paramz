@@ -52,6 +52,9 @@ Fix
 
 Other
 ~~~~~
+- Bump version: 0.9.3 → 0.9.4. [mzwiessele]
+- Pkg: py37. [mzwiessele]
+- Pkg: changelog. [mzwiessele]
 - Bump version: 0.9.2 → 0.9.3. [mzwiessele]
 - Merge pull request #27 from vmarkovtsev/patch-1. [Max Zwiessele]
 
