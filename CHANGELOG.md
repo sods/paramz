@@ -52,6 +52,9 @@ Fix
 
 Other
 ~~~~~
+- Bump version: 0.9.4 → 0.9.5. [mzwiessele]
+- Fixed ipython checking. [Trevor Campbell]
+- Pkg: changelog. [mzwiessele]
 - Bump version: 0.9.3 → 0.9.4. [mzwiessele]
 - Pkg: py37. [mzwiessele]
 - Pkg: changelog. [mzwiessele]

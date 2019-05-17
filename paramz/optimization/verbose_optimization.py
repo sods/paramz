@@ -65,6 +65,7 @@ class VerboseOptimization(object):
                 #self.progresstext = Text(width='100%', disabled=True, value='0/{}'.format(maxiters))
                 self.model_show = HTML()
                 self.ipython_notebook = ipython_notebook
+                get_ipython
             except:
                 # Not in Ipython notebook
                 self.ipython_notebook = False
