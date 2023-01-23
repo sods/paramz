@@ -84,7 +84,7 @@ class Pickleable(object):
         parents = []
         if which is None:
             which = self
-        which.traverse_parents(parents.append) # collect parents
+        which.traverse_parents(parents.append) # collect parents #TODO: Refactor: This is bad, in this class we do not know anything about parentables
         for p in parents:
             if not id(p) in memo :memo[id(p)] = None # set all parents to be None, so they will not be copied
         if not id(self.gradient) in memo:memo[id(self.gradient)] = None # reset the gradient
@@ -96,13 +96,18 @@ class Pickleable(object):
 
     def __deepcopy__(self, memo):
         s = self.__new__(self.__class__) # fresh instance
-        memo[id(self)] = s # be sure to break all cycles --> self is already done
+        memo[id(self)] = s # be sure to break all cycles --> self will be done after all children are done
+        # children should not have a link to parent as parent cant finish before children.
         import copy
-        s.__setstate__(copy.deepcopy(self.__getstate__(), memo)) # standard copy
+
+        state = self.__getstate__()
+        updated_state = copy.deepcopy(state, memo) # standard copy
+
+        s.__setstate__(updated_state)
         return s
 
-    def __getstate__(self):
-        ignore_list = ['_param_array_', # parameters get set from bottom to top
+    def __getstate__(self): #TODO: Refactor: This is bad, this class does not know about most of these attributes
+        ignore_list = [#'_param_array_', # parameters get set from bottom to top
                        '_gradient_array_', # as well as gradients
                        '_optimizer_copy_',
                        'logger',
