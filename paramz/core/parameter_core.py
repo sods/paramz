@@ -493,7 +493,7 @@ class Parameterizable(OptimizationHandlable):
 
     def __getstate__(self):
         dc = super().__getstate__()
-        del dc['_param_array_']
+        dc.pop('_param_array_', None)
         return dc
 
     def __setstate__(self, state):
