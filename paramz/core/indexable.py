@@ -158,7 +158,7 @@ class Indexable(Nameable, Updateable):
         """
         from ..param import ParamConcatenation
         if isinstance(param, ParamConcatenation):
-            return np.hstack((self._raveled_index_for(p) for p in param.params))
+            return np.hstack(tuple(self._raveled_index_for(p) for p in param.params))
         return param._raveled_index() + self._offset_for(param)
 
     def _raveled_index_for_transformed(self, param):
