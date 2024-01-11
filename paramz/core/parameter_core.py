@@ -244,7 +244,7 @@ class OptimizationHandlable(Constrainable):
         self.optimizer_array = x  # makes sure all of the tied parameters get the same init (since there's only one prior object...)
         # now draw from prior where possible
         x = self.param_array.copy()
-        unfixlist = np.ones((self.size,),dtype=np.bool)
+        unfixlist = np.ones((self.size,),dtype=bool)
         unfixlist[self.constraints[__fixed__]] = False
         self.param_array.flat[unfixlist] = x.view(np.ndarray).ravel()[unfixlist]
         self.update_model(updates)
