@@ -22,6 +22,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+    - name: Clean up build artifacts
+        run: |
+          rm -rf dist
+
       - name: Setup python
         uses: actions/setup-python@v4
         with:
