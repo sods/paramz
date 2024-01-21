@@ -16,6 +16,7 @@ New
 
 Fix
 ~~~
+- Fix deepcopy and picling [bela127]
 - Replace np.float with float [connorfuhrman]
 - Replace np.bool with bool [connorfuhrman]
 - Better error handling in robust optimize_restarts. [Felix Berkenkamp]
