@@ -491,6 +491,11 @@ class Parameterizable(OptimizationHandlable):
         self._remove_parameter_name(None, old_name)
         self._add_parameter_name(param)
 
+    def __getstate__(self):
+        dc = super().__getstate__()
+        dc.pop('_param_array_', None)
+        return dc
+
     def __setstate__(self, state):
         super(Parameterizable, self).__setstate__(state)
         self.logger = logging.getLogger(self.__class__.__name__)

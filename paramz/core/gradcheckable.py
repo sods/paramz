@@ -28,10 +28,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 from . import HierarchyError
-from .pickleable import Pickleable
 from .parentable import Parentable
 
-class Gradcheckable(Pickleable, Parentable):
+class Gradcheckable(Parentable):
     """
     Adds the functionality for an object to be gradcheckable.
     It is just a thin wrapper of a call to the highest parent for now.
@@ -74,3 +73,4 @@ class Gradcheckable(Pickleable, Parentable):
         TODO: this can be done more efficiently, when doing it inside here
         """
         raise HierarchyError("This parameter is not in a model with a likelihood, and, therefore, cannot be gradient checked!")
+

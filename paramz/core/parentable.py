@@ -27,8 +27,9 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
+from .pickleable import Pickleable
 
-class Parentable(object):
+class Parentable(Pickleable):
     """
     Enable an Object to have a parent.
 
@@ -37,8 +38,9 @@ class Parentable(object):
     """
     _parent_ = None
     _parent_index_ = None
+
     def __init__(self, *args, **kwargs):
-        super(Parentable, self).__init__()
+        super().__init__(*args, **kwargs)
 
     def has_parent(self):
         """
@@ -73,3 +75,26 @@ class Parentable(object):
         Dont do anything if in leaf node
         """
         pass
+
+    def __getstate__(self):
+        dc =  super().__getstate__()
+        dc.pop('_parent_', None)
+        return dc
+    
+    def __deepcopy__(self, memo: dict):
+        s = self.__new__(self.__class__) # fresh instance
+        memo[id(self)] = s # be sure to break all cycles --> self is already done
+        # The above line can cause hard to understand exceptions/bugs, because s is not 'done' its state attributes need to be copied first
+        # If a state attribute has a link to a parent object, the parent is copied first, using the uninitialized copy s
+        # thereby throwing an exception when attributes of the child are accessed while copying the parent.
+        # so a subclass should not link to its parent or handel the link like its done here.
+        import copy
+
+        parent_copy = memo.get(id(self._parent_), None) #get the copy of the parent (it should already be in the memo),
+        # if the parent is not in the memo the copy process was not started from the parent, and the link should will be removed.
+        state = self.__getstate__()
+        updated_state = copy.deepcopy(state, memo) # standard copy
+        s.__setstate__(updated_state)
+        s._parent_ = parent_copy
+        return s
+
