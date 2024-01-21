@@ -35,8 +35,7 @@ import time
 
 
 def exponents(fnow, current_grad):
-    exps = [np.abs(np.float_(fnow)),
-            1 if current_grad is np.nan else current_grad]
+    exps = [np.abs(float(fnow)), 1 if current_grad is np.nan else current_grad]
     return np.sign(exps) * np.log10(exps).astype(int)
 
 
