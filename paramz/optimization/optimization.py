@@ -251,6 +251,7 @@ def _check_for_climin():
 
 class Opt_Adadelta(Optimizer):
     def __init__(self, step_rate=0.1, decay=0.9, momentum=0, *args, **kwargs):
+        self.fp = kwargs.pop('fp', None)
         Optimizer.__init__(self, *args, **kwargs)
         self.opt_name = "Adadelta (climin)"
         self.step_rate=step_rate
@@ -261,7 +262,10 @@ class Opt_Adadelta(Optimizer):
 
 
     def opt(self, x_init, f_fp=None, f=None, fp=None):
-        assert not fp is None
+        if self.fp is not None:
+            fp = self.fp
+        else:
+            assert not fp is None
 
         import climin
 
