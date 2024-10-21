@@ -81,7 +81,7 @@ class Transformation(object):
 
         .. math::
 
-            \frac{\frac{\partial L}{\partial f}\left(\left.\partial f(x)}{\partial x}\right|_{x=f^{-1}(f)\right)}
+            \frac{\frac{\\partial L}{\\partial f}\\left(\\left.\\partial f(x)}{\\partial x}\right|_{x=f^{-1}(f)\right)}
         """
         raise NotImplementedError
     def gradfactor_non_natural(self, model_param, dL_dmodel_param):

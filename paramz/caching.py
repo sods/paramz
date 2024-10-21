@@ -236,7 +236,7 @@ class Cacher(object):
         return self.operation.__name__
 
     def __str__(self, *args, **kwargs):
-        return "Cacher({})\n  limit={}\n  \#cached={}".format(self.__name__, self.limit, len(self.cached_input_ids))
+        return "Cacher({})\n  limit={}\n  \\#cached={}".format(self.__name__, self.limit, len(self.cached_input_ids))
 
 class FunctionCache(dict):
     def __init__(self, *args, **kwargs):
