@@ -116,7 +116,7 @@ class Model(Parameterized):
         return opt
 
     def optimize_restarts(self, num_restarts=10, robust=False, verbose=True, parallel=False, num_processes=None, **kwargs):
-        """
+        r"""
         Perform random restarts of the model, and set the model to the best
         seen solution.
 

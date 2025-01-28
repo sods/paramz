@@ -299,7 +299,7 @@ class OptimizationHandlable(Constrainable):
         pass
 
 
-_name_digit = re.compile("(?P<name>.*)_(?P<digit>\d+)$")
+_name_digit = re.compile(r"(?P<name>.*)_(?P<digit>\d+)$")
 class Parameterizable(OptimizationHandlable):
     """
     A parameterisable class.
