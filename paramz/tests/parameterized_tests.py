@@ -131,8 +131,8 @@ class ParameterizedTest(unittest.TestCase):
         self.assertEqual(self.test1.add.rbf.num_params, 2)
 
     def test_index_operations(self):
-        self.assertRaisesRegexp(AttributeError, "An index operation with the name constraints was already taken", self.test1.add_index_operation, 'constraints', None)
-        self.assertRaisesRegexp(AttributeError, "No index operation with the name", self.test1.remove_index_operation, 'not_an_index_operation')
+        self.assertRaisesRegex(AttributeError, "An index operation with the name constraints was already taken", self.test1.add_index_operation, 'constraints', None)
+        self.assertRaisesRegex(AttributeError, "No index operation with the name", self.test1.remove_index_operation, 'not_an_index_operation')
 
     def test_names(self):
         self.assertSequenceEqual(self.test1.parameter_names(adjust_for_printing=True), self.test1.parameter_names(adjust_for_printing=False))
@@ -182,7 +182,7 @@ class ParameterizedTest(unittest.TestCase):
             from builtins import RecursionError as RE
         except:
             RE = RuntimeError
-        self.assertRaisesRegexp(RE, "aximum recursion depth", max_recursion)
+        self.assertRaisesRegex(RE, "aximum recursion depth", max_recursion)
         # Recursion limit not reached if kernels are named individually:
         sys.setrecursionlimit(1000)
         p = Parameterized('add')
@@ -239,7 +239,7 @@ class ParameterizedTest(unittest.TestCase):
         self.assertListEqual(self.test1.kern.param_array.tolist(), val[:2].tolist())
 
     def test_add_parameter_already_in_hirarchy(self):
-        self.assertRaisesRegexp(HierarchyError, "You cannot add a parameter twice into the hierarchy", self.test1.link_parameter, self.white.parameters[0])
+        self.assertRaisesRegex(HierarchyError, "You cannot add a parameter twice into the hierarchy", self.test1.link_parameter, self.white.parameters[0])
 
     def test_default_constraints(self):
         self.assertIs(self.rbf.variance.constraints._param_index_ops, self.rbf.constraints._param_index_ops)
