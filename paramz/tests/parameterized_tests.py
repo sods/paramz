@@ -274,7 +274,7 @@ class ParameterizedTest(unittest.TestCase):
 
     def test_fixing_randomize(self):
         self.white.fix(warning=True)
-        val = float(self.white.variance)
+        val = self.white.variance
         self.test1.randomize()
         self.assertEqual(val, self.white.variance)
 
@@ -286,7 +286,7 @@ class ParameterizedTest(unittest.TestCase):
 
     def test_fixing_randomize_parameter_handling(self):
         self.rbf.fix(0.1, warning=True)
-        val = float(self.rbf.variance)
+        val = self.rbf.variance
         self.test1.kern.randomize()
         self.assertEqual(val, self.rbf.variance)
 

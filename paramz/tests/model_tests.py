@@ -268,7 +268,7 @@ class ModelTest(unittest.TestCase):
         #self.assertSequenceEqual(cache_str, str(self.testmodel), None, str)
 
     def test_updates(self):
-        val = float(self.testmodel.objective_function())
+        val = self.testmodel.objective_function()
         self.testmodel.update_toggle()
         self.testmodel.kern.randomize(np.random.normal, loc=1, scale=.2)
         self.testmodel.likelihood.randomize()
@@ -284,7 +284,7 @@ class ModelTest(unittest.TestCase):
 
     def test_fixing_optimize(self):
         self.testmodel.kern.lengthscale.fix()
-        val = float(self.testmodel.kern.lengthscale)
+        val = self.testmodel.kern.lengthscale
         self.testmodel.randomize()
         self.assertEqual(val, self.testmodel.kern.lengthscale)
         self.testmodel.optimize(max_iters=2)
@@ -299,7 +299,7 @@ class ModelTest(unittest.TestCase):
         np.testing.assert_((self.testmodel[''][:2] == [10,10]).all())
 
         self.testmodel.kern.lengthscale.fix()
-        val = float(self.testmodel.kern.lengthscale)
+        val = self.testmodel.kern.lengthscale
         self.testmodel.randomize()
         self.assertEqual(val, self.testmodel.kern.lengthscale)
 
@@ -354,7 +354,7 @@ class ModelTest(unittest.TestCase):
 
 
         # Assert fixing works and does not randomize the - say - lengthscale:
-        val = float(self.testmodel.kern.lengthscale)
+        val = self.testmodel.kern.lengthscale
         self.testmodel.randomize()
         self.assertEqual(val, self.testmodel.kern.lengthscale)
 
