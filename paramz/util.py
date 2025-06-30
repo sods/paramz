@@ -27,6 +27,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
+import warnings
 
 def _inherit_doc(fromclass, done_classes = None):
     inherited = ''
@@ -45,3 +46,22 @@ def _inherit_doc(fromclass, done_classes = None):
         inherited += _inherit_doc(c, done_classes=done_classes)        
         
     return inherited
+
+
+def _set_mem_addr(dest, src) -> None:
+    """
+    This function serves to replace the `.data` getter/setter that existed in
+    `numpy<2` and got removed in `numpy>=2`.
+    The original behavior was setting the memory address of dest to that of src.
+    However, directly setting the memory address of a numpy array to the data of
+    another one seems to be unwanted in `numpy>=2`, which is causing some major 
+    problems here.
+    """
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+
+        # original
+        # dest.data = src.data
+        
+        # take 1
+        dest.data = memoryview(src)

@@ -28,7 +28,10 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-import numpy; np = numpy
+import ctypes
+import numpy
+
+from paramz.util import _set_mem_addr; np = numpy
 from re import compile
 try:
     from re import _pattern_type
@@ -268,8 +271,8 @@ All parameter arrays must be C_CONTIGUOUS
             self.param_array[pslice] = p.param_array.flat  # , requirements=['C', 'W']).ravel(order='C')
             self.gradient_full[pslice] = p.gradient_full.flat  # , requirements=['C', 'W']).ravel(order='C')
 
-            p.param_array.data = self.param_array[pslice].data
-            p.gradient_full.data = self.gradient_full[pslice].data
+            _set_mem_addr(p.param_array, self.param_array[pslice])
+            _set_mem_addr(p.gradient_full, self.gradient_full[pslice])
 
             self._param_slices_.append(pslice)
 

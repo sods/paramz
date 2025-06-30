@@ -38,6 +38,8 @@ import numpy as np
 import re
 import logging
 
+from paramz.util import _set_mem_addr
+
 from ..transformations import __fixed__, FIXED
 from .constrainable import Constrainable
 from .nameable import adjust_name_for_printing
@@ -287,8 +289,8 @@ class OptimizationHandlable(Constrainable):
             self.param_array[pislice] = pi.param_array.flat  # , requirements=['C', 'W']).flat
             self.gradient_full[pislice] = pi.gradient_full.flat  # , requirements=['C', 'W']).flat
 
-            pi.param_array.data = parray[pislice].data
-            pi.gradient_full.data = garray[pislice].data
+            _set_mem_addr(pi.param_array, parray[pislice])
+            _set_mem_addr(pi.gradient_full, garray[pislice])
 
             pi._propagate_param_grad(parray[pislice], garray[pislice])
             pi_old_size += pi.size
