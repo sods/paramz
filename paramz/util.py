@@ -57,11 +57,11 @@ def _set_mem_addr(dest, src) -> None:
     another one seems to be unwanted in `numpy>=2`, which is causing some major 
     problems here.
     """
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
+    # with warnings.catch_warnings():
+    #     warnings.simplefilter("ignore", DeprecationWarning)
 
-        # original
-        # dest.data = src.data
-        
-        # take 1
-        dest.data = memoryview(src)
+    # original
+    # dest.data = src.data
+    
+    # take 1
+    dest.data = memoryview(src)
