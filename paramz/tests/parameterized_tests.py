@@ -309,4 +309,7 @@ class ParameterizedTest(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_add_parameter']
-    unittest.main()
+    # unittest.main()
+    obj = ParameterizedTest()
+    obj.setUp()
+    obj.test_unfixed_param_array()
