@@ -1,9 +1,10 @@
+from .conftest import AssertionsMixin
 '''
 Created on Feb 13, 2014
 
 @author: maxzwiessele
 '''
-import unittest
+import pytest
 import numpy as np
 
 from paramz.core.index_operations import ParameterIndexOperations
@@ -48,14 +49,14 @@ class M(Model):
 
 
 
-#class ErrorTest(unittest.TestCase):
+#class ErrorTest:
 #    def test_fail_param_dimension_change(self):
 #        p = Param('test', np.random.normal(0,1,2))
 #        m = Parameterized('test')
 #        self.assertRaises(ValueError, m.link_parameter, p[:,None])
 
 
-class ParameterizedTest(unittest.TestCase):
+class TestParameterized(AssertionsMixin):
 
     def setUp(self):
         self.rbf = Parameterized('rbf')
@@ -309,7 +310,7 @@ class ParameterizedTest(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_add_parameter']
-    # unittest.main()
+    # Run this module with pytest when debugging individual tests.
     obj = ParameterizedTest()
     obj.setUp()
     obj.test_unfixed_param_array()

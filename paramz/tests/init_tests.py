@@ -28,13 +28,14 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
+from .conftest import AssertionsMixin
 from paramz import transformations
 from paramz.model import Model
 from paramz.param import Param
 from paramz.parameterized import Parameterized
 from paramz.tests.parameterized_tests import P
 import numpy as np
-import unittest
+import pytest
 
 
 
@@ -85,7 +86,7 @@ def test_parameter_modify_in_init():
     m.randomize()
     assert(m.p1 == val)
 
-class InitTests(unittest.TestCase):
+class TestInit(AssertionsMixin):
     def setUp(self):
         class M(Model):
             def __init__(self, name, **kwargs):

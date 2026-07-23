@@ -448,8 +448,13 @@ class ParamConcatenation(object):
     # parameter operations:
     #===========================================================================
     def update_all_params(self):
-        for par in self.parents:
-            par.trigger_update(trigger_parent=False)
+        roots = set()
+        for parameter in self.params:
+            if parameter.has_parent():
+                parameter._parent_._sync_from_child(parameter)
+                roots.add(parameter._highest_parent_)
+        for root in roots:
+            root.trigger_update(trigger_parent=False)
 
     def constrain(self, constraint, warning=True):
         [param.constrain(constraint, trigger_parent=False) for param in self.params]

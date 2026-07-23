@@ -28,10 +28,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-import ctypes
 import numpy
 
-from paramz.util import _set_mem_addr; np = numpy
+np = numpy
 from re import compile
 try:
     from re import _pattern_type
@@ -235,7 +234,7 @@ class Parameterized(with_metaclass(ParametersChangedMeta, Parameterizable)):
         # it also sets the constraints for each parameter to the constraints
         # of their respective parents
         self._model_initialized_ = True
-        
+
         if not hasattr(self, "parameters") or len(self.parameters) < 1:
             # no parameters for this class
             return
@@ -264,15 +263,14 @@ All parameter arrays must be C_CONTIGUOUS
 
             pslice = slice(old_size, old_size + p.size)
 
-            # first connect all children
-            p._propagate_param_grad(self.param_array[pslice], self.gradient_full[pslice])
-
-            # then connect children to self
+            # Copy current values into the canonical arrays before wiring views.
             self.param_array[pslice] = p.param_array.flat  # , requirements=['C', 'W']).ravel(order='C')
             self.gradient_full[pslice] = p.gradient_full.flat  # , requirements=['C', 'W']).ravel(order='C')
 
-            _set_mem_addr(p.param_array, self.param_array[pslice])
-            _set_mem_addr(p.gradient_full, self.gradient_full[pslice])
+            # Parameterized children can use array views directly. Param leaves
+            # are synchronized at notification boundaries because NumPy 2 no
+            # longer permits rebinding ndarray data buffers.
+            p._propagate_param_grad(self.param_array[pslice], self.gradient_full[pslice])
 
             self._param_slices_.append(pslice)
 
@@ -312,9 +310,9 @@ All parameter arrays must be C_CONTIGUOUS
 
     def __setitem__(self, name, value, paramlist=None):
         if not self._model_initialized_:
-            raise AttributeError("""Model is not initialized, this change will only be reflected after initialization if in leaf. 
+            raise AttributeError("""Model is not initialized, this change will only be reflected after initialization if in leaf.
 
-If you are loading a model, set updates off, then initialize, then set the values, then update the model to be fully initialized: 
+If you are loading a model, set updates off, then initialize, then set the values, then update the model to be fully initialized:
 >>> m.update_model(False)
 >>> m.initialize_parameter()
 >>> m[:] = loaded_parameters

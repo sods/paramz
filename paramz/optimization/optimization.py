@@ -77,9 +77,6 @@ class opt_tnc(Optimizer):
         Run the TNC optimizer
 
         """
-        tnc_rcstrings = ['Local minimum', 'Converged', 'XConverged', 'Maximum number of f evaluations reached',
-             'Line search failed', 'Function is constant']
-
         assert f_fp != None, "TNC requires f_fp"
 
         opt_dict = {}
@@ -95,7 +92,12 @@ class opt_tnc(Optimizer):
         self.x_opt = opt_result[0]
         self.f_opt = f_fp(self.x_opt)[0]
         self.funct_eval = opt_result[1]
-        self.status = tnc_rcstrings[opt_result[2]]
+        status_messages = getattr(optimize, 'RCSTRINGS', ())
+        return_code = opt_result[2]
+        if 0 <= return_code < len(status_messages):
+            self.status = status_messages[return_code]
+        else:
+            self.status = 'TNC return code {}'.format(return_code)
 
 class opt_lbfgsb(Optimizer):
     def __init__(self, *args, **kwargs):
@@ -246,7 +248,7 @@ class opt_SCG(Optimizer):
 def _check_for_climin():
     try:
         import climin
-    except ImportError: 
+    except ImportError:
         raise ImportError("Need climin to run this optimizer. See https://github.com/BRML/climin.")
 
 class Opt_Adadelta(Optimizer):
@@ -287,17 +289,17 @@ class RProp(Optimizer):
         self.changes_max = changes_max
 
         _check_for_climin()
-        
+
     def opt(self, x_init, f_fp=None, f=None, fp=None):
-        # We only need the gradient of the 
+        # We only need the gradient of the
         assert not fp is None
 
         import climin
 
         # Do the optimization, giving previously stored parameters
-        opt = climin.rprop.Rprop(x_init, fp, 
-                                 step_shrink=self.step_shrink, step_grow=self.step_grow, 
-                                 min_step=self.min_step, max_step=self.max_step, 
+        opt = climin.rprop.Rprop(x_init, fp,
+                                 step_shrink=self.step_shrink, step_grow=self.step_grow,
+                                 min_step=self.min_step, max_step=self.max_step,
                                  changes_max=self.changes_max)
 
         # Get the optimized state and transform it into Paramz readable format by setting
@@ -329,9 +331,9 @@ class Adam(Optimizer):
         self.offset = offset
 
         _check_for_climin()
-        
+
     def opt(self, x_init, f_fp=None, f=None, fp=None):
-        # We only need the gradient of the 
+        # We only need the gradient of the
         assert not fp is None
 
         import climin

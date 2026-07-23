@@ -28,11 +28,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-import unittest
+from .conftest import AssertionsMixin
+import pytest
 from paramz.optimization.verbose_optimization import VerboseOptimization
 from paramz.optimization.optimization import opt_bfgs
 
-class Test(unittest.TestCase):
+class Test(AssertionsMixin):
     def setUp(self):
         class Stub(object):
             obj_grads = [10,0]

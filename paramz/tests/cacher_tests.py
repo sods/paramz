@@ -1,16 +1,17 @@
+from .conftest import AssertionsMixin
 '''
 Created on 4 Sep 2015
 
 @author: maxz
 '''
-import unittest
+import pytest
 from ..caching import Cacher
 from pickle import PickleError
 from ..core.observable_array import ObsAr
 import numpy as np
 from paramz.caching import Cache_this
 
-class TestDecorator(unittest.TestCase):
+class TestDecorator(AssertionsMixin):
     def setUp(self):
         opcalls = [0, 0, 0]
         class O(object):
@@ -120,7 +121,7 @@ class TestDecorator(unittest.TestCase):
         self.assertIsNot(ab1, self.cached(a, b, 2))  # thus ab and ab2 are the SAME objects
 
 
-class Test(unittest.TestCase):
+class Test(AssertionsMixin):
     def setUp(self):
         def op(x, *args):
             return (x,) + args
@@ -336,4 +337,4 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     # import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    raise SystemExit(pytest.main([__file__]))

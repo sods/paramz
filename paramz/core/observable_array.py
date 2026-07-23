@@ -58,7 +58,7 @@ class ObsAr(np.ndarray, Pickleable, Observable):
         if not isinstance(input_array, ObsAr):
             try:
                 # try to cast ints to floats
-                obj = np.atleast_1d(np.require(input_array, dtype=np.float_, requirements=['W', 'C'])).view(cls)
+                obj = np.atleast_1d(np.require(input_array, dtype=np.float64, requirements=['W', 'C'])).view(cls)
             except ValueError:
                 # do we have other dtypes in the array?
                 obj = np.atleast_1d(np.require(input_array, requirements=['W', 'C'])).view(cls)
@@ -72,10 +72,11 @@ class ObsAr(np.ndarray, Pickleable, Observable):
         self.observers = getattr(obj, 'observers', None)
         self._update_on = getattr(obj, '_update_on', None)
 
-    def __array_wrap__(self, out_arr, context=None):
+    def __array_wrap__(self, out_arr, context=None, return_scalar=False):
         #np.ndarray.__array_wrap__(self, out_arr, context)
         #return out_arr
-        return out_arr.view(np.ndarray)
+        result = out_arr.view(np.ndarray)
+        return result[()] if return_scalar else result
 
     def _setup_observers(self):
         # do not setup anything, as observable arrays do not have default observers

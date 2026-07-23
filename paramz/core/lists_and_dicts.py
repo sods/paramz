@@ -33,7 +33,7 @@ import weakref
 
 def intarray_default_factory():
     import numpy as np
-    return np.int_([])
+    return np.array([], dtype=np.int64)
 
 class IntArrayDict(defaultdict):
     def __init__(self, default_factory=None):

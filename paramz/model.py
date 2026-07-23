@@ -33,7 +33,7 @@
 
 
 import numpy as np
-from numpy.linalg.linalg import LinAlgError
+from numpy.linalg import LinAlgError
 
 from . import optimization
 from .parameterized import Parameterized
