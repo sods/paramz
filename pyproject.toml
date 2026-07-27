@@ -5,27 +5,25 @@ authors = [
     {name = "Max Zwiessele", email = "ibinbei@gmail.com"},
 ]
 description = "The Parameterization Framework"
-license = {text = "BSD 3-clause"}
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
 keywords = ["machine-learning", "gaussian-processes", "kernels"]
 classifiers = [
-    "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
     "Operating System :: MacOS :: MacOS X",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 2.7",
-    "Programming Language :: Python :: 3.5",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
 dependencies = [
-    "numpy>=1.7",
-    "scipy",
+    "numpy>=2",
+    "scipy>=1.15",
     "six",
     "decorator>=4.0.10",
 ]
@@ -39,6 +37,7 @@ notebook = [
     "notebook >= 4.0.5",
 ]
 optimization = ["climin"]
+test = ["pytest>=8"]
 
 [project.urls]
 Homepage = "https://github.com/sods/paramz"
@@ -51,5 +50,5 @@ version = {attr = "paramz.__version__.__version__"}
 readme = {file = ["README.rst"]}
 
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
