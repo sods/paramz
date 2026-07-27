@@ -7,6 +7,8 @@ on:
       - deploy
   pull_request:
   workflow_dispatch:
+  release:
+    types: [published]
 
 permissions:
   contents: read
@@ -24,14 +26,27 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
 
-      - name: Install lib
+      - name: Install and test
         run: |
           pip install --upgrade pip
-          pip install -e .
+          pip install ".[test]"
+          python -m pytest
+
+      - name: Build and validate distribution
+        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.14'
+        run: |
+          pip install build twine
+          python -m build
+          twine check dist/*
+          python -m venv /tmp/paramz-wheel-test
+          /tmp/paramz-wheel-test/bin/python -m pip install --upgrade pip
+          /tmp/paramz-wheel-test/bin/python -m pip install dist/*.whl
+          cd /tmp
+          /tmp/paramz-wheel-test/bin/python -c "import paramz; print(paramz.__version__)"
 
   deploy:
     runs-on: ubuntu-latest
@@ -42,20 +57,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
-      - name: Install twine
+      - name: Build and validate distribution
         run: |
           pip install --upgrade pip
-          pip install twine
-
-      - name: Build wheel
-        run: |
-          pip install setuptools
-          pip install wheel
-          python setup.py sdist bdist_wheel
+          pip install build twine
+          python -m build
+          twine check dist/*
 
       - name: Upload to PyPI using twine
         run: |
