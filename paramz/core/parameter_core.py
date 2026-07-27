@@ -605,6 +605,6 @@ class Parameterizable(OptimizationHandlable):
                     d = f.create_dataset('param_array',self.param_array.shape, dtype=self.param_array.dtype)
                     d[:] = self.param_array
                 f.close()
-            except:
-                raise 'Fails to write the parameters into a HDF5 file!'
+            except Exception as error:
+                raise RuntimeError('Failed to write parameters to an HDF5 file') from error
 
