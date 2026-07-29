@@ -27,13 +27,14 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
+from .conftest import AssertionsMixin
 from paramz.core.observable_array import ObsAr
 import numpy as np
-import unittest
+import pytest
 
 
 
-class ArrayCoreTest(unittest.TestCase):
+class TestArrayCore(AssertionsMixin):
     def setUp(self):
         self.X = np.random.normal(1,1, size=(100,10))
         self.obsX = ObsAr(self.X)

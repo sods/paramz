@@ -1,6 +1,7 @@
 # Copyright (c) 2014, Max Zwiessele
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
-import unittest
+from .conftest import AssertionsMixin
+import pytest
 from ..core.observable_array import ObsAr
 from ..parameterized import Parameterized
 from ..param import Param
@@ -20,21 +21,21 @@ class ParameterizedTest(Parameterized):
     def parameters_changed(self):
         self.params_changed_count += 1
 
-class TestMisc(unittest.TestCase):
+class TestMisc(AssertionsMixin):
     def test_casting(self):
         ints = np.array(range(10))
         self.assertEqual(ints.dtype, np.int_)
         floats = np.arange(0,5,.5)
-        self.assertEqual(floats.dtype, np.float_)
+        self.assertEqual(floats.dtype, np.float64)
         strings = np.array(list('testing'))
         self.assertEqual(strings.dtype.type, np.str_)
 
-        self.assertEqual(ObsAr(ints).dtype, np.float_)
-        self.assertEqual(ObsAr(floats).dtype, np.float_)
+        self.assertEqual(ObsAr(ints).dtype, np.float64)
+        self.assertEqual(ObsAr(floats).dtype, np.float64)
         self.assertEqual(ObsAr(strings).dtype.type, np.str_)
 
 
-class Test(unittest.TestCase):
+class Test(AssertionsMixin):
 
     def setUp(self):
         self.parent = ParamTestParent('test parent')
@@ -161,4 +162,4 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    raise SystemExit(pytest.main([__file__]))

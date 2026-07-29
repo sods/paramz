@@ -130,6 +130,7 @@ class OptimizationHandlable(Constrainable):
 
         If trigger_parent is True, we will tell the parent, otherwise not.
         """
+        self._sync_params_to_children()
         [p._trigger_params_changed(trigger_parent=False) for p in self.parameters if not p.is_fixed]
         self.notify_observers(None, None if trigger_parent else -np.inf)
 
@@ -280,20 +281,50 @@ class OptimizationHandlable(Constrainable):
         #if self.gradient.size != self.size:
         #    self._gradient_array_ = np.empty(self.size, dtype=np.float64)
 
+        from ..param import Param
+
+        if isinstance(self, Param):
+            self._gradient_array_ = garray.reshape(self.shape)
+            np.ndarray.__setitem__(self, Ellipsis, parray.reshape(self.shape))
+            return
+
+        self._param_array_ = parray
+        self._gradient_array_ = garray
+
         pi_old_size = 0
         for pi in self.parameters:
             pislice = slice(pi_old_size, pi_old_size + pi.size)
-
-            self.param_array[pislice] = pi.param_array.flat  # , requirements=['C', 'W']).flat
-            self.gradient_full[pislice] = pi.gradient_full.flat  # , requirements=['C', 'W']).flat
-
-            pi.param_array.data = parray[pislice].data
-            pi.gradient_full.data = garray[pislice].data
-
             pi._propagate_param_grad(parray[pislice], garray[pislice])
             pi_old_size += pi.size
 
         self._model_initialized_ = True
+
+    def _sync_params_to_children(self):
+        """Copy the canonical flat parameter array into ndarray leaf parameters."""
+        from ..param import Param
+
+        offset = 0
+        for parameter in self.parameters:
+            pslice = slice(offset, offset + parameter.size)
+            if isinstance(parameter, Param):
+                values = self.param_array[pslice].reshape(parameter.shape)
+                np.ndarray.__setitem__(parameter, Ellipsis, values)
+            offset += parameter.size
+
+    def _sync_from_child(self, child):
+        """Copy a changed immediate child's values and gradients into this object."""
+        child = getattr(child, '_original_', child)
+        while child not in self.parameters and child.has_parent():
+            child = child._parent_
+        try:
+            index = self.parameters.index(child)
+        except ValueError:
+            return
+
+        start = sum(parameter.size for parameter in self.parameters[:index])
+        pslice = slice(start, start + child.size)
+        self.param_array[pslice] = child.param_array.flat
+        self.gradient_full[pslice] = child.gradient_full.flat
 
     def _connect_parameters(self):
         pass
@@ -444,7 +475,7 @@ class Parameterizable(OptimizationHandlable):
     def _add_parameter_name(self, param):
         try:
             pname = adjust_name_for_printing(param.name)
-    
+
             def warn_and_retry(param, match=None):
                 #===================================================================
                 # print """
@@ -507,6 +538,7 @@ class Parameterizable(OptimizationHandlable):
         self._optimizer_copy_transformed = False # tells the optimizer array to update on next request
         self.parameters_changed()
     def _pass_through_notify_observers(self, me, which=None):
+        self._sync_from_child(me)
         self.notify_observers(which=which)
     def _setup_observers(self):
         """
@@ -573,6 +605,6 @@ class Parameterizable(OptimizationHandlable):
                     d = f.create_dataset('param_array',self.param_array.shape, dtype=self.param_array.dtype)
                     d[:] = self.param_array
                 f.close()
-            except:
-                raise 'Fails to write the parameters into a HDF5 file!'
+            except Exception as error:
+                raise RuntimeError('Failed to write parameters to an HDF5 file') from error
 

@@ -1,0 +1,19 @@
+{
+  "name": "paramz",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.13-bullseye",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.debugpy"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false
+      }
+    }
+  },
+  "postCreateCommand": "python -m pip install --upgrade pip && python -m pip install -e '.[test,docs,notebook]' nose",
+  "remoteUser": "vscode"
+}

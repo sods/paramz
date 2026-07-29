@@ -2,6 +2,34 @@ Changelog
 =========
 
 
+0.10.0 (2026-07-29)
+-------------------
+
+New
+~~~
+- Full compatibility with NumPy 2.x and Python 3.11-3.14. [fbordeu]
+- Modernized package setup and build configuration. [fbordeu]
+- Updated GitHub Actions workflows for modern CI/CD. [fbordeu]
+- Added replacement wrapper for numpy's .data access for compatibility. [fbordeu]
+- Refactored numerical operations and removed unnecessary float conversions. [fbordeu]
+- Improved error handling in HDF5 parameter writing. [fbordeu]
+- Updated AssertionsMixin to inherit from unittest.TestCase with improved tests. [fbordeu]
+
+Fix
+~~~
+- Restored compatibility with NumPy 1.26.x while supporting NumPy 2.x. [fbordeu]
+- Updated deprecated assertRegexp calls to modern equivalents. [fbordeu]
+- Deactivated catch warnings causing issues with NumPy. [fbordeu]
+- Added debugging config to resolve NumPy memory address issues in tests. [fbordeu]
+
+Other
+~~~~~
+- Builds on preparatory NumPy compatibility work by [MartinBubel]. [fbordeu]
+- Dropped support for Python < 3.11. [fbordeu]
+- Set minimum dependency versions: numpy>=2, scipy>=1.15. [fbordeu]
+- Bumped version: 0.9.6 → 0.10.0. [fbordeu]
+
+
 (unreleased)
 ------------
 

@@ -33,7 +33,7 @@
 
 
 import numpy as np
-from numpy.linalg.linalg import LinAlgError
+from numpy.linalg import LinAlgError
 
 from . import optimization
 from .parameterized import Parameterized
@@ -370,9 +370,9 @@ class Model(Parameterized):
             for xind in zip(transformed_index):
                 xx = x.copy()
                 xx[xind] += step
-                f1 = float(self._objective(xx))
+                f1 = self._objective(xx)
                 xx[xind] -= 2.*step
-                f2 = float(self._objective(xx))
+                f2 = self._objective(xx)
                 #Avoid divide by zero, if any of the values are above 1e-15, otherwise both values are essentiall
                 #the same
                 if f1 > 1e-15 or f1 < -1e-15 or f2 > 1e-15 or f2 < -1e-15:
@@ -396,11 +396,11 @@ class Model(Parameterized):
                 if df_unstable:  # pragma: no cover
                     formatted_name = "\033[94m {0} \033[0m".format(names[xind])
 
-                r = '%.6f' % float(ratio)
-                d = '%.6f' % float(difference)
+                r = '%.6f' % ratio
+                d = '%.6f' % difference
                 g = '%.6f' % gradient[xind]
-                ng = '%.6f' % float(numerical_gradient)
-                df = '%1.e' % float(df_ratio)
+                ng = '%.6f' % numerical_gradient
+                df = '%1.e' % df_ratio
                 grad_string = "{0:<{c0}}|{1:^{c1}}|{2:^{c2}}|{3:^{c3}}|{4:^{c4}}|{5:^{c5}}".format(formatted_name, r, d, g, ng, df, c0=cols[0] + 9, c1=cols[1], c2=cols[2], c3=cols[3], c4=cols[4], c5=cols[5])
                 print(grad_string)
 

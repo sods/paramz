@@ -1,14 +1,15 @@
 # Copyright (c) 2014, Max Zwiessele
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
 
-import unittest
+from .conftest import AssertionsMixin
+import pytest
 import numpy as np
 from ..core.index_operations import ParameterIndexOperations,\
     ParameterIndexOperationsView
 
 one, two, three = 'one', 'two', 'three'
 
-class Test(unittest.TestCase):
+class Test(AssertionsMixin):
 
     def setUp(self):
         self.param_index = ParameterIndexOperations()
@@ -155,4 +156,4 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_index_view']
-    unittest.main()
+    raise SystemExit(pytest.main([__file__]))

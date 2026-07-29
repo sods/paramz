@@ -28,11 +28,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #===============================================================================
 
-import unittest
+from .conftest import AssertionsMixin
+import pytest
 import numpy as np
 from ..examples import RidgeRegression, Lasso, Polynomial
 
-class Test2D(unittest.TestCase):
+class Test2D(AssertionsMixin):
 
     def testRidgeRegression(self):
         np.random.seed(1000)
@@ -83,4 +84,4 @@ class Test2D(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testRidgeRegression']
-    unittest.main()
+    raise SystemExit(pytest.main([__file__]))

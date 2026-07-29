@@ -1,3 +1,4 @@
+from .conftest import AssertionsMixin
 '''
 Copyright (c) 2015, Max Zwiessele
 All rights reserved.
@@ -27,12 +28,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '''
-import unittest, numpy as np
+import numpy as np
 from ..core.lists_and_dicts import ArrayList, IntArrayDict, ObserverList
 from ..core.observable_array import ObsAr
 from ..parameterized import Parameterized
         
-class Test(unittest.TestCase):
+class Test(AssertionsMixin):
 
 
     def setUp(self):
@@ -103,4 +104,4 @@ class Test(unittest.TestCase):
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    raise SystemExit(pytest.main([__file__]))

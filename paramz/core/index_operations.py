@@ -1,21 +1,21 @@
 #===============================================================================
 # Copyright (c) 2015, Max Zwiessele
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of paramax nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,9 +29,10 @@
 #===============================================================================
 
 import numpy
-from numpy.lib.function_base import vectorize
 from .lists_and_dicts import IntArrayDict
 from functools import reduce
+
+vectorize = numpy.vectorize
 
 def extract_properties_to_index(index, props):
     prop_index = dict()
@@ -64,11 +65,11 @@ class ParameterIndexOperations(object):
         model : 0 1 2 3 4 5 6 7 8 9
         key1: 4 5
         key2: 7 8
-    
+
         param1: 0 1 2 3 4 5
         key1: 2 3
         key2: 5
-    
+
         param2: 0 1 2 3 4
         key1: 0
         key2: 2 3
@@ -226,7 +227,7 @@ class ParameterIndexOperationsView(object):
             ind2 = self._filter_index(ind)
             if ind2.size > 0:
                 yield i, ind2
-    
+
     def properties(self):
         return [i[0] for i in self.items()]
 

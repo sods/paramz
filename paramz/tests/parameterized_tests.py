@@ -1,9 +1,10 @@
+from .conftest import AssertionsMixin
 '''
 Created on Feb 13, 2014
 
 @author: maxzwiessele
 '''
-import unittest
+import pytest
 import numpy as np
 
 from paramz.core.index_operations import ParameterIndexOperations
@@ -48,14 +49,14 @@ class M(Model):
 
 
 
-#class ErrorTest(unittest.TestCase):
+#class ErrorTest:
 #    def test_fail_param_dimension_change(self):
 #        p = Param('test', np.random.normal(0,1,2))
 #        m = Parameterized('test')
 #        self.assertRaises(ValueError, m.link_parameter, p[:,None])
 
 
-class ParameterizedTest(unittest.TestCase):
+class TestParameterized(AssertionsMixin):
 
     def setUp(self):
         self.rbf = Parameterized('rbf')
@@ -131,8 +132,8 @@ class ParameterizedTest(unittest.TestCase):
         self.assertEqual(self.test1.add.rbf.num_params, 2)
 
     def test_index_operations(self):
-        self.assertRaisesRegexp(AttributeError, "An index operation with the name constraints was already taken", self.test1.add_index_operation, 'constraints', None)
-        self.assertRaisesRegexp(AttributeError, "No index operation with the name", self.test1.remove_index_operation, 'not_an_index_operation')
+        self.assertRaisesRegex(AttributeError, "An index operation with the name constraints was already taken", self.test1.add_index_operation, 'constraints', None)
+        self.assertRaisesRegex(AttributeError, "No index operation with the name", self.test1.remove_index_operation, 'not_an_index_operation')
 
     def test_names(self):
         self.assertSequenceEqual(self.test1.parameter_names(adjust_for_printing=True), self.test1.parameter_names(adjust_for_printing=False))
@@ -182,7 +183,7 @@ class ParameterizedTest(unittest.TestCase):
             from builtins import RecursionError as RE
         except:
             RE = RuntimeError
-        self.assertRaisesRegexp(RE, "aximum recursion depth", max_recursion)
+        self.assertRaisesRegex(RE, "aximum recursion depth", max_recursion)
         # Recursion limit not reached if kernels are named individually:
         sys.setrecursionlimit(1000)
         p = Parameterized('add')
@@ -239,7 +240,7 @@ class ParameterizedTest(unittest.TestCase):
         self.assertListEqual(self.test1.kern.param_array.tolist(), val[:2].tolist())
 
     def test_add_parameter_already_in_hirarchy(self):
-        self.assertRaisesRegexp(HierarchyError, "You cannot add a parameter twice into the hierarchy", self.test1.link_parameter, self.white.parameters[0])
+        self.assertRaisesRegex(HierarchyError, "You cannot add a parameter twice into the hierarchy", self.test1.link_parameter, self.white.parameters[0])
 
     def test_default_constraints(self):
         self.assertIs(self.rbf.variance.constraints._param_index_ops, self.rbf.constraints._param_index_ops)
@@ -274,7 +275,7 @@ class ParameterizedTest(unittest.TestCase):
 
     def test_fixing_randomize(self):
         self.white.fix(warning=True)
-        val = float(self.white.variance)
+        val = self.white.variance
         self.test1.randomize()
         self.assertEqual(val, self.white.variance)
 
@@ -286,7 +287,7 @@ class ParameterizedTest(unittest.TestCase):
 
     def test_fixing_randomize_parameter_handling(self):
         self.rbf.fix(0.1, warning=True)
-        val = float(self.rbf.variance)
+        val = self.rbf.variance
         self.test1.kern.randomize()
         self.assertEqual(val, self.rbf.variance)
 
@@ -309,4 +310,7 @@ class ParameterizedTest(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_add_parameter']
-    unittest.main()
+    # Run this module with pytest when debugging individual tests.
+    obj = ParameterizedTest()
+    obj.setUp()
+    obj.test_unfixed_param_array()

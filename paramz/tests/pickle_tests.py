@@ -1,9 +1,10 @@
+from .conftest import AssertionsMixin
 '''
 Created on 13 Mar 2014
 
 @author: maxz
 '''
-import unittest, pickle, tempfile, os, paramz
+import pickle, tempfile, os, paramz
 import numpy as np
 from ..core.index_operations import ParameterIndexOperations, ParameterIndexOperationsView
 from ..core.observable_array import ObsAr
@@ -11,7 +12,7 @@ from paramz.transformations import Exponent, Logexp
 from ..parameterized import Parameterized
 from ..param import Param
 
-class ListDictTestCase(unittest.TestCase):
+class ListDictTestCase(AssertionsMixin):
     def assertListDictEquals(self, d1, d2, msg=None):
         #py3 fix
         #for k,v in d1.iteritems():
@@ -119,4 +120,4 @@ class Test(ListDictTestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_parameter_index_operations']
-    unittest.main()
+    raise SystemExit(pytest.main([__file__]))
