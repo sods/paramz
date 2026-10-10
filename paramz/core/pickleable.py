@@ -109,6 +109,11 @@ class Pickleable(object):
                        'observers',
                        '_fixes_', # and fixes
                        'cache', # never pickle the cache
+                       # Parent links are rebuilt by Parameterized.__setstate__
+                       # via _connect_parameters. Serializing them pulls the whole
+                       # model when pickling a used child (e.g. a kernel attached
+                       # to a GP) and creates incomplete-object cycles on load.
+                       '_parent_',
                        ]
         dc = dict()
         #py3 fix
@@ -122,7 +127,9 @@ class Pickleable(object):
         self.__dict__.update(state)
         from .lists_and_dicts import ObserverList
         from ..caching import FunctionCache
-        self.observers = ObserverList()
-        self.cache = FunctionCache()
+        # Use object.__setattr__ so Parameterized.__setattr__ does not walk
+        # parameters while child objects may still be mid-unpickle.
+        object.__setattr__(self, 'observers', ObserverList())
+        object.__setattr__(self, 'cache', FunctionCache())
         self._setup_observers()
-        self._optimizer_copy_transformed = False
+        object.__setattr__(self, '_optimizer_copy_transformed', False)

@@ -333,7 +333,11 @@ If you are loading a model, set updates off, then initialize, then set the value
     def __setattr__(self, name, val):
         # override the default behaviour, if setting a param, so broadcasting can by used
         if hasattr(self, "parameters"):
-            pnames = self.parameter_names(False, adjust_for_printing=True, recursive=False)
+            try:
+                pnames = self.parameter_names(False, adjust_for_printing=True, recursive=False)
+            except AttributeError:
+                # Children may not be fully unpickled yet; fall through to plain set.
+                return object.__setattr__(self, name, val)
             if name in pnames:
                 param = self.parameters[pnames.index(name)]
                 param[:] = val; return
