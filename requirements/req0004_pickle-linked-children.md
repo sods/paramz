@@ -1,7 +1,7 @@
 ---
 id: "0004"
 title: "Pickling a linked Parameterized child round-trips without parent-graph cycles"
-status: "In Progress"
+status: "Validated"
 priority: "High"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -22,8 +22,8 @@ Pickling a `Parameterized` object that already has a parent must not serialize t
 ## Acceptance Criteria
 
 - [x] Regression test for linked-child pickle round-trip exists on the fix branch.
-- [ ] PR #50 merges with green CI (or documented waiver for unrelated failures).
-- [ ] GPy #605 reproduction passes against a released / tagged paramz including the fix.
+- [x] PR #50 merges with green CI (or documented waiver for unrelated failures).
+- [x] GPy #605 reproduction passes against a released / tagged paramz including the fix.
 
 ## References
 
