@@ -1,7 +1,7 @@
 ---
 id: "0001"
 title: "VibeSafe governance artifacts exist and stay in sync with tooling"
-status: "In Progress"
+status: "Validated"
 priority: "Medium"
 created: "2026-10-17"
 last_updated: "2026-10-17"
