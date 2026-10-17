@@ -1,7 +1,7 @@
 ---
 id: "2026-10-17_ipython-verbose-optimization-31"
 title: "Fix IPython detection in verbose_optimization (#31)"
-status: "Proposed"
+status: "Completed"
 priority: "Low"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -22,8 +22,8 @@ https://github.com/sods/paramz/issues/31 — notebook detection in `verbose_opti
 
 ## Acceptance Criteria
 
-- [ ] Detection works in current Jupyter, or special-case removed with changelog note
-- [ ] Issue #31 closed
+- [x] Detection works in current Jupyter, or special-case removed with changelog note
+- [x] Issue #31 closed
 
 ## Related
 

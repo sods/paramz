@@ -1,7 +1,7 @@
 ---
 id: "2026-10-17_param-array-notify-observers"
 title: "param_array[:] does not notify observers (#51)"
-status: "Ready"
+status: "Completed"
 priority: "High"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -22,9 +22,9 @@ https://github.com/sods/paramz/issues/51 — in-place `param_array` writes skip 
 
 ## Acceptance Criteria
 
-- [ ] Docs/README recommend notifying reload path
-- [ ] Regression test added
-- [ ] Issue #51 closed or updated with disposition
+- [x] Docs/README recommend notifying reload path
+- [x] Regression test added
+- [x] Issue #51 closed or updated with disposition
 
 ## Related
 

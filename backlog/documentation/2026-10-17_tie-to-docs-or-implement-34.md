@@ -1,7 +1,7 @@
 ---
 id: "2026-10-17_tie-to-docs-or-implement-34"
 title: "Resolve undocumented/missing tie_to (#34)"
-status: "Proposed"
+status: "Completed"
 priority: "Medium"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -23,9 +23,9 @@ https://github.com/sods/paramz/issues/34 — Param docs mention `tie_to`, but it
 
 ## Acceptance Criteria
 
-- [ ] Docstring no longer promises a missing API, or `tie_to` exists with tests
-- [ ] Short example of sharing values across params documented
-- [ ] Issue #34 closed
+- [x] Docstring no longer promises a missing API, or `tie_to` exists with tests
+- [x] Short example of sharing values across params documented
+- [x] Issue #34 closed
 
 ## Related
 

@@ -2,6 +2,7 @@
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
 
 import datetime as dt
+import numpy as np
 from scipy import optimize
 from warnings import warn
 
@@ -116,12 +117,14 @@ class opt_lbfgsb(Optimizer):
         opt_dict = {}
         if self.xtol is not None:
             print("WARNING: l-bfgs-b doesn't have an xtol arg, so I'm going to ignore it")
+        # fmin_l_bfgs_b exposes tolerance as factr (relative to machine eps).
+        # Map ftol -> factr so callers get the intended stopping criterion (#47).
         if self.ftol is not None:
-            print("WARNING: l-bfgs-b doesn't have an ftol arg, so I'm going to ignore it")
+            opt_dict['factr'] = max(self.ftol / np.finfo(float).eps, 1.0)
+        elif self.bfgs_factor is not None:
+            opt_dict['factr'] = self.bfgs_factor
         if self.gtol is not None:
             opt_dict['pgtol'] = self.gtol
-        if self.bfgs_factor is not None:
-            opt_dict['factr'] = self.bfgs_factor
 
         opt_result = optimize.fmin_l_bfgs_b(f_fp, x_init, maxfun=self.max_iters, maxiter=self.max_iters, **opt_dict)
         self.x_opt = opt_result[0]
@@ -253,6 +256,8 @@ def _check_for_climin():
 
 class Opt_Adadelta(Optimizer):
     def __init__(self, step_rate=0.1, decay=0.9, momentum=0, *args, **kwargs):
+        # Optional gradient callable for stochastic / custom gradients (PR #24).
+        self.fp = kwargs.pop('fp', None)
         Optimizer.__init__(self, *args, **kwargs)
         self.opt_name = "Adadelta (climin)"
         self.step_rate=step_rate
@@ -263,7 +268,10 @@ class Opt_Adadelta(Optimizer):
 
 
     def opt(self, x_init, f_fp=None, f=None, fp=None):
-        assert not fp is None
+        if self.fp is not None:
+            fp = self.fp
+        else:
+            assert not fp is None
 
         import climin
 

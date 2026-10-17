@@ -1,7 +1,7 @@
 ---
 id: "0003"
 title: "Recommended parameter reload path notifies observers"
-status: "Proposed"
+status: "Validated"
 priority: "High"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -28,9 +28,9 @@ Users who restore parameters after save/load must get consistent views, caches, 
 
 ## Acceptance Criteria
 
-- [ ] Docstrings and README recommend a notifying path (`m[:] = …` or equivalent).
-- [ ] A regression test covers reload → predictions/views match.
-- [ ] If auto-notify on `param_array.__setitem__` is added, batching via `update_model(False)` still works.
+- [x] Docstrings and README recommend a notifying path (`m[:] = …` or equivalent).
+- [x] A regression test covers reload → predictions/views match.
+- [x] If auto-notify on `param_array.__setitem__` is added, batching via `update_model(False)` still works.
 
 ## References
 

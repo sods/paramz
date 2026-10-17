@@ -43,12 +43,14 @@ Python 2.7, 3.5 and higher
 As pickle is inconsistent across python versions and heavily dependent on class structure, it behaves inconsistent across versions. 
 Pickling as meant to serialize models within the same environment, and not to store models on disk to be used later on.
 
-To save a model it is best to save the m.param_array of it to disk (using numpy’s np.save).
-Additionally, you save the script, which creates the model. 
-In this script you can create the model using initialize=False as a keyword argument and with the data loaded as normal. 
-You then set the model parameters by setting m.param_array[:] = loaded_params as the previously saved parameters. 
-Then you initialize the model by m.initialize_parameter(), which will make the model usable. 
-Be aware that up to this point the model is in an inconsistent state and cannot be used to produce any results.
+To save a model it is best to save the `m.param_array` of it to disk (using numpy’s `np.save`).
+Additionally, you save the script which creates the model.
+In this script you can create the model using `initialize=False` as a keyword argument and with the data loaded as normal.
+You then set the model parameters with **`m[:] = loaded_params`** (not `m.param_array[:] = …` alone).
+Slice assignment on the model notifies observers so child views and cached algebra stay consistent;
+writing only into `param_array` updates the buffer silently (see issue #51).
+Then call `m.initialize_parameter()` if you built with `initialize=False`.
+Be aware that until parameters are assigned with a notifying path and updates are re-enabled, the model is in an inconsistent state.
 
 ```python
 # let X, Y be data loaded above
@@ -59,11 +61,11 @@ m.optimize()
 np.save('model_save.npy', m.param_array)
 # 2: loading a model
 # Model creation, without initialization:
-m_load = paramz.examples.RidgeRegression(X, Y,initialize=False)
-m_load.update_model(False) # do not call the underlying expensive algebra on load
-m_load.initialize_parameter() # Initialize the parameters (connect the parameters up)
-m_load[:] = np.load('model_save.npy') # Load the parameters
-m_load.update_model(True) # Call the algebra only once
+m_load = paramz.examples.RidgeRegression(X, Y, initialize=False)
+m_load.update_model(False)  # do not call the underlying expensive algebra on load
+m_load.initialize_parameter()  # Initialize the parameters (connect the parameters up)
+m_load[:] = np.load('model_save.npy')  # Load + notify observers
+m_load.update_model(True)  # Call the algebra only once
 print(m_load)
 ```
 

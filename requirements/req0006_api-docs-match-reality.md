@@ -1,7 +1,7 @@
 ---
 id: "0006"
 title: "Public docs describe APIs that exist and behave as stated"
-status: "Proposed"
+status: "Validated"
 priority: "Medium"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -21,10 +21,10 @@ Docstrings and Sphinx pages must not advertise unimplemented methods. Constraint
 
 ## Acceptance Criteria
 
-- [ ] `tie_to` is implemented or removed from Param docs (#34).
-- [ ] Constraint introspection has a short documented example (`m.constraints`) (#29).
-- [ ] Sum-to-one / simplex requests are answered in docs (supported pattern or explicit unsupported) (#35).
-- [ ] Stale answered questions (#29, #30) are closed or turned into doc PRs.
+- [x] `tie_to` is implemented or removed from Param docs (#34).
+- [x] Constraint introspection has a short documented example (`m.constraints`) (#29).
+- [x] Sum-to-one / simplex requests are answered in docs (supported pattern or explicit unsupported) (#35).
+- [x] Stale answered questions (#29, #30) are closed or turned into doc PRs.
 
 ## References
 
