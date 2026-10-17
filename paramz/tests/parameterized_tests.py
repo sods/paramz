@@ -306,6 +306,19 @@ class TestParameterized(AssertionsMixin):
         print(self.param)
         print(self.test1[''])
 
+    def test_pickle_linked_child_roundtrip(self):
+        """Used children must pickle without pulling an incomplete parent cycle."""
+        import pickle
+        child = self.rbf
+        assert child._parent_ is self.test1.kern
+        restored = pickle.loads(pickle.dumps(child))
+        np.testing.assert_array_equal(restored.param_array, child.param_array)
+        assert restored.name == child.name
+        assert restored._parent_ is None
+        parent = pickle.loads(pickle.dumps(self.test1))
+        np.testing.assert_array_equal(parent.param_array, self.test1.param_array)
+        assert parent.kern.rbf._parent_ is parent.kern
+
 
 
 if __name__ == "__main__":

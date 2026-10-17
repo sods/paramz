@@ -2,6 +2,21 @@ Changelog
 =========
 
 
+0.10.1 (2026-10-10)
+-------------------
+
+Fix
+~~~
+- Pickling a Parameterized object that is linked into a parent (for example a
+  kernel after it has been used by a GP) no longer fails on load with
+  ``AttributeError: ... has no attribute '_name'``. Parent links are omitted
+  from the pickle memento and rebuilt on ``__setstate__``; observer/cache
+  restoration uses ``object.__setattr__`` so incomplete children are not
+  walked during unpickle. Parent pass-through observers are re-bound in
+  ``_connect_parameters`` so ``copy()`` and in-hierarchy updates keep syncing
+  child writes into the shared ``param_array``. [SheffieldML/GPy#605, #932]
+
+
 0.10.0 (2026-07-29)
 -------------------
 

@@ -260,6 +260,10 @@ All parameter arrays must be C_CONTIGUOUS
 
             p._parent_ = self
             p._parent_index_ = i
+            # Pickle omits `_parent_`, so Pickleable.__setstate__ cannot register
+            # the parent pass-through observer. Re-bind after reconnecting.
+            p.remove_observer(self, self._pass_through_notify_observers)
+            p.add_observer(self, self._pass_through_notify_observers, -np.inf)
 
             pslice = slice(old_size, old_size + p.size)
 
@@ -333,7 +337,11 @@ If you are loading a model, set updates off, then initialize, then set the value
     def __setattr__(self, name, val):
         # override the default behaviour, if setting a param, so broadcasting can by used
         if hasattr(self, "parameters"):
-            pnames = self.parameter_names(False, adjust_for_printing=True, recursive=False)
+            try:
+                pnames = self.parameter_names(False, adjust_for_printing=True, recursive=False)
+            except AttributeError:
+                # Children may not be fully unpickled yet; fall through to plain set.
+                return object.__setattr__(self, name, val)
             if name in pnames:
                 param = self.parameters[pnames.index(name)]
                 param[:] = val; return
