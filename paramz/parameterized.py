@@ -260,6 +260,10 @@ All parameter arrays must be C_CONTIGUOUS
 
             p._parent_ = self
             p._parent_index_ = i
+            # Pickle omits `_parent_`, so Pickleable.__setstate__ cannot register
+            # the parent pass-through observer. Re-bind after reconnecting.
+            p.remove_observer(self, self._pass_through_notify_observers)
+            p.add_observer(self, self._pass_through_notify_observers, -np.inf)
 
             pslice = slice(old_size, old_size + p.size)
 
