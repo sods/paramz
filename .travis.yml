@@ -54,6 +54,6 @@ deploy:
   on:
     tags: true
     #repo: mzwiessele/paramz
-    branch: master
+    branch: main
   distributions: "sdist"
   skip_cleanup: true

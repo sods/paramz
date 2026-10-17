@@ -1,11 +1,11 @@
 # paramz
 
 [![pypi](https://badge.fury.io/py/paramz.svg)](https://pypi.python.org/pypi/paramz)
-[![build](https://travis-ci.org/sods/paramz.svg?branch=master)](https://travis-ci.org/sods/paramz)
-[![codecov](https://codecov.io/gh/sods/paramz/branch/master/graph/badge.svg)](https://codecov.io/gh/sods/paramz)
+[![build](https://github.com/sods/paramz/actions/workflows/actions.yml/badge.svg?branch=main)](https://github.com/sods/paramz/actions/workflows/actions.yml)
+[![codecov](https://codecov.io/gh/sods/paramz/branch/main/graph/badge.svg)](https://codecov.io/gh/sods/paramz)
 
 #### Coverage
-![codecov.io](https://codecov.io/gh/sods/paramz/branch/master/graphs/commits.svg)
+![codecov.io](https://codecov.io/gh/sods/paramz/branch/main/graphs/commits.svg)
 
 Parameterization Framework for parameterized model creation and handling.
 This is a lightweight framework for using parameterized models.
