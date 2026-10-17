@@ -1,7 +1,7 @@
 ---
 id: "0005"
 title: "Optimizer wrappers expose upstream options honestly"
-status: "Proposed"
+status: "Validated"
 priority: "Medium"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -21,9 +21,9 @@ Thin wrappers around SciPy / climin should pass through options the upstream sol
 
 ## Acceptance Criteria
 
-- [ ] L-BFGS-B `ftol` is accepted when SciPy supports it (#47).
-- [ ] Adadelta can take a caller-supplied gradient function (#24), or the PR is closed with rationale.
-- [ ] Verbose optimization IPython/notebook detection works or is removed (#31).
+- [x] L-BFGS-B `ftol` is accepted when SciPy supports it (#47).
+- [x] Adadelta can take a caller-supplied gradient function (#24), or the PR is closed with rationale.
+- [x] Verbose optimization IPython/notebook detection works or is removed (#31).
 
 ## References
 

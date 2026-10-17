@@ -58,16 +58,18 @@ class VerboseOptimization(object):
             self.update()
 
             try:  # pragma: no cover
+                from IPython import get_ipython
                 from IPython.display import display
                 from ipywidgets import IntProgress, HTML, Box, VBox, HBox
+                if get_ipython() is None:
+                    raise RuntimeError("not running under IPython")
                 self.text = HTML(width='100%')
                 self.progress = IntProgress(min=0, max=maxiters)
                 #self.progresstext = Text(width='100%', disabled=True, value='0/{}'.format(maxiters))
                 self.model_show = HTML()
                 self.ipython_notebook = ipython_notebook
-                get_ipython
-            except:
-                # Not in Ipython notebook
+            except Exception:
+                # Not in IPython / notebook, or widgets unavailable (#31)
                 self.ipython_notebook = False
 
             if self.ipython_notebook:  # pragma: no cover

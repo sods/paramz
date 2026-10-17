@@ -1,7 +1,7 @@
 ---
 id: "2026-10-17_adadelta-gradient-fn-pr-24"
 title: "Decide merge or close Adadelta fp PR #24"
-status: "Proposed"
+status: "Completed"
 priority: "Low"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -23,9 +23,9 @@ https://github.com/sods/paramz/pull/24 (2017) adds `fp=` kwarg to Adadelta for s
 
 ## Acceptance Criteria
 
-- [ ] Rebased or verified against master
-- [ ] Merged with note, or closed with rationale
-- [ ] REQ-0005 acceptance item updated
+- [x] Rebased or verified against master
+- [x] Merged with note, or closed with rationale
+- [x] REQ-0005 acceptance item updated
 
 ## Related
 

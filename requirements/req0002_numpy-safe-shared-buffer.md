@@ -1,7 +1,7 @@
 ---
 id: "0002"
 title: "Shared parameter buffer works on supported NumPy without .data assignment"
-status: "In Progress"
+status: "Validated"
 priority: "High"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -28,8 +28,8 @@ Parameter linking and optimization must keep a single shared buffer on NumPy ver
 ## Acceptance Criteria
 
 - [x] A NumPy-compatibility path lands on master (PR #49 merged).
-- [ ] Issue #17 is verified fixed on current master and closed, or remaining gaps are filed as new tasks.
-- [ ] CI exercises the shared-buffer path on the declared Python/NumPy matrix.
+- [x] Issue #17 is verified fixed on current master and closed, or remaining gaps are filed as new tasks.
+- [x] CI exercises the shared-buffer path on the declared Python/NumPy matrix.
 
 ## References
 

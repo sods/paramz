@@ -60,10 +60,12 @@ class Param(Parameterizable, ObsAr):
     You can add/remove constraints by calling constrain on the parameter itself, e.g:
 
         - self[:,1].constrain_positive()
-        - self[0].tie_to(other)
-        - self.untie()
         - self[:3,:].unconstrain()
         - self[1].fix()
+
+    Note: ``tie_to`` is documented historically but was never implemented (#34).
+    To share values across parameters, assign in ``parameters_changed`` (or keep
+    a single Param and reuse it) rather than expecting a ``tie_to`` API.
 
     Fixing parameters will fix them to the value they are right now. If you change
     the fixed value, it will be fixed to the new value!

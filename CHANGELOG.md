@@ -2,6 +2,28 @@ Changelog
 =========
 
 
+0.10.2 (2026-10-17)
+-------------------
+
+Fix
+~~~
+- Document that ``param_array[:]`` writes do not notify observers; recommend
+  ``m[:] = …`` for reload/copy, with a regression test. [#51]
+- Pass ``ftol`` through to SciPy L-BFGS-B via ``factr`` (was incorrectly
+  warned as unsupported). [#47]
+- Allow Adadelta to take a caller-supplied gradient function (``fp=``). [#24]
+- Detect IPython/notebook for verbose optimization with ``get_ipython()``
+  instead of a bare name reference. [#31]
+- Remove unimplemented ``tie_to`` from public docs; document constraints
+  introspection, lack of simplex constraints, and verbose opt for
+  per-iteration objectives. [#29, #30, #34, #35]
+
+Other
+~~~~~
+- Confirmed no remaining ``ndarray.data`` assignment on supported paths
+  after NumPy 2 compatibility work; issue #17 ready to close.
+
+
 0.10.1 (2026-10-10)
 -------------------
 

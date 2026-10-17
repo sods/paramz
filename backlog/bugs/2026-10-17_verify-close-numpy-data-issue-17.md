@@ -1,7 +1,7 @@
 ---
 id: "2026-10-17_verify-close-numpy-data-issue-17"
 title: "Verify NumPy .data fix and close #17"
-status: "Ready"
+status: "Completed"
 priority: "High"
 created: "2026-10-17"
 last_updated: "2026-10-17"
@@ -22,9 +22,9 @@ https://github.com/sods/paramz/issues/17 tracked unsafe `ndarray.data` assignmen
 
 ## Acceptance Criteria
 
-- [ ] Confirm no `.data =` assignment remains on supported paths
-- [ ] Comment on #17 with verification notes
-- [ ] Close #17 or open follow-up for residual work
+- [x] Confirm no `.data =` assignment remains on supported paths
+- [x] Comment on #17 with verification notes
+- [x] Close #17 or open follow-up for residual work
 
 ## Related
 

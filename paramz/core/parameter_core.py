@@ -373,8 +373,13 @@ class Parameterizable(OptimizationHandlable):
         Array representing the parameters of this class.
         There is only one copy of all parameters in memory, two during optimization.
 
-        !WARNING!: setting the parameter array MUST always be done in memory:
-        m.param_array[:] = m_copy.param_array
+        !WARNING!: never *replace* the array object (``m.param_array = …``).
+        Write into the existing buffer with an in-place slice assignment.
+
+        In-place writes to ``param_array`` update the shared buffer but do **not**
+        notify observers. Prefer ``m[:] = values`` (or call
+        ``m._trigger_params_changed()`` after a deliberate buffer write) so child
+        views, caches, and model algebra stay consistent. See issue #51.
         """
         if (self.__dict__.get('_param_array_', None) is None) or (self._param_array_.size != self.size):
             self._param_array_ = np.empty(self.size, dtype=np.float64)
@@ -383,11 +388,11 @@ class Parameterizable(OptimizationHandlable):
     @property
     def unfixed_param_array(self):
         """
-        Array representing the parameters of this class.
-        There is only one copy of all parameters in memory, two during optimization.
+        Array representing the unfixed parameters of this class (view into
+        ``param_array`` when constraints are present).
 
-        !WARNING!: setting the parameter array MUST always be done in memory:
-        m.param_array[:] = m_copy.param_array
+        Same warning as :attr:`param_array`: in-place buffer writes do not notify
+        observers; prefer ``m[:] = …`` for load/copy.
         """
         if self.constraints[__fixed__].size !=0:
             fixes = np.ones(self.size).astype(bool)

@@ -96,16 +96,29 @@ class Parameterized(with_metaclass(ParametersChangedMeta, Parameterizable)):
 
     Handling of constraining, fixing and tieing parameters::
 
-         - You can constrain parameters by calling the constrain on the param itself, e.g:
+         - You can constrain parameters by calling constrain on the param itself, e.g:
 
             - m.name[:,1].constrain_positive()
-            - m.name[0].tie_to(m.name[1])
+            - m.name[1].fix()
+
+         - Inspect active constraints with ``m.constraints`` (a mapping from
+           transformation / ``'fixed'`` to flat index arrays).
+
+         - There is no built-in simplex / "sum to one" constraint (#35). Use a
+           transformation (e.g. logistic on free parameters) or enforce the
+           coupling in ``parameters_changed``.
+
+         - ``tie_to`` was never implemented (#34); sync shared values in
+           ``parameters_changed`` instead.
 
          - Fixing parameters will fix them to the value they are right now. If you change
            the parameters value, the param will be fixed to the new value!
 
          - If you want to operate on all parameters use m[''] to wildcard select all paramters
            and concatenate them. Printing m[''] will result in printing of all parameters in detail.
+
+         - During optimization, enable verbose messages (``m.optimize(messages=True)``)
+           to follow the objective; there is no separate per-iteration callback API (#30).
     """
     #===========================================================================
     # Metaclass for parameters changed after init.

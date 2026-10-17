@@ -62,3 +62,20 @@ def test_observable_array_scalar_ufunc_returns_a_numpy_scalar():
 
     assert isinstance(result, np.floating)
     assert result == 3.0
+
+
+def test_slice_assign_notifies_param_array_write_does_not():
+    """Recommended reload path is m[:]; bare param_array[:] stays silent (#51)."""
+    root, child = make_hierarchy()
+    root[:] = [1.0, 2.0, 3.0]
+    loaded = np.array([4.0, 5.0, 6.0])
+
+    root.param_array[:] = loaded
+    np.testing.assert_array_equal(root.param_array, loaded)
+    # Silent buffer write: leaf views are not refreshed.
+    np.testing.assert_array_equal(child.left, [1.0, 2.0])
+    np.testing.assert_array_equal(child.right, [3.0])
+
+    root[:] = loaded
+    np.testing.assert_array_equal(child.left, [4.0, 5.0])
+    np.testing.assert_array_equal(child.right, [6.0])
