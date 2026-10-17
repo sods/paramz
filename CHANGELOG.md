@@ -22,6 +22,8 @@ Other
 ~~~~~
 - Confirmed no remaining ``ndarray.data`` assignment on supported paths
   after NumPy 2 compatibility work; issue #17 ready to close.
+- Default git branch renamed ``master`` → ``main``; CI triggers and README
+  badges updated accordingly. [#55]
 
 
 0.10.1 (2026-10-10)
