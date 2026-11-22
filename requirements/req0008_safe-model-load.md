@@ -1,7 +1,7 @@
 ---
 id: "0008"
 title: "Loading a model file does not execute untrusted code by default"
-status: "Proposed"
+status: "Ready"
 priority: "High"
 created: "2026-11-22"
 last_updated: "2026-11-22"
