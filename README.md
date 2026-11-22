@@ -43,6 +43,11 @@ Python 2.7, 3.5 and higher
 As pickle is inconsistent across python versions and heavily dependent on class structure, it behaves inconsistent across versions. 
 Pickling as meant to serialize models within the same environment, and not to store models on disk to be used later on.
 
+If you do use ``m.pickle`` / ``paramz.load``, only load files from sources you trust.
+By default ``paramz.load`` uses a restricted unpickler (issue #60); pass
+``trusted=True`` only for archives you authored. Prefer ``np.save`` of
+``param_array`` plus a reconstruct script for durable storage:
+
 To save a model it is best to save the `m.param_array` of it to disk (using numpy’s `np.save`).
 Additionally, you save the script which creates the model.
 In this script you can create the model using `initialize=False` as a keyword argument and with the data loaded as normal.

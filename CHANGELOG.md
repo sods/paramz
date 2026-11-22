@@ -2,6 +2,18 @@ Changelog
 =========
 
 
+0.10.3 (2026-11-22)
+-------------------
+
+Fix
+~~~
+- ``paramz.load`` uses a restricted unpickler by default so crafted pickles
+  cannot invoke builtins gadgets such as ``exec`` during load (CWE-502).
+  Pass ``allow_modules=[...]`` to extend the allow-list, or ``trusted=True``
+  for unrestricted ``pickle.load`` (warns). Credit: Dilanka Kaushal Hewage
+  (r3vpwnx). [#60]
+
+
 0.10.2 (2026-10-17)
 -------------------
 
