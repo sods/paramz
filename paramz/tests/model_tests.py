@@ -42,9 +42,6 @@ from paramz.tests.parameterized_tests import P, M
 class TestModel(AssertionsMixin):
 
     def setUp(self):
-        # Fixed positive values (not random): unseeded draws can land near zero
-        # under Logexp and fail numerical checkgrad on some Python/NumPy builds
-        # (seen on CI Python 3.14 for test_caching_offswitch).
         self.testmodel = M('testmodel')
         self.testmodel.kern = P('rbf')
         self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', 0.3, transformations.Logexp()))
@@ -56,6 +53,12 @@ class TestModel(AssertionsMixin):
         self.testmodel.kern.lengthscale = lengthscale
         self.testmodel.kern.link_parameter(lengthscale)
         self.testmodel.kern.link_parameter(variance)
+        # link_parameter rebuilds the shared buffer and can leave new children at 0;
+        # set finite positive values afterwards so checkgrad is well-conditioned
+        # (denormals from a zeroed Logexp param fail on some Python 3.14 builds).
+        self.testmodel.kern.lengthscale[:] = 0.7
+        self.testmodel.kern.variance[:] = 0.4
+        self.testmodel.likelihood.variance[:] = 0.3
         self.testmodel.trigger_update()
         #=============================================================================
         # GP_regression.           |  Value  |  Constraint  |  Prior  |  Tied to
