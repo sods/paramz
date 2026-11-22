@@ -42,6 +42,9 @@ from paramz.tests.parameterized_tests import P, M
 class TestModel(AssertionsMixin):
 
     def setUp(self):
+        # Seed so checkgrad assertions are reproducible across CI runners
+        # (unseeded draws occasionally fail numerical checks, e.g. macOS/3.14).
+        np.random.seed(42)
 
         self.testmodel = M('testmodel')
         self.testmodel.kern = P('rbf')
