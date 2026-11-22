@@ -42,17 +42,16 @@ from paramz.tests.parameterized_tests import P, M
 class TestModel(AssertionsMixin):
 
     def setUp(self):
-        # Seed so checkgrad assertions are reproducible across CI runners
-        # (unseeded draws occasionally fail numerical checks, e.g. macOS/3.14).
-        np.random.seed(42)
-
+        # Fixed positive values (not random): unseeded draws can land near zero
+        # under Logexp and fail numerical checkgrad on some Python/NumPy builds
+        # (seen on CI Python 3.14 for test_caching_offswitch).
         self.testmodel = M('testmodel')
         self.testmodel.kern = P('rbf')
-        self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
+        self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', 0.3, transformations.Logexp()))
         self.testmodel.link_parameter(self.testmodel.kern)
         self.testmodel.link_parameter(self.testmodel.likelihood)
-        variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp())
-        lengthscale=Param('lengthscale', np.random.uniform(.1, 1, 1), transformations.Logexp())
+        variance=Param('variance', 0.4, transformations.Logexp())
+        lengthscale=Param('lengthscale', np.array([0.7]), transformations.Logexp())
         self.testmodel.kern.variance = variance
         self.testmodel.kern.lengthscale = lengthscale
         self.testmodel.kern.link_parameter(lengthscale)
