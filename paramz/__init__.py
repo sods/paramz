@@ -76,8 +76,9 @@ def load(file_or_path, allow_modules=None, trusted=False):
 
     Only load pickles from sources you trust. By default a restricted
     unpickler is used so builtins gadgets such as ``exec`` cannot run during
-    load (CWE-502 / issue #60). Prefix allow-listing is not a full security
-    boundary against hostile code inside allow-listed packages.
+    load (CWE-502 / issue #60). Dotted GLOBAL names and non-class callables
+    under package prefixes are rejected; this is still not a full security
+    boundary against hostile code inside allow-listed classes.
 
     :param file_or_path: path to a pickle file, or an open binary file object
     :param allow_modules: optional extra module-name prefixes to allow when

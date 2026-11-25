@@ -29,17 +29,26 @@ from __future__ import annotations
 
 import pickle
 
-# Modules pickle itself uses when reconstructing ordinary containers / codecs.
-_PICKLE_SUPPORT_MODULES = frozenset({
-    "builtins",
-    "__builtin__",
-    "copyreg",
-    "copy_reg",
-    "collections",
-    "collections.abc",
-    "_compat_pickle",
-    "codecs",
-    "_codecs",
+# Exact (module, name) pairs for pickle / NumPy reconstruction helpers.
+# Module-wide allowances are avoided so imports hanging off support modules
+# (e.g. codecs.builtins) and helpers such as numpy.testing.runstring cannot
+# be resolved. See PR #61 review.
+_EXACT_ALLOWED = frozenset({
+    ("copyreg", "_reconstructor"),
+    ("copy_reg", "_reconstructor"),
+    ("collections", "OrderedDict"),
+    ("codecs", "encode"),
+    ("_codecs", "encode"),
+    ("numpy", "ndarray"),
+    ("numpy", "dtype"),
+    ("numpy.core.multiarray", "_reconstruct"),
+    ("numpy._core.multiarray", "_reconstruct"),
+    ("numpy.core.multiarray", "scalar"),
+    ("numpy._core.multiarray", "scalar"),
+    ("numpy.core.numeric", "_frombuffer"),
+    ("numpy._core.numeric", "_frombuffer"),
+    # defaultdict factory pickled with IntArrayDict state
+    ("paramz.core.lists_and_dicts", "intarray_default_factory"),
 })
 
 # Callables / types safe to resolve from builtins during unpickle.
@@ -78,10 +87,9 @@ _SAFE_BUILTINS = frozenset({
     "type",
 })
 
-# Default package prefixes for paramz / NumPy / GPy model graphs.
+# Package prefixes whose *classes* may be resolved (not module-level functions).
 DEFAULT_ALLOW_MODULE_PREFIXES = (
     "paramz",
-    "numpy",
     "GPy",
 )
 
@@ -93,28 +101,27 @@ def _module_allowed(module, prefixes):
     return False
 
 
-def is_allowed_global(module, name, allow_modules=None):
-    """Return True if ``module.name`` may be resolved by the restricted unpickler."""
-    prefixes = DEFAULT_ALLOW_MODULE_PREFIXES
-    if allow_modules:
-        prefixes = prefixes + tuple(allow_modules)
-
-    if module in ("builtins", "__builtin__"):
-        return name in _SAFE_BUILTINS
-
-    if module in _PICKLE_SUPPORT_MODULES:
-        return True
-
-    return _module_allowed(module, prefixes)
+def _forbidden(module, name):
+    return pickle.UnpicklingError(
+        "global '{}.{}' is forbidden by paramz restricted unpickler".format(
+            module, name
+        )
+    )
 
 
 class RestrictedUnpickler(pickle.Unpickler):
     """
-    ``pickle.Unpickler`` that only resolves classes from an allow-list.
+    ``pickle.Unpickler`` with an allow-list for GLOBAL opcodes.
 
-    This blocks classic builtins gadgets (e.g. ``exec``) used in crafted
-    pickles. It is not a full security boundary against hostile code in
-    allow-listed packages; only load files from sources you trust.
+    - Rejects dotted ``name`` values (protocol-4 attribute walks).
+    - Allows an exact set of pickle/NumPy reconstructors.
+    - Allows safe builtins by name.
+    - For ``paramz`` / ``GPy`` / ``allow_modules`` prefixes, only accepts
+      classes whose ``__module__`` lies under an allowed prefix.
+
+    This blocks classic gadgets and the bypasses reported on PR #61. It is
+    still not a full security boundary against hostile code in allow-listed
+    classes; only load files from sources you trust.
     """
 
     def __init__(self, file, allow_modules=None, **kwargs):
@@ -124,19 +131,23 @@ class RestrictedUnpickler(pickle.Unpickler):
         self._allow_modules = DEFAULT_ALLOW_MODULE_PREFIXES + extra
 
     def find_class(self, module, name):
+        if "." in name:
+            raise _forbidden(module, name)
+
         if module in ("builtins", "__builtin__"):
-            allowed = name in _SAFE_BUILTINS
-        elif module in _PICKLE_SUPPORT_MODULES:
-            allowed = True
-        else:
-            allowed = _module_allowed(module, self._allow_modules)
-        if not allowed:
-            raise pickle.UnpicklingError(
-                "global '{}.{}' is forbidden by paramz restricted unpickler".format(
-                    module, name
-                )
-            )
-        return super(RestrictedUnpickler, self).find_class(module, name)
+            if name not in _SAFE_BUILTINS:
+                raise _forbidden(module, name)
+            return super(RestrictedUnpickler, self).find_class(module, name)
+
+        if (module, name) in _EXACT_ALLOWED:
+            return super(RestrictedUnpickler, self).find_class(module, name)
+
+        if _module_allowed(module, self._allow_modules):
+            obj = super(RestrictedUnpickler, self).find_class(module, name)
+            if isinstance(obj, type) and _module_allowed(obj.__module__, self._allow_modules):
+                return obj
+
+        raise _forbidden(module, name)
 
 
 def restricted_load(file_obj, allow_modules=None):
