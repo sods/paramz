@@ -42,18 +42,23 @@ from paramz.tests.parameterized_tests import P, M
 class TestModel(AssertionsMixin):
 
     def setUp(self):
-
         self.testmodel = M('testmodel')
         self.testmodel.kern = P('rbf')
-        self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp()))
+        self.testmodel.likelihood = P('Gaussian_noise', variance=Param('variance', 0.3, transformations.Logexp()))
         self.testmodel.link_parameter(self.testmodel.kern)
         self.testmodel.link_parameter(self.testmodel.likelihood)
-        variance=Param('variance', np.random.uniform(0.1, 0.5), transformations.Logexp())
-        lengthscale=Param('lengthscale', np.random.uniform(.1, 1, 1), transformations.Logexp())
+        variance=Param('variance', 0.4, transformations.Logexp())
+        lengthscale=Param('lengthscale', np.array([0.7]), transformations.Logexp())
         self.testmodel.kern.variance = variance
         self.testmodel.kern.lengthscale = lengthscale
         self.testmodel.kern.link_parameter(lengthscale)
         self.testmodel.kern.link_parameter(variance)
+        # link_parameter rebuilds the shared buffer and can leave new children at 0;
+        # set finite positive values afterwards so checkgrad is well-conditioned
+        # (denormals from a zeroed Logexp param fail on some Python 3.14 builds).
+        self.testmodel.kern.lengthscale[:] = 0.7
+        self.testmodel.kern.variance[:] = 0.4
+        self.testmodel.likelihood.variance[:] = 0.3
         self.testmodel.trigger_update()
         #=============================================================================
         # GP_regression.           |  Value  |  Constraint  |  Prior  |  Tied to

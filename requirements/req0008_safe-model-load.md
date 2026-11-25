@@ -1,7 +1,7 @@
 ---
 id: "0008"
 title: "Loading a model file does not execute untrusted code by default"
-status: "Ready"
+status: "Implemented"
 priority: "High"
 created: "2026-11-22"
 last_updated: "2026-11-22"
@@ -30,10 +30,10 @@ An explicit escape hatch for unrestricted pickle may exist for trusted archives,
 
 ## Acceptance Criteria
 
-- [ ] Default `paramz.load` rejects a crafted pickle whose reconstruction uses disallowed callables (e.g. `builtins.exec`).
-- [ ] Legitimate paramz round-trips (and typical GPy model loads when exercised) still succeed under the default path.
-- [ ] Any unrestricted pickle path is opt-in, named clearly, and documented as trusting the file author.
-- [ ] User-facing docs state that model pickles should only be loaded from trusted sources, even with the restricted loader.
+- [x] Default `paramz.load` rejects a crafted pickle whose reconstruction uses disallowed callables (e.g. `builtins.exec`).
+- [x] Legitimate paramz round-trips (and typical GPy model loads when exercised) still succeed under the default path.
+- [x] Any unrestricted pickle path is opt-in, named clearly, and documented as trusting the file author.
+- [x] User-facing docs state that model pickles should only be loaded from trusted sources, even with the restricted loader.
 - [ ] Patch release notes credit the reporter and reference the issue / advisory.
 
 ## References

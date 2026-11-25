@@ -41,38 +41,57 @@ from . import examples
 
 from .__version__ import __version__
 
-def _unpickle(file_or_path, pickle, strcl, p3kw):
-    if isinstance(file_or_path, strcl):
-        with open(file_or_path, 'rb') as f:
-            m = pickle.load(f, **p3kw)
-    else:
-        m = pickle.load(file_or_path, **p3kw)
-    return m
-
-def load(file_or_path):
+def _open_pickle_source(file_or_path):
     """
-    Load a previously pickled model, using `m.pickle('path/to/file.pickle)'`
+    Yield an open binary file for ``file_or_path``.
 
-    :param file_name: path/to/file.pickle
+    If ``file_or_path`` is a path string, the file is closed after use.
+    If it is already a file object, it is left open for the caller.
     """
-    from pickle import UnpicklingError
-    _python3 = True
-    try: 
-        import cPickle as pickle
-        _python3 = False
-    except ImportError: #python3
-        import pickle
-   
+    if isinstance(file_or_path, str):
+        return open(file_or_path, 'rb'), True
+    return file_or_path, False
+
+def _unpickle_trusted(file_or_path):
+    import pickle
+    f, close = _open_pickle_source(file_or_path)
     try:
-        if _python3:
-            strcl = str
-            p3kw = dict(encoding='latin1')
-            return _unpickle(file_or_path, pickle, strcl, p3kw)
-        else:
-            strcl = basestring
-            p3kw = {}
-            return _unpickle(file_or_path, pickle, strcl, p3kw)
-    
-    except UnpicklingError: # pragma: no coverage
-        import pickle
-        return _unpickle(file_or_path, pickle, strcl, p3kw)
+        return pickle.load(f, encoding='latin1')
+    finally:
+        if close:
+            f.close()
+
+def _unpickle_restricted(file_or_path, allow_modules=None):
+    from .core.safe_pickle import restricted_load
+    f, close = _open_pickle_source(file_or_path)
+    try:
+        return restricted_load(f, allow_modules=allow_modules)
+    finally:
+        if close:
+            f.close()
+
+def load(file_or_path, allow_modules=None, trusted=False):
+    """
+    Load a previously pickled model, using ``m.pickle('path/to/file.pickle')``.
+
+    Only load pickles from sources you trust. By default a restricted
+    unpickler is used so builtins gadgets such as ``exec`` cannot run during
+    load (CWE-502 / issue #60). Dotted GLOBAL names and non-class callables
+    under package prefixes are rejected; this is still not a full security
+    boundary against hostile code inside allow-listed classes.
+
+    :param file_or_path: path to a pickle file, or an open binary file object
+    :param allow_modules: optional extra module-name prefixes to allow when
+        using the restricted loader (e.g. ``['mypkg']``)
+    :param trusted: if True, use unrestricted ``pickle.load`` (unsafe; warns)
+    """
+    if trusted:
+        import warnings
+        warnings.warn(
+            "paramz.load(..., trusted=True) uses unrestricted pickle.load; "
+            "only use for files you trust (issue #60 / CWE-502).",
+            UserWarning,
+            stacklevel=2,
+        )
+        return _unpickle_trusted(file_or_path)
+    return _unpickle_restricted(file_or_path, allow_modules=allow_modules)
